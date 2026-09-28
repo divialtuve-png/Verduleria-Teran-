@@ -1,0 +1,13 @@
+{
+  "name":"Verdulería Terán",
+  "short_name":"Verdulería Terán",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#f7faf6",
+  "theme_color":"#2f7d32",
+  "lang":"es-PE",
+  "icons":[
+    {"src":"icon-180.png","sizes":"180x180","type":"image/png"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
