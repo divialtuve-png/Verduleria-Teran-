@@ -1521,7 +1521,13 @@ async function saveOrder(){
 
     showSuccess(text);
 
-  }catch(error){alert("No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente.");
+ alert(
+  "ERROR SUPABASE\n\n" +
+  "Mensaje: " + (error?.message || "sin mensaje") + "\n" +
+  "Código: " + (error?.code || "sin código") + "\n" +
+  "Detalle: " + (error?.details || "sin detalle") + "\n" +
+  "Hint: " + (error?.hint || "sin hint")
+);
 
     console.error("Error registrando pedido:",error);
 
