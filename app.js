@@ -1,4 +1,7 @@
-const demoProducts = [
+const demoProducts = [const supabase = window.supabase.createClient(
+  window.SUPABASE_CONFIG.url,
+  window.SUPABASE_CONFIG.publishableKey
+);
   {id:1,name:"Papa blanca",category:"Verduras",unit:"kg",price:3.50,emoji:"🥔"},
   {id:2,name:"Tomate",category:"Verduras",unit:"kg",price:4.50,emoji:"🍅"},
   {id:3,name:"Cebolla roja",category:"Verduras",unit:"kg",price:4.00,emoji:"🧅"},
