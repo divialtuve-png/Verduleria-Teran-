@@ -1693,19 +1693,31 @@ function navigate(view){
 
 async function loadProducts(){
 
-  // IMPORTANTE: el catálogo y sus precios vienen de `productos`.
-  // Las imágenes NO se toman de la tabla `products`, porque allí
-  // algunas imágenes estaban cruzadas (por ejemplo Brócoli/Papa y
-  // Pepino/Zanahoria). Se usa la biblioteca de imágenes de este archivo
-  // asociada por nombre de producto.
-  const productosResult=await client
+  // Cargar el catálogo desde la tabla principal `productos`.
+  // Las imágenes se resuelven SIEMPRE por nombre con nuestra biblioteca
+  // para evitar las imágenes cruzadas de la tabla `products`.
+  let productosResult=await client
     .from("productos")
     .select("*")
     .eq("activo",true)
     .order("id");
 
+  // Si Supabase devuelve 0 productos activos, hacemos una segunda lectura
+  // sin el filtro para evitar que un valor de `activo` distinto bloquee
+  // todo el catálogo. Si existen registros, los mostramos.
+  if(!productosResult.error && (!productosResult.data || productosResult.data.length===0)){
+    const allResult=await client
+      .from("productos")
+      .select("*")
+      .order("id");
+
+    if(!allResult.error && Array.isArray(allResult.data) && allResult.data.length){
+      productosResult=allResult;
+    }
+  }
+
   if(productosResult.error){
-    console.error(productosResult.error);
+    console.error("Error cargando productos:",productosResult.error);
     const box=document.getElementById("products");
     if(box){
       box.innerHTML=`
@@ -1720,7 +1732,6 @@ async function loadProducts(){
   products.length=0;
 
   (productosResult.data || []).forEach(row=>{
-
     const category=row.categoria || "Otros";
     const name=row.nombre || "Producto";
 
@@ -1731,7 +1742,6 @@ async function loadProducts(){
       unit:row.unidad || "kg",
       unitLabel:unitLabel(row.unidad),
       price:Number(row.precio)||0,
-      // Siempre usar la imagen correcta por nombre; no usar `products.image_url`.
       image:fallbackImage(name,category)
     });
   });
