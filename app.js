@@ -8,10 +8,11 @@ let cart = [];
 
 async function loadProducts() {
   const { data, error } = await supabase
-    .from("productos")
-    .select("*")
-    .eq("activo", true);
+  .from("productos")
+  .select("*")
+  .eq("activo", true);
 
+console.log("PRODUCTOS RECIBIDOS:", data?.length);
   if (error) {
   console.error("Error cargando productos:", error);
   document.querySelector("#products").innerHTML =
