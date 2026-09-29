@@ -1,23 +1,24 @@
-# Verdulería Terán
+# Verdulería Terán — versión corregida
 
-PWA móvil + página administrativa.
+Esta versión utiliza el diseño aprobado y corrige el problema de caché de GitHub Pages/Safari.
 
-## Archivos
-- `index.html`: aplicación cliente.
-- `app.js`: lógica completa de catálogo, carrito, checkout, pagos, pedidos y WhatsApp.
-- `config.js`: URL y publishable key de Supabase.
-- `admin.html` / `admin.js`: administración de precios, productos y estados de pedidos.
-- `schema.sql`: tablas, RLS, secuencia de pedidos y productos iniciales.
-- `manifest.webmanifest` / `sw.js`: instalación como PWA.
+## Archivos principales
+- `index.html`
+- `app.js`
+- `config.js`
+- `sw.js`
+- `admin.html` / `admin.js`
+- `schema.sql`
+- `manifest.webmanifest`
 
-## Configuración
-1. Crea/abre el proyecto de Supabase.
-2. Ejecuta `schema.sql` en SQL Editor.
-3. Copia la URL del proyecto y la publishable key en `config.js`.
-4. Crea un usuario en Supabase Authentication para entrar a `admin.html`.
-5. Publica la carpeta con GitHub Pages, Netlify, Vercel u otro hosting HTTPS.
+## Publicación en GitHub Pages
+1. Reemplaza los archivos del repositorio por los de este ZIP.
+2. Haz **Commit changes** en la rama `main`.
+3. Espera a que GitHub Pages publique el cambio.
+4. Abre el sitio agregando `?reset=7` al final de la dirección una sola vez.
+5. Luego puedes abrir normalmente el sitio.
 
-## Importante
-No coloques una `service_role key` en `config.js`. Para navegador se utiliza la publishable/anon key y las políticas RLS.
+## Supabase
+Conserva tus datos reales en `config.js`. Debes usar la URL de tu proyecto y la publishable/anon key, nunca una `service_role` key en el navegador.
 
-Si `config.js` todavía tiene valores de ejemplo, la app abre en modo demostración con productos locales y permite probar el catálogo/carrito/checkout; los pedidos no se sincronizan con Supabase hasta configurar las credenciales.
+Si todavía no configuras Supabase, la página muestra un catálogo de respaldo para que puedas comprobar el diseño y la navegación.

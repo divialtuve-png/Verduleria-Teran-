@@ -8,10 +8,21 @@
 ====================================================
 */
 
-const client = window.supabase.createClient(
-  window.SUPABASE_CONFIG.url,
-  window.SUPABASE_CONFIG.publishableKey
+const SUPABASE_READY = Boolean(
+  window.supabase &&
+  window.SUPABASE_CONFIG &&
+  window.SUPABASE_CONFIG.url &&
+  window.SUPABASE_CONFIG.publishableKey &&
+  !String(window.SUPABASE_CONFIG.url).includes("TU-PROYECTO") &&
+  !String(window.SUPABASE_CONFIG.publishableKey).includes("TU-PUBLISHABLE-KEY")
 );
+
+const client = SUPABASE_READY
+  ? window.supabase.createClient(
+      window.SUPABASE_CONFIG.url,
+      window.SUPABASE_CONFIG.publishableKey
+    )
+  : null;
 
 const BUSINESS_WHATSAPP = "51983130700";
 
@@ -1489,6 +1500,10 @@ async function saveOrder(){
 
   try{
 
+    if(!client){
+      throw new Error("SUPABASE_NOT_CONFIGURED");
+    }
+
     const {error}=await client
       .from("pedidos")
       .insert({
@@ -1691,7 +1706,73 @@ function navigate(view){
    LOAD PRODUCTS
 ================================================= */
 
+// Catálogo de respaldo: evita que la pantalla quede vacía si Supabase tarda
+// o no responde. Cuando Supabase responde con productos, estos reemplazan
+// automáticamente este catálogo de respaldo.
+const starterCatalog = [
+  {id:-1,name:"Tomate",category:"Verduras",unit:"kg",price:4.50},
+  {id:-2,name:"Cebolla roja",category:"Verduras",unit:"kg",price:3.80},
+  {id:-3,name:"Zanahoria",category:"Verduras",unit:"kg",price:2.50},
+  {id:-4,name:"Lechuga",category:"Verduras",unit:"unidad",price:2.00},
+  {id:-5,name:"Limón",category:"Frutas",unit:"kg",price:5.00},
+  {id:-6,name:"Papa amarilla",category:"Tubérculos",unit:"kg",price:3.50},
+  {id:-7,name:"Brócoli",category:"Verduras",unit:"kg",price:5.00},
+  {id:-8,name:"Pepino criollo",category:"Verduras",unit:"kg",price:3.20},
+  {id:-9,name:"Culantro",category:"Hierbas",unit:"atado",price:1.50},
+  {id:-10,name:"Papa blanca",category:"Tubérculos",unit:"kg",price:3.50}
+];
+
+function useCatalogRows(rows){
+  products.length=0;
+  (rows || []).forEach(row=>{
+    const category=row.categoria || row.category || "Otros";
+    const name=row.nombre || row.name || "Producto";
+    const unit=row.unidad || row.unit || "kg";
+    products.push({
+      id:row.id,
+      name,
+      category,
+      unit,
+      unitLabel:unitLabel(unit),
+      price:Number(row.precio ?? row.price)||0,
+      image:fallbackImage(name,category)
+    });
+  });
+  renderProductGrid();
+}
+
 async function loadProducts(){
+
+  // Mostrar inmediatamente un catálogo válido. Esto evita la pantalla
+  // vacía mientras Supabase responde.
+  useCatalogRows(starterCatalog);
+
+  if(!client){
+    console.warn("Supabase aún no está configurado. Se mantiene el catálogo de respaldo.");
+    return;
+  }
+
+  try{
+    const request=client
+      .from("productos")
+      .select("*")
+      .order("id");
+
+    const timeout=new Promise((_,reject)=>
+      setTimeout(()=>reject(new Error("TIMEOUT_PRODUCTS")),7000)
+    );
+
+    const result=await Promise.race([request,timeout]);
+
+    if(!result.error && Array.isArray(result.data) && result.data.length){
+      const activeRows=result.data.filter(row=>row.activo !== false);
+      useCatalogRows(activeRows.length ? activeRows : result.data);
+    }
+  }catch(error){
+    console.warn("Catálogo remoto no disponible; se mantiene el catálogo de respaldo.",error);
+  }
+}
+
 
   // Cargar el catálogo desde la tabla principal `productos`.
   // Las imágenes se resuelven SIEMPRE por nombre con nuestra biblioteca
