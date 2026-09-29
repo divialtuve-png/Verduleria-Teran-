@@ -1521,7 +1521,7 @@ async function saveOrder(){
 
     showSuccess(text);
 
-  }catch(error){
+  }catch(error){alert("No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente.");
 
     console.error("Error registrando pedido:",error);
 
