@@ -278,7 +278,7 @@ img{display:block;max-width:100%}
 }
 
 .products{
-  display:grid;
+  display:grid !important;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:9px;
   padding:0 10px;
@@ -346,10 +346,7 @@ img{display:block;max-width:100%}
   background:var(--green);
 }
 
-.card:nth-child(3n) .add{background:var(--purple)}
-.card:nth-child(4n) .add{background:var(--orange)}
-.card:nth-child(5n) .add{background:#207ce0}
-.card:nth-child(6n) .add{background:#ef2042}
+.card .add{background:var(--green)}
 
 .fruit-banner{
   margin:15px 10px 0;
@@ -862,7 +859,7 @@ img{display:block;max-width:100%}
 }
 
 @media(max-width:700px){
-  .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .products{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
   .hero{min-height:215px}
 }
 
@@ -873,8 +870,8 @@ img{display:block;max-width:100%}
 @media(max-width:360px){
   .brand-name,.brand-name span{font-size:15px}
   .top-cart-total{font-size:10px}
-  .products{gap:7px}
-  .card-body{padding:6px}
+  .products{gap:6px !important}
+  .card-body{padding:5px}
   .card-name{font-size:11px}
 }
 `;
