@@ -8,7 +8,24 @@ const demoProducts = [
   {id:7,name:"Culantro",category:"Hierbas",unit:"atado",price:1.50,emoji:"🌿"},
   {id:8,name:"Brócoli",category:"Verduras",unit:"unidad",price:4.50,emoji:"🥦"}
 ];
-let products = demoProducts, cart = [];
+let products = demoProducts, cart = [let demoProducts = [];
+
+async function loadProducts() {
+  const { data, error } = await window.supabase
+    .from("productos")
+    .select("*")
+    .eq("activo", true);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  demoProducts = data;
+  renderProducts(demoProducts);
+}
+
+loadProducts();];
 
 function money(n){return `S/ ${Number(n).toFixed(2)}`}
 function render(){
