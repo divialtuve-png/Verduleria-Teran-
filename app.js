@@ -2404,3 +2404,11 @@ async function sendWhatsAppOrder() {
       `?text=${encodeURIComponent(
         message
       )}`;
+      window.open(url, "_blank");
+}
+
+loadProducts();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js");
+}
