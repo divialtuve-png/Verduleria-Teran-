@@ -924,6 +924,35 @@ img{display:block;max-width:100%}
 .checkout-ref{padding:9px 10px 84px}.checkout-card{border-radius:15px;padding:13px;margin-bottom:9px}.checkout-heading{font-size:18px;margin-bottom:10px}.heading-icon{width:31px;height:31px}.field label{font-size:10px}.field input{height:38px;border-radius:10px;font-size:11px}.payment{min-height:100px;border-radius:13px}.payment-logo{width:46px;height:46px}.payment-note{font-size:9px}.summary{border-radius:15px;padding:13px}.summary-line{grid-template-columns:48px 1fr auto}.summary-line img{width:48px;height:48px}.confirm{border-radius:13px;padding:13px}
 .success-ref{padding:26px 16px 90px;min-height:calc(100vh - 82px)}.success-card{max-width:360px;border-radius:18px;padding:20px 17px}.success-check{width:82px;height:82px;border-radius:50%;font-size:48px}.success-card h2{font-size:25px}.success-card p{font-size:13px;line-height:1.4}.order-box{border-radius:15px;padding:13px}.order-number{font-size:18px;font-weight:900}.order-state{font-size:11px;color:#277443}.whatsapp,.secondary{border-radius:13px;padding:13px;font-size:13px}
 
+/* ===== DISEÑO DE LA REFERENCIA — TARJETAS ===== */
+.price-block{display:flex;flex-direction:column;align-items:flex-start;line-height:1}
+.card-unit{display:block;margin-top:4px;font-size:9px;color:#777}
+.card-bottom{align-items:flex-end}
+.card-name{margin-bottom:4px}
+.card-body{padding:7px 7px 8px}
+.add{font-size:16px;font-weight:800}
+@media (max-width:520px){
+  .topbar{height:80px;padding:6px 12px}
+  .brand-mark,.logo-svg{width:52px;height:52px}
+  .brand-name,.brand-name span{font-size:18px}
+  .brand-sub{font-size:9px}
+  .top-cart-icon{width:44px;height:44px}
+  .top-cart-total{font-size:12px;padding:9px 11px}
+  .hero{min-height:194px;margin:8px 12px 0}
+  .search-wrap{margin:8px 12px 6px}
+  .search{height:40px}
+  .categories{padding:3px 12px 9px}
+  .category{padding:8px 14px;font-size:11px}
+  .section-head{margin:1px 12px 8px}
+  .products{padding:0 12px;gap:8px}
+  .card{border-radius:14px}
+  .card-image{aspect-ratio:1/0.96}
+  .card-name{font-size:11px;min-height:0}
+  .price{font-size:13px}
+  .card-unit{font-size:8px}
+  .add{width:31px;height:31px;min-width:31px;border-radius:9px}
+}
+
 `;
 
 document.head.appendChild(style);
@@ -1051,12 +1080,12 @@ function renderShell(){
 
 function logoMarkup(){
   return `<svg viewBox="0 0 64 64" aria-hidden="true" class="logo-svg">
-    <path d="M31 57C29 45 30 34 36 23" fill="none" stroke="#16863f" stroke-width="3.2" stroke-linecap="round"/>
-    <path d="M32 45C23 45 14 39 12 30c9-2 18 2 20 11Z" fill="#4fae42"/>
-    <path d="M34 35C25 34 18 28 18 20c8-1 16 4 18 12Z" fill="#1f9147"/>
-    <path d="M36 27C31 20 32 12 39 8c6 6 5 13-3 19Z" fill="#6bbd3f"/>
-    <path d="M34 42C43 42 51 37 53 29c-9-1-17 3-19 11Z" fill="#159447"/>
-    <path d="M35 33C43 32 48 27 48 20c-7 0-13 4-15 10Z" fill="#8cc63f"/>
+    <path d="M32 58C31 46 32 35 36 24" fill="none" stroke="#188a42" stroke-width="3" stroke-linecap="round"/>
+    <path d="M32 48C23 47 15 42 12 33c9-1 18 4 21 12Z" fill="#5dbd42"/>
+    <path d="M34 40C25 39 18 34 16 25c9 0 16 4 19 12Z" fill="#278f45"/>
+    <path d="M35 31C30 23 31 14 38 8c7 6 7 14-3 22Z" fill="#7cc84a"/>
+    <path d="M35 47C43 46 51 41 54 32c-9 0-17 4-20 12Z" fill="#168c43"/>
+    <path d="M36 38C44 37 50 32 51 24c-8 0-14 4-17 11Z" fill="#9bd34e"/>
   </svg>`;
 }
 
@@ -1194,11 +1223,12 @@ function renderProductGrid(){
 
       <div class="card-body">
         <div class="card-name">${esc(p.name)}</div>
-        <div class="card-unit">${esc(p.unitLabel)}</div>
-
         <div class="card-bottom">
-          <span class="price">S/ ${p.price.toFixed(2)}</span>
-          <button class="add" data-add="${p.id}">+</button>
+          <div class="price-block">
+            <span class="price">S/ ${p.price.toFixed(2)}</span>
+            <span class="card-unit">${esc(p.unit)}</span>
+          </div>
+          <button class="add" data-add="${p.id}" aria-label="Agregar ${esc(p.name)}">+</button>
         </div>
       </div>
     </article>
