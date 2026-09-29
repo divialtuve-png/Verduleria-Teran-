@@ -97,6 +97,13 @@ img{display:block;max-width:100%}
   font-size:29px;
   background:linear-gradient(145deg,#ecf8df,#ccefc8);
   flex:none;
+  overflow:hidden;
+}
+
+.brand-mark img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
 }
 
 .brand-name{
@@ -185,8 +192,7 @@ img{display:block;max-width:100%}
 }
 
 .hero-content{
-  padding:27px 22px;
-  color:#fff;
+  display:none;
 }
 
 .hero h1{
@@ -1023,7 +1029,9 @@ function header(){
   return `
     <header class="topbar">
       <div class="brand">
-        <div class="brand-mark">🌿</div>
+        <div class="brand-mark">
+          <img src="icon.svg" alt="Verdulería Terán" onerror="this.style.display='none';this.parentElement.textContent='🌿';">
+        </div>
         <div>
           <div class="brand-name">Verdulería <span>Terán</span></div>
           <div class="brand-sub">Productos frescos</div>
@@ -1065,16 +1073,7 @@ function renderHome(){
 
     <main class="page">
 
-      <section class="hero">
-        <div class="hero-content">
-          <h1>Productos <span>frescos</span><br>directo a tu hogar</h1>
-          <p>Verdulería Terán</p>
-          <div class="delivery">
-            🚚 San Borja · San Luis<br>
-            San Isidro · La Victoria
-          </div>
-        </div>
-      </section>
+      <section class="hero" aria-label="Productos frescos"></section>
 
       <div class="search-wrap">
         <input id="search" class="search" placeholder="⌕  Buscar productos...">

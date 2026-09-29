@@ -1,4 +1,4 @@
-const CACHE = 'verduleria-teran-v1';
+const CACHE = 'verduleria-teran-v2';
 const APP_SHELL = ['./', './index.html', './config.js', './app.js', './manifest.webmanifest'];
 
 self.addEventListener('install', event => {
