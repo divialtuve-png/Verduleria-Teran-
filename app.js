@@ -13,8 +13,10 @@ async function loadProducts() {
     .eq("activo", true);
 
   if (error) {
-    console.error("Error cargando productos:", error);
-    return;
+  console.error("Error cargando productos:", error);
+  document.querySelector("#products").innerHTML =
+    `<div>Error al cargar productos: ${error.message}</div>`;
+  return;
   }
 
   products = data.map(p => ({
