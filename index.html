@@ -1,42 +1,197 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#16823b">
-  <meta name="description" content="Verdulería Terán - verduras y productos frescos">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icon.svg">
-  <title>Verdulería Terán</title>
-  <style>
-    :root{--green:#16823b;--dark:#12351f;--bg:#f5f8f4;--card:#fff;--muted:#66756b}
-    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:#17231b}
-    header{background:linear-gradient(135deg,#16823b,#25a653);color:white;padding:22px 18px 28px;border-radius:0 0 24px 24px}
-    header h1{margin:0 0 5px;font-size:28px}header p{margin:0;opacity:.9}
-    main{max-width:900px;margin:auto;padding:18px}.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-    input,select,button{font:inherit}input,select{border:1px solid #d7dfd9;border-radius:12px;padding:12px;background:#fff}
-    #search{flex:1;min-width:220px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
-    .card{background:var(--card);border-radius:18px;padding:15px;box-shadow:0 3px 14px #17351b12}
-    .emoji{font-size:42px}.name{font-weight:700;font-size:18px;margin:8px 0 4px}.unit{color:var(--muted);font-size:13px}
-    .price{font-weight:800;color:var(--green);font-size:19px;margin:10px 0}.add{width:100%;border:0;border-radius:12px;padding:11px;background:var(--green);color:white;font-weight:700}
-    .empty{text-align:center;color:var(--muted);padding:35px}.cart{position:sticky;bottom:12px;margin-top:20px;background:var(--dark);color:#fff;border-radius:18px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
-    .cart button{background:#fff;color:var(--dark);border:0;border-radius:12px;padding:10px 14px;font-weight:700}
-    footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
-  </style>
-</head>
-<body>
-<header><h1>🥬 Verdulería Terán</h1><p>Verduras frescas para tu hogar</p></header>
-<main>
-  <div class="bar">
-    <input id="search" placeholder="Buscar verdura...">
-    <select id="category"><option value="">Todas</option><option>Verduras</option><option>Frutas</option><option>Hierbas</option><option>Otros</option></select>
-  </div>
-  <section id="products" class="grid"></section>
-  <div id="cart" class="cart" hidden><div><strong>🛒 <span id="count">0</span> productos</strong><br><span id="total">S/ 0.00</span></div><button onclick="showOrder()">Ver pedido</button></div>
-</main>
-<footer>San Borja · San Luis · San Isidro · La Victoria<br>Yape · Plin · Transferencia · Contra entrega</footer>
-<script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js"></script>
-</body>
-</html>
+const supabase = window.supabase.createClient(
+  window.SUPABASE_CONFIG.url,
+  window.SUPABASE_CONFIG.publishableKey
+);
+
+let products = [];
+let cart = [];
+let isAdmin = false;
+
+function loadCart() {
+  const saved = localStorage.getItem("cart");
+  if (saved) {
+    try {
+      cart = JSON.parse(saved);
+    } catch (e) {
+      cart = [];
+    }
+  }
+}
+
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+async function loadProducts() {
+  try {
+    const { data, error } = await supabase
+      .from("productos")
+      .select("*")
+      .order("nombre");
+
+    if (error) {
+      console.error("Error cargando productos:", error);
+      document.querySelector("#products").innerHTML = 
+        `<div class="empty">Error al cargar productos: ${error.message}</div>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      document.querySelector("#products").innerHTML = 
+        `<div class="empty">No hay productos disponibles</div>`;
+      return;
+    }
+
+    products = data.map(p => ({
+      id: p.id,
+      name: p.nombre,
+      category: p.categoria,
+      unit: p.unidad,
+      price: Number(p.precio),
+      emoji: p.emoji || "🥬",
+      activo: p.activo !== false,
+      stock: p.stock || null
+    }));
+
+    render();
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}
+
+function money(n) {
+  return `S/ ${Number(n).toFixed(2)}`;
+}
+
+function render() {
+  const q = document.querySelector("#search").value.toLowerCase().trim();
+  const c = document.querySelector("#category").value;
+
+  const list = products.filter(
+    p =>
+      (!q || p.name.toLowerCase().includes(q)) &&
+      (!c || p.category === c)
+  );
+
+  const el = document.querySelector("#products");
+
+  el.innerHTML = list.length
+    ? list.map(p => `
+      <article class="card" data-id="${p.id}">
+        <div class="emoji">${p.emoji}</div>
+        <div class="name">${p.name}</div>
+        <div class="unit">Venta por ${p.unit}</div>
+        <div class="price">${money(p.price)}</div>
+        <button class="add" onclick="add(${p.id})">Agregar</button>
+      </article>
+    `).join("")
+    : `<div class="empty">No encontramos productos.</div>`;
+
+  updateCart();
+}
+
+function add(id) {
+  const p = products.find(x => x.id === id);
+  if (p) {
+    cart.push({ ...p });
+    saveCart();
+    updateCart();
+  }
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  saveCart();
+  updateCart();
+}
+
+function updateCart() {
+  const cartEl = document.querySelector("#cart");
+  const countEl = document.querySelector("#count");
+  const totalEl = document.querySelector("#total");
+  const itemsEl = document.querySelector("#cart-items");
+  const totalDetalleEl = document.querySelector("#cart-total");
+
+  cartEl.hidden = !cart.length;
+
+  if (!cart.length) {
+    itemsEl.innerHTML = "";
+    totalDetalleEl.textContent = money(0);
+    countEl.textContent = "0";
+    totalEl.textContent = money(0);
+    return;
+  }
+
+  countEl.textContent = cart.length;
+  const total = cart.reduce((s, p) => s + p.price, 0);
+  totalEl.textContent = money(total);
+
+  itemsEl.innerHTML = cart.map((p, i) => `
+    <div class="cart-item">
+      <span>${p.emoji} ${p.name}</span>
+      <span>${money(p.price)}</span>
+      <button onclick="removeFromCart(${i})" class="remove-btn">✕</button>
+    </div>
+  `).join("");
+
+  totalDetalleEl.textContent = money(total);
+}
+
+async function showOrder() {
+  if (!cart.length) {
+    alert("El carrito está vacío");
+    return;
+  }
+
+  const total = cart.reduce((s, p) => s + p.price, 0);
+  const text = cart
+    .map((p, i) => `${i + 1}. ${p.emoji} ${p.name} — ${money(p.price)}`)
+    .join("\n");
+
+  const mensaje = `📋 PEDIDO VERDULERÍA TERÁN\n\n${text}\n\n💰 Total: ${money(total)}\n\n¿Deseas confirmar el pedido?`;
+
+  if (confirm(mensaje)) {
+    await guardarPedido(total, text);
+  }
+}
+
+async function guardarPedido(total, detalle) {
+  try {
+    const { error } = await supabase
+      .from("pedidos")
+      .insert([
+        {
+          items: cart.length,
+          total: total,
+          detalle: detalle,
+          estado: "pendiente",
+          fecha: new Date().toISOString()
+        }
+      ]);
+
+    if (error) {
+      console.error("Error guardando pedido:", error);
+      alert("Error al guardar el pedido: " + error.message);
+      return;
+    }
+
+    alert("✅ Pedido guardado correctamente!\n\nNos pondremos en contacto pronto.");
+    cart = [];
+    saveCart();
+    updateCart();
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}
+
+document.querySelector("#search").addEventListener("input", render);
+document.querySelector("#category").addEventListener("change", render);
+
+loadCart();
+loadProducts();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("./sw.js")
+    .catch(() => {});
+}
