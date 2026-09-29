@@ -3,56 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#2f7d32">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Verdulería Terán">
+  <meta name="theme-color" content="#16823b">
+  <meta name="description" content="Verdulería Terán - verduras y productos frescos">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="icon" href="icon.svg">
   <title>Verdulería Terán</title>
   <style>
-    :root{--green:#2f7d32;--green2:#eaf6e9;--ink:#17301a;--muted:#6c786d;--bg:#f7faf6;--card:#fff;--line:#e4ebe3}
-    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
-    header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top)) 16px 10px}
-    .top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:800;font-size:20px}.sub{font-size:12px;color:var(--muted);margin-top:2px}
-    .cart{border:0;background:var(--green);color:white;border-radius:14px;padding:10px 13px;font-weight:700}.badge{background:white;color:var(--green);border-radius:999px;padding:1px 6px;margin-left:5px}
-    main{max-width:760px;margin:auto;padding:16px 14px 100px}.hero{background:var(--green);color:#fff;border-radius:22px;padding:20px;margin-bottom:16px}.hero h1{margin:0 0 6px;font-size:25px}.hero p{margin:0;opacity:.9}
-    .toolbar{display:flex;gap:9px;overflow:auto;margin:0 0 15px}.chip{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;color:var(--ink)}.chip.active{background:var(--green);color:#fff;border-color:var(--green)}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.03)}.photo{height:125px;border-radius:14px;background:var(--green2);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px}.photo img{width:100%;height:100%;object-fit:cover}.emoji{font-size:48px}.name{font-weight:750;min-height:40px}.price{font-size:18px;font-weight:800;margin:7px 0}.presentation{font-size:12px;color:var(--muted);margin-bottom:9px}.add{width:100%;border:0;border-radius:12px;padding:10px;background:var(--green);color:white;font-weight:750}.disabled{background:#dfe5df;color:#6e776f}.status{text-align:center;padding:30px;color:var(--muted)}
-    .sheet{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:30;display:none;align-items:flex-end}.sheet.open{display:flex}.panel{width:100%;max-height:88vh;overflow:auto;background:white;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}.row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.close{float:right;border:0;background:#eef2ed;border-radius:50%;width:36px;height:36px}.total{font-size:21px;font-weight:850;margin:16px 0}.empty{padding:30px 5px;text-align:center;color:var(--muted)}
-    @media(min-width:620px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    :root{--green:#16823b;--dark:#12351f;--bg:#f5f8f4;--card:#fff;--muted:#66756b}
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:#17231b}
+    header{background:linear-gradient(135deg,#16823b,#25a653);color:white;padding:22px 18px 28px;border-radius:0 0 24px 24px}
+    header h1{margin:0 0 5px;font-size:28px}header p{margin:0;opacity:.9}
+    main{max-width:900px;margin:auto;padding:18px}.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+    input,select,button{font:inherit}input,select{border:1px solid #d7dfd9;border-radius:12px;padding:12px;background:#fff}
+    #search{flex:1;min-width:220px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+    .card{background:var(--card);border-radius:18px;padding:15px;box-shadow:0 3px 14px #17351b12}
+    .emoji{font-size:42px}.name{font-weight:700;font-size:18px;margin:8px 0 4px}.unit{color:var(--muted);font-size:13px}
+    .price{font-weight:800;color:var(--green);font-size:19px;margin:10px 0}.add{width:100%;border:0;border-radius:12px;padding:11px;background:var(--green);color:white;font-weight:700}
+    .empty{text-align:center;color:var(--muted);padding:35px}.cart{position:sticky;bottom:12px;margin-top:20px;background:var(--dark);color:#fff;border-radius:18px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .cart button{background:#fff;color:var(--dark);border:0;border-radius:12px;padding:10px 14px;font-weight:700}
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
   </style>
 </head>
 <body>
-<header><div class="top"><div><div class="brand">🥬 Verdulería Terán</div><div class="sub">Frescos para tu hogar</div></div><button class="cart" id="cartBtn">Carrito <span class="badge" id="count">0</span></button></div></header>
-<div id="setup" style="display:none;position:fixed;inset:0;z-index:50;background:#f7faf6;padding:28px 18px;overflow:auto"><div style="max-width:520px;margin:50px auto;background:#fff;border:1px solid #e4ebe3;border-radius:22px;padding:22px"><h2 style="margin-top:0">Conectar Verdulería Terán</h2><p style="color:#6c786d">Pega aquí la <b>Publishable Key</b> de Supabase. Debe comenzar con <b>sb_publishable_</b>.</p><input id="keyInput" type="text" autocomplete="off" placeholder="sb_publishable_..." style="width:100%;padding:13px;border:1px solid #d9e1d8;border-radius:12px;font-size:14px"><button id="saveKey" style="width:100%;margin-top:12px;border:0;border-radius:12px;padding:13px;background:#2f7d32;color:#fff;font-weight:800">Conectar</button><p id="keyMsg" style="color:#b42318"></p></div></div>
+<header><h1>🥬 Verdulería Terán</h1><p>Verduras frescas para tu hogar</p></header>
 <main>
-  <section class="hero"><h1>Compra fresco, fácil y rápido</h1><p>Productos y precios actualizados desde Verdulería Terán.</p></section>
-  <div class="toolbar" id="cats"></div>
-  <section class="grid" id="products"></section>
-  <div class="status" id="status">Cargando catálogo…</div>
+  <div class="bar">
+    <input id="search" placeholder="Buscar verdura...">
+    <select id="category"><option value="">Todas</option><option>Verduras</option><option>Frutas</option><option>Hierbas</option><option>Otros</option></select>
+  </div>
+  <section id="products" class="grid"></section>
+  <div id="cart" class="cart" hidden><div><strong>🛒 <span id="count">0</span> productos</strong><br><span id="total">S/ 0.00</span></div><button onclick="showOrder()">Ver pedido</button></div>
 </main>
-<div class="sheet" id="sheet"><div class="panel"><button class="close" id="close">✕</button><h2>Tu carrito</h2><div id="cartItems"></div><div class="total" id="total">Total: S/ 0.00</div><button class="add" id="checkout">Continuar pedido</button></div></div>
-<script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-const SUPABASE_URL='https://ldkalvjtxbmnznxwjdfc.supabase.co';
-let SUPABASE_PUBLISHABLE_KEY=localStorage.getItem('vt_supabase_key')||'';
-let supabase=SUPABASE_PUBLISHABLE_KEY?createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY):null;
-const $=id=>document.getElementById(id);let products=[],prices=[],categories=[],cart=JSON.parse(localStorage.getItem('vt_cart')||'[]'),activeCat=0;
-const emoji={"Papa":"🥔","Tomate":"🍅","Cebolla":"🧅","Zanahoria":"🥕","Limón":"🍋","Lechuga":"🥬","Plátano":"🍌","Manzana":"🍎","Culantro":"🌿","Perejil":"🌿","Palta":"🥑","Brócoli":"🥦","Coliflor":"🥦","Pepino":"🥒","Pimiento":"🫑","Rocoto":"🌶️","Ajo":"🧄","Champiñón":"🍄"};
-function save(){localStorage.setItem('vt_cart',JSON.stringify(cart));$('count').textContent=cart.reduce((s,x)=>s+x.qty,0)}
-function money(v){return 'S/ '+Number(v).toFixed(2)}
-function renderCats(){ $('cats').innerHTML='<button class="chip '+(!activeCat?'active':'')+'" data-cat="0">Todos</button>'+categories.map(c=>`<button class="chip ${activeCat==c.id?'active':''}" data-cat="${c.id}">${c.name}</button>`).join('');document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{activeCat=Number(b.dataset.cat);renderCats();renderProducts()})}
-function renderProducts(){let list=products.filter(p=>!activeCat||p.category_id===activeCat);$('products').innerHTML=list.map(p=>{let pp=prices.filter(x=>x.product_id===p.id&&Number(x.price)>0);let x=pp[0];return `<article class="card"><div class="photo">${p.image_url?`<img src="${p.image_url}" alt="${p.name}">`:`<div class="emoji">${emoji[p.name]||'🥬'}</div>`}</div><div class="name">${p.name}</div>${x?`<div class="price">${money(x.price)}</div><div class="presentation">${x.presentation_name||'Presentación'}</div>`:`<div class="price">Consultar</div><div class="presentation">Precio pendiente</div>`}<button class="add ${x?'':'disabled'}" data-id="${p.id}" ${x?'':'disabled'}>${x?'Agregar':'Sin precio'}</button></article>`}).join('');document.querySelectorAll('.add:not(.disabled)').forEach(b=>b.onclick=()=>add(Number(b.dataset.id)))}
-function add(id){let p=products.find(x=>x.id===id),x=prices.find(x=>x.product_id===id&&Number(x.price)>0);if(!x)return;let item=cart.find(i=>i.product_id===id&&i.presentation_id===x.presentation_id);if(item)item.qty++;else cart.push({product_id:id,name:p.name,presentation_id:x.presentation_id,presentation_name:x.presentation_name,price:Number(x.price),qty:1});save();openCart()}
-function openCart(){renderCart();$('sheet').classList.add('open')}
-function renderCart(){if(!cart.length){$('cartItems').innerHTML='<div class="empty">Tu carrito está vacío.</div>'}else{$('cartItems').innerHTML=cart.map((i,n)=>`<div class="row"><div><b>${i.name}</b><div class="sub">${i.presentation_name}</div><div>${money(i.price)} × ${i.qty}</div></div><button class="close" data-remove="${n}">−</button></div>`).join('');document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{cart.splice(Number(b.dataset.remove),1);save();renderCart()})}let t=cart.reduce((s,i)=>s+i.price*i.qty,0);$('total').textContent='Total: '+money(t)}
-$('cartBtn').onclick=openCart;$('close').onclick=()=>$('sheet').classList.remove('open');$('sheet').onclick=e=>{if(e.target===$('sheet'))$('sheet').classList.remove('open')};$('checkout').onclick=()=>alert('El siguiente módulo será Dirección → Horario → Forma de pago → Confirmación.');
-save();
-const setup=$('setup'); const keyInput=$('keyInput'); const keyMsg=$('keyMsg');
-if(!SUPABASE_PUBLISHABLE_KEY){setup.style.display='block';}else{keyInput.value=SUPABASE_PUBLISHABLE_KEY;}
-$('saveKey').onclick=()=>{const k=keyInput.value.trim(); if(!k.startsWith('sb_publishable_')){keyMsg.textContent='La clave no parece ser una Publishable Key válida.';return;} localStorage.setItem('vt_supabase_key',k); SUPABASE_PUBLISHABLE_KEY=k; supabase=createClient(SUPABASE_URL,k); setup.style.display='none'; $('status').textContent='Conectando…'; load();};
-async function load(){if(!supabase)return;try{let a=await supabase.from('categories').select('id,name').order('id');if(a.error)throw a.error;categories=a.data||[];let b=await supabase.from('products').select('id,name,description,image_url,active,stock,category_id').eq('active',true).order('id');if(b.error)throw b.error;products=b.data||[];let c=await supabase.from('product_prices').select('id,product_id,presentation_id,price,active').eq('active',true);if(c.error)throw c.error;prices=c.data||[];let ids=[...new Set(prices.map(x=>x.presentation_id))];let d=ids.length?await supabase.from('presentations').select('id,name,code').in('id',ids):{data:[],error:null};if(d.error)throw d.error;let pm=new Map((d.data||[]).map(x=>[x.id,x.name]));prices=prices.map(x=>({...x,presentation_name:pm.get(x.presentation_id)||'Presentación'}));renderCats();renderProducts();$('status').textContent=products.length+' productos disponibles';}catch(e){console.error(e);$('status').textContent='No se pudo cargar el catálogo. Revisa la Publishable Key de Supabase.'}}
-load();
-</script>
-</body></html>
+<footer>San Borja · San Luis · San Isidro · La Victoria<br>Yape · Plin · Transferencia · Contra entrega</footer>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
