@@ -359,21 +359,148 @@ function updateCart() {
 }
 
 function showOrder() {
-  if (cart.length === 0) return;
+  if (cart.length === 0) {
+    alert("Agrega al menos un producto al carrito.");
+    return;
+  }
 
-  const text = cart
+  const cartBox = document.querySelector("#cart");
+
+  let form = document.querySelector("#customerForm");
+
+  if (form) {
+    form.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
+  form = document.createElement("div");
+  form.id = "customerForm";
+
+  form.style.cssText = `
+    margin-top:20px;
+    padding:18px;
+    background:#f7faf5;
+    border-radius:16px;
+    border:1px solid #dce8d8;
+  `;
+
+  form.innerHTML = `
+    <h3 style="margin-top:0">
+      Datos del cliente
+    </h3>
+
+    <input
+      id="customerName"
+      type="text"
+      placeholder="Nombre completo"
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:13px;
+        margin-bottom:10px;
+        border:1px solid #ccc;
+        border-radius:10px;
+        font-size:16px;
+      "
+    >
+
+    <input
+      id="customerPhone"
+      type="tel"
+      placeholder="Teléfono / WhatsApp"
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:13px;
+        margin-bottom:10px;
+        border:1px solid #ccc;
+        border-radius:10px;
+        font-size:16px;
+      "
+    >
+
+    <input
+      id="customerAddress"
+      type="text"
+      placeholder="Dirección de entrega"
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:13px;
+        margin-bottom:10px;
+        border:1px solid #ccc;
+        border-radius:10px;
+        font-size:16px;
+      "
+    >
+
+    <input
+      id="customerReference"
+      type="text"
+      placeholder="Referencia (opcional)"
+      style="
+        width:100%;
+        box-sizing:border-box;
+        padding:13px;
+        margin-bottom:15px;
+        border:1px solid #ccc;
+        border-radius:10px;
+        font-size:16px;
+      "
+    >
+
+    <button
+      onclick="confirmCustomerData()"
+      style="
+        width:100%;
+        padding:14px;
+        border:0;
+        border-radius:12px;
+        background:#2e7d32;
+        color:white;
+        font-size:17px;
+        font-weight:700;
+      "
+    >
+      Continuar
+    </button>
+  `;
+
+  cartBox.appendChild(form);
+
+  form.scrollIntoView({ behavior: "smooth" });
+}
+
+function confirmCustomerData() {
+  const name = document.querySelector("#customerName").value.trim();
+  const phone = document.querySelector("#customerPhone").value.trim();
+  const address = document.querySelector("#customerAddress").value.trim();
+  const reference = document.querySelector("#customerReference").value.trim();
+
+  if (!name || !phone || !address) {
+    alert("Por favor completa nombre, teléfono y dirección.");
+    return;
+  }
+
+  const orderText = cart
     .map(p =>
       `• ${p.name} x${p.quantity} - S/ ${(p.price * p.quantity).toFixed(2)}`
     )
     .join("\n");
 
   const total = cart.reduce(
-    (s, p) => s + (p.price * p.quantity),
+    (sum, p) => sum + (p.price * p.quantity),
     0
   );
 
   alert(
-    `PEDIDO VERDULERÍA TERÁN\n\n${text}\n\nTotal: S/ ${total.toFixed(2)}`
+    `DATOS DEL CLIENTE\n\n` +
+    `Nombre: ${name}\n` +
+    `Teléfono: ${phone}\n` +
+    `Dirección: ${address}\n` +
+    `Referencia: ${reference || "Sin referencia"}\n\n` +
+    `PEDIDO\n\n${orderText}\n\n` +
+    `TOTAL: S/ ${total.toFixed(2)}`
   );
 }
 
