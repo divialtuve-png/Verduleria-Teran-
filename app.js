@@ -173,10 +173,7 @@ img{display:block;max-width:100%}
   border-radius:19px;
   overflow:hidden;
   position:relative;
-  background:
-    linear-gradient(90deg,rgba(3,77,34,.9),rgba(4,103,49,.32)),
-    url("https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=90")
-    center/cover;
+  background:linear-gradient(90deg,rgba(3,77,34,.95),rgba(34,112,54,.82)),radial-gradient(circle at 78% 25%,#c6a33f 0 8%,transparent 9%),radial-gradient(circle at 68% 48%,#e05a43 0 10%,transparent 11%),radial-gradient(circle at 88% 64%,#7bb34d 0 12%,transparent 13%),linear-gradient(135deg,#1c6334,#315e35);
 }
 
 .hero-content{
@@ -278,7 +275,7 @@ img{display:block;max-width:100%}
 }
 
 .products{
-  display:grid !important;
+  display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:9px;
   padding:0 10px;
@@ -308,7 +305,7 @@ img{display:block;max-width:100%}
 .card-body{padding:7px}
 
 .card-name{
-  min-height:29px;
+  min-height:30px;
   font-size:12px;
   font-weight:900;
   line-height:1.12;
@@ -353,10 +350,7 @@ img{display:block;max-width:100%}
   min-height:125px;
   border-radius:18px;
   overflow:hidden;
-  background:
-    linear-gradient(90deg,rgba(118,37,10,.88),rgba(118,37,10,.25)),
-    url("https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1200&q=90")
-    center/cover;
+  background:linear-gradient(90deg,#9b4d13,#d89a38);
   display:flex;
   align-items:center;
 }
@@ -859,7 +853,7 @@ img{display:block;max-width:100%}
 }
 
 @media(max-width:700px){
-  .products{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
+  .products{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:6px}
   .hero{min-height:215px}
 }
 
@@ -868,10 +862,11 @@ img{display:block;max-width:100%}
 }
 
 @media(max-width:360px){
+  .products{grid-template-columns:repeat(3,minmax(0,1fr)) !important}
   .brand-name,.brand-name span{font-size:15px}
   .top-cart-total{font-size:10px}
-  .products{gap:6px !important}
-  .card-body{padding:5px}
+  .products{gap:7px}
+  .card-body{padding:6px}
   .card-name{font-size:11px}
 }
 `;
@@ -905,50 +900,39 @@ function normalize(value){
   Esto permite aprovechar las imágenes que ya estén asociadas
   a los 93 productos en Supabase.
 */
-const imageLibrary = {
-  papa:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=700&q=90",
-  tomate:"https://images.unsplash.com/photo-1546094096-0df4bcaaa337?auto=format&fit=crop&w=700&q=90",
-  cebolla:"https://images.unsplash.com/photo-1508747703725-719777637510?auto=format&fit=crop&w=700&q=90",
-  zanahoria:"https://images.unsplash.com/photo-1445282768818-728615cc910a?auto=format&fit=crop&w=700&q=90",
-  limon:"https://images.unsplash.com/photo-1590502593747-42a996133562?auto=format&fit=crop&w=700&q=90",
-  lechuga:"https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?auto=format&fit=crop&w=700&q=90",
-  brocoli:"https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?auto=format&fit=crop&w=700&q=90",
-  pepino:"https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?auto=format&fit=crop&w=700&q=90",
-  palta:"https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?auto=format&fit=crop&w=700&q=90",
-  platano:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=700&q=90",
-  manzana:"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=700&q=90",
-  naranja:"https://images.unsplash.com/photo-1547514701-42782101795e?auto=format&fit=crop&w=700&q=90",
-  fresa:"https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=700&q=90",
-  uva:"https://images.unsplash.com/photo-1537640538966-79f369143f8f?auto=format&fit=crop&w=700&q=90",
-  sandia:"https://images.unsplash.com/photo-1563114773-84221bd62daa?auto=format&fit=crop&w=700&q=90",
-  melon:"https://images.unsplash.com/photo-1498842812179-c81beecf902c?auto=format&fit=crop&w=700&q=90",
-  mango:"https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=700&q=90",
-  piña:"https://images.unsplash.com/photo-1550258987-190a2d41a8ba?auto=format&fit=crop&w=700&q=90",
-  ajo:"https://images.unsplash.com/photo-1540148426945-6cf22a6b2383?auto=format&fit=crop&w=700&q=90",
-  pimiento:"https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=700&q=90",
-  aji:"https://images.unsplash.com/photo-1588252303782-cb80119abd6d?auto=format&fit=crop&w=700&q=90",
-  espinaca:"https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=700&q=90",
-  apio:"https://images.unsplash.com/photo-1604977042946-1eecc30f269e?auto=format&fit=crop&w=700&q=90",
-  coliflor:"https://images.unsplash.com/photo-1568584711271-7b0f0a2b1f17?auto=format&fit=crop&w=700&q=90",
-  repollo:"https://images.unsplash.com/photo-1598030343246-eec71cb4427d?auto=format&fit=crop&w=700&q=90",
-  beterraga:"https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=700&q=90"
-};
+function svgImage(kind,label){
+  const safe=esc(label);
+  let art='';
+  if(kind==='papa') art=`<g fill="#c99a62"><ellipse cx="95" cy="86" rx="54" ry="34"/><ellipse cx="166" cy="112" rx="52" ry="35"/><ellipse cx="112" cy="150" rx="48" ry="32"/><ellipse cx="205" cy="167" rx="58" ry="37"/></g>`;
+  else if(kind==='tomate') art=`<g fill="#e64a3b"><circle cx="86" cy="115" r="34"/><circle cx="145" cy="105" r="36"/><circle cx="207" cy="118" r="34"/></g><path d="M145 73l-13-22 22 12 18-13-7 24" fill="#3d9b4d"/>`;
+  else if(kind==='cebolla') art=`<path d="M145 48c-8 18-31 23-45 43-25 35-4 81 45 81s70-46 45-81c-14-20-37-25-45-43z" fill="#c9a4d8"/><path d="M145 48v-22" stroke="#4f9c4a" stroke-width="9" stroke-linecap="round"/>`;
+  else if(kind==='zanahoria') art=`<path d="M105 76l82 0-38 124c-8 22-36 22-44 0z" fill="#f08a22"/><path d="M125 72c-8-28-25-35-39-41M145 72c2-31 16-42 31-52M164 75c14-24 29-28 44-30" stroke="#4c9a4b" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+  else if(kind==='lechuga') art=`<g fill="#5eaa52"><circle cx="105" cy="119" r="47"/><circle cx="159" cy="92" r="48"/><circle cx="199" cy="126" r="48"/><circle cx="151" cy="143" r="55"/></g>`;
+  else if(kind==='limon') art=`<g fill="#f4d447"><ellipse cx="105" cy="120" rx="42" ry="31" transform="rotate(-18 105 120)"/><ellipse cx="174" cy="111" rx="43" ry="32" transform="rotate(14 174 111)"/><ellipse cx="145" cy="156" rx="40" ry="30" transform="rotate(-8 145 156)"/></g>`;
+  else if(kind==='brocoli') art=`<g fill="#4e9c45"><circle cx="103" cy="92" r="34"/><circle cx="151" cy="77" r="40"/><circle cx="198" cy="95" r="34"/><circle cx="123" cy="124" r="40"/><circle cx="178" cy="128" r="42"/></g><path d="M139 124v70h24v-70" fill="#6e8e45"/>`;
+  else if(kind==='platano') art=`<path d="M79 72c19 75 67 100 121 56 17-14 31-14 42-3-13 42-48 66-87 68-61 3-93-39-76-121z" fill="#f5d34d" stroke="#d4ae2d" stroke-width="7"/>`;
+  else if(kind==='manzana') art=`<path d="M145 83c-42-33-83 7-69 58 13 47 50 70 69 70s56-23 69-70c14-51-27-91-69-58z" fill="#df4b46"/><path d="M145 84c-4-27 12-39 29-46" stroke="#4f9148" stroke-width="9" fill="none" stroke-linecap="round"/>`;
+  else if(kind==='pepino') art=`<g fill="#6da84f"><rect x="62" y="84" width="166" height="50" rx="25" transform="rotate(-12 145 109)"/><circle cx="100" cy="103" r="4" fill="#dce9b0"/><circle cx="153" cy="91" r="4" fill="#dce9b0"/><circle cx="194" cy="107" r="4" fill="#dce9b0"/></g>`;
+  else if(kind==='palta') art=`<path d="M147 47c-41 4-70 43-66 86 4 46 29 78 65 78s61-32 65-78c4-43-23-82-64-86z" fill="#5b9b45"/><ellipse cx="147" cy="137" rx="29" ry="31" fill="#d9b45a"/>`;
+  else if(kind==='naranja'||kind==='mandarina') art=`<circle cx="145" cy="128" r="68" fill="#f39b24"/><circle cx="145" cy="128" r="55" fill="#ffb13b" opacity=".55"/><path d="M145 61c9-20 24-28 41-25" stroke="#4f9148" stroke-width="9" fill="none" stroke-linecap="round"/>`;
+  else if(kind==='fresa') art=`<path d="M75 94c0-35 35-51 70-29 35-22 70-6 70 29 0 45-70 98-70 98S75 139 75 94z" fill="#e94b48"/><path d="M145 64l-18-22M145 64l23-21M145 65l0-28" stroke="#4f9b4b" stroke-width="9" stroke-linecap="round"/>`;
+  else if(kind==='uva') art=`<g fill="#7550a5"><circle cx="125" cy="82" r="23"/><circle cx="165" cy="83" r="23"/><circle cx="105" cy="117" r="23"/><circle cx="145" cy="118" r="23"/><circle cx="185" cy="117" r="23"/><circle cx="125" cy="151" r="23"/><circle cx="165" cy="151" r="23"/><circle cx="145" cy="184" r="23"/></g>`;
+  else if(kind==='sandia') art=`<path d="M70 85h150c-8 73-44 111-75 111S78 158 70 85z" fill="#4e9b4b"/><path d="M83 91h124c-10 53-33 78-62 78S93 144 83 91z" fill="#f25c4c"/><circle cx="115" cy="123" r="4" fill="#222"/><circle cx="145" cy="142" r="4" fill="#222"/><circle cx="174" cy="120" r="4" fill="#222"/>`;
+  else if(kind==='mango') art=`<path d="M90 80c34-38 94-27 115 12 20 38-1 95-48 108-47 13-84-22-82-67 1-22 7-39 15-53z" fill="#f2a52e"/>`;
+  else if(kind==='piña') art=`<path d="M145 64c-43 0-63 32-55 88 7 48 30 69 55 69s48-21 55-69c8-56-12-88-55-88z" fill="#d7aa38"/><path d="M145 65C118 44 111 27 119 14M145 65c-3-28 7-47 22-61M145 65c25-20 43-24 57-17" stroke="#4e9848" stroke-width="12" fill="none" stroke-linecap="round"/>`;
+  else art=`<g fill="#6aa94f"><circle cx="105" cy="118" r="42"/><circle cx="150" cy="96" r="45"/><circle cx="194" cy="121" r="42"/><circle cx="151" cy="145" r="49"/></g>`;
+  return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 220"><rect width="290" height="220" rx="18" fill="#f8fbf2"/><g>${art}</g><text x="145" y="207" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#24452c">${safe}</text></svg>`);
+}
 
-const fallbackByCategory = {
-  verduras:"https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=90",
-  frutas:"https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=700&q=90",
-  tuberculos:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&w=700&q=90",
-  hierbas:"https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=700&q=90",
-  otros:"https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=90"
-};
+function productKind(name){
+  const n=normalize(name);
+  const map=[['papa','papa'],['tomate','tomate'],['cebolla','cebolla'],['zanahoria','zanahoria'],['lechuga','lechuga'],['limon','limon'],['brocoli','brocoli'],['pepino','pepino'],['palta','palta'],['platano','platano'],['manzana','manzana'],['naranja','naranja'],['mandarina','naranja'],['fresa','fresa'],['uva','uva'],['sandia','sandia'],['mango','mango'],['pina','piña']];
+  for(const [needle,kind] of map) if(n.includes(needle)) return kind;
+  return 'generic';
+}
 
 function fallbackImage(name,category){
-  const n=normalize(name);
-  for(const key of Object.keys(imageLibrary)){
-    if(n.includes(normalize(key))) return imageLibrary[key];
-  }
-  const c=normalize(category);
-  return fallbackByCategory[c] || fallbackByCategory.otros;
+  return svgImage(productKind(name),name);
 }
 
 /* =================================================
@@ -1122,7 +1106,7 @@ function renderProductGrid(){
           src="${esc(p.image)}"
           alt="${esc(p.name)}"
           loading="lazy"
-          onerror="this.src='${esc(fallbackImage(p.name,p.category))}'"
+          onerror="this.onerror=null;this.src='${esc(fallbackImage(p.name,p.category))}'"
         >
       </div>
 
@@ -1216,7 +1200,7 @@ function renderCart(){
                 <img
                   src="${esc(item.image)}"
                   alt="${esc(item.name)}"
-                  onerror="this.src='${esc(fallbackImage(item.name,item.category))}'"
+                  onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'"
                 >
 
                 <div>
@@ -1388,7 +1372,7 @@ function openCheckout(){
             <img
               src="${esc(item.image)}"
               alt="${esc(item.name)}"
-              onerror="this.src='${esc(fallbackImage(item.name,item.category))}'"
+              onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'"
             >
             <div>
               <div class="summary-name">${esc(item.name)}</div>
@@ -1468,7 +1452,7 @@ async function saveOrder(){
 
   const button=document.getElementById("confirm");
   button.disabled=true;
-  button.textContent="Registrando pedido...";
+  button.textContent="Registrando pedido…";
 
   const orderProducts=cart.map(item=>({
     id:item.id,
@@ -1485,7 +1469,7 @@ async function saveOrder(){
 
     const {error}=await client
       .from("pedidos")
-      .insert({
+      .insert([{
         nombre_cliente:name,
         telefono:phone,
         direccion:address,
@@ -1494,7 +1478,7 @@ async function saveOrder(){
         productos:orderProducts,
         total,
         estado:"Pendiente"
-      });
+      }]);
 
     if(error) throw error;
 
@@ -1517,7 +1501,7 @@ async function saveOrder(){
     button.disabled=false;
     button.textContent="✓ Confirmar pedido";
 
-    alert("No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente.");
+    alert("No se pudo registrar el pedido. " + (error?.message || "Revisa la configuración de pedidos en Supabase."));
   }
 }
 
