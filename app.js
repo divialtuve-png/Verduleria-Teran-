@@ -1534,7 +1534,7 @@ async function saveOrder(){
     button.disabled=false;
     button.textContent="✓ Confirmar pedido";
 
-    alert("No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente.");
+   alert("No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente.");
   }
 }
 
