@@ -1077,6 +1077,13 @@ function createBottomNav(){
 ========================================================= */
 
 function updateCart(){
+  const cartBox = document.getElementById("cart");
+
+  if(cartBox){
+    cartBox.hidden = true;
+    cartBox.style.display = "none";
+  }
+}
 
   const cartBox =
     document.getElementById("cart");
