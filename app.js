@@ -34,7 +34,7 @@ async function loadProducts() {
       category: p.categoria,
       unit: p.unidad,
       price: Number(p.precio),
-      emoji: p.emoji || "🥬"
+      emoji: getEmoji(p.nombre)
     })));
 
     render();
