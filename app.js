@@ -90,7 +90,6 @@ body {
 .top-cart-title {
   text-align: left;
 }
-
 .top-cart-title strong {
   display: block;
   font-size: 19px;
@@ -785,7 +784,39 @@ body {
 ========================================================= */
 
 document.head.appendChild(style);
+async function loadProducts() {
+  const section = document.getElementById("products");
 
+  try {
+    section.innerHTML = "Cargando productos...";
+
+    const { data, error } = await client
+      .from("productos")
+      .select("*")
+      .eq("activo", true)
+      .order("id");
+
+    if (error) throw error;
+
+    products.length = 0;
+
+    data.forEach(p => {
+      products.push({
+        id: p.id,
+        name: p.nombre,
+        category: p.categoria,
+        unit: p.unidad,
+        price: Number(p.precio) || 0,
+        active: p.activo
+      });
+    });
+
+    render();
+  } catch (error) {
+    console.error("Error cargando productos:", error);
+    section.innerHTML = "No se pudieron cargar los productos.";
+  }
+}
 /* =========================================================
    CARRITO SUPERIOR
 ========================================================= */
