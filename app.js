@@ -518,30 +518,30 @@ function getEmoji(name){
   return "🥕";
 }
 
-function getImage(name){
-  const n = cleanName(name).toLowerCase();
-
-  const images = {
-    papa:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=500",
-    tomate:"https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=500",
-    cebolla:"https://images.unsplash.com/photo-1518977956818-3c1c7b9f5d0b?w=500",
-    zanahoria:"https://images.unsplash.com/photo-1445282768818-728615cc910a?w=500",
-    limon:"https://images.unsplash.com/photo-1590502593747-42a996133562?w=500",
-    lechuga:"https://images.unsplash.com/photo-1622205313162-be1d5712a43b?w=500",
-    brocoli:"https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=500",
-    platano:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=500",
-    manzana:"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500",
-    naranja:"https://images.unsplash.com/photo-1547514701-42782101795e?w=500",
-    uva:"https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=500",
-    fresa:"https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=500"
-  };
-
-  for(const key in images){
-    if(n.includes(key)) return images[key];
+  function getImage(name){
+    const n = cleanName(name).toLowerCase();
+  
+    const images = {
+      papa:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=500",
+      tomate:"https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=500",
+      cebolla:"https://images.unsplash.com/photo-1518977956818-3c1c7b9f5d0b?w=500",
+      zanahoria:"https://images.unsplash.com/photo-1445282768818-728615cc910a?w=500",
+      limon:"https://images.unsplash.com/photo-1590502593747-42a996133562?w=500",
+      lechuga:"https://images.unsplash.com/photo-1622205313162-be1d5712a43b?w=500",
+      brocoli:"https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=500",
+      platano:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=500",
+      manzana:"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500",
+      naranja:"https://images.unsplash.com/photo-1547514701-42782101795e?w=500",
+      uva:"https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=500",
+      fresa:"https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=500"
+    };
+  
+    for(const key in images){
+      if(n.includes(key)) return images[key];
+    }
+  
+    return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500";
   }
-
-  return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500";
-}
 
 /* =========================================================
    CARGAR PRODUCTOS
