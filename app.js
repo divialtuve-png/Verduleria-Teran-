@@ -1,6 +1,6 @@
 /* =========================================================
    VERDULERÍA TERÁN
-   APP COMPLETA
+   APP COMPLETA - VERSIÓN LIMPIA
 ========================================================= */
 
 const client = window.supabase.createClient(
@@ -13,6 +13,7 @@ const BUSINESS_WHATSAPP = "51983130700";
 const products = [];
 let cart = [];
 let currentCategory = "";
+let currentPayment = "";
 
 /* =========================================================
    ESTILOS
@@ -25,210 +26,323 @@ style.textContent = `
   box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#fffaf4;
+  background:#fffaf5;
   color:#222;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
 
-header{
-  display:none;
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
 }
 
-main{
-  max-width:1200px;
-  margin:auto;
-  padding:110px 16px 100px;
+button{
+  cursor:pointer;
 }
 
-#search{
-  width:100%;
-  height:50px;
-  border:2px solid #eee;
-  border-radius:16px;
-  padding:0 18px;
-  font-size:16px;
-  background:#fff;
-  outline:none;
-  box-shadow:0 4px 15px rgba(0,0,0,.06);
+.app-shell{
+  min-height:100vh;
+  padding-bottom:100px;
 }
 
-#search:focus{
-  border-color:#ff7043;
-}
+/* =========================================================
+   BARRA SUPERIOR
+========================================================= */
 
-#category{
-  display:none !important;
-}
-
-.top-cart{
-  position:fixed;
+.topbar{
+  position:sticky;
   top:0;
-  left:0;
-  right:0;
   z-index:1000;
-  height:82px;
   background:#fff;
+  height:82px;
+  padding:9px 14px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:10px 16px;
   box-shadow:0 3px 15px rgba(0,0,0,.12);
 }
 
-.top-cart-left{
+.brand-mini{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:9px;
 }
 
-.top-cart-image{
-  width:58px;
-  height:58px;
-  border-radius:16px;
-  object-fit:cover;
-}
-
-.top-cart-title strong{
-  display:block;
-  font-size:17px;
-  color:#222;
-}
-
-.top-cart-title span{
-  font-size:13px;
-  color:#777;
-}
-
-.cart-total{
-  background:#e91e63;
-  color:white;
-  font-weight:bold;
-  padding:11px 15px;
-  border-radius:20px;
-  white-space:nowrap;
-}
-
-.cart-badge{
-  position:absolute;
-  left:55px;
-  top:5px;
-  background:#ff1744;
-  color:#fff;
-  width:22px;
-  height:22px;
-  border-radius:50%;
+.logo-mini{
+  width:50px;
+  height:50px;
+  border-radius:15px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:12px;
-  font-weight:bold;
+  background:linear-gradient(135deg,#43a047,#8bc34a);
+  box-shadow:0 4px 12px rgba(67,160,71,.25);
 }
 
+.logo-mini svg{
+  width:34px;
+  height:34px;
+}
+
+.brand-mini-text strong{
+  display:block;
+  font-size:15px;
+  color:#222;
+}
+
+.brand-mini-text span{
+  display:block;
+  font-size:11px;
+  color:#888;
+}
+
+.cart-top{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.cart-picture-wrap{
+  position:relative;
+}
+
+.cart-picture{
+  width:55px;
+  height:55px;
+  border-radius:16px;
+  object-fit:cover;
+  display:block;
+}
+
+.cart-zero{
+  position:absolute;
+  top:-5px;
+  right:-6px;
+  min-width:23px;
+  height:23px;
+  padding:0 6px;
+  border-radius:50px;
+  background:#f52255;
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid #fff;
+}
+
+.cart-top-info strong{
+  display:block;
+  font-size:14px;
+}
+
+.cart-top-info span{
+  display:block;
+  font-size:11px;
+  color:#888;
+}
+
+.cart-top-total{
+  margin-left:3px;
+  padding:10px 13px;
+  border-radius:20px;
+  background:#e83269;
+  color:#fff;
+  font-size:15px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.content{
+  max-width:1200px;
+  margin:auto;
+  padding:15px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
 .hero{
-  margin:0 0 20px;
-  min-height:240px;
-  border-radius:24px;
+  min-height:245px;
+  border-radius:25px;
   overflow:hidden;
   position:relative;
   background-image:
-    linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.18)),
+    linear-gradient(90deg,rgba(0,0,0,.72),rgba(0,0,0,.12)),
     url("https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200");
   background-size:cover;
   background-position:center;
   display:flex;
   align-items:center;
-  padding:30px;
+  padding:30px 25px;
   color:#fff;
+  box-shadow:0 8px 25px rgba(0,0,0,.12);
 }
 
-.hero h2{
-  margin:0 0 10px;
-  font-size:36px;
-  line-height:1.05;
+.hero-content{
+  max-width:650px;
 }
 
-.hero h2 span{
-  color:#ff9800;
+.hero-logo{
+  width:60px;
+  height:60px;
+  margin-bottom:7px;
+}
+
+.hero h1{
+  margin:0;
+  font-size:38px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.hero h1 span{
+  color:#ff9f1c;
 }
 
 .hero p{
-  margin:6px 0;
-  font-size:16px;
+  margin:13px 0 5px;
+  font-size:17px;
+  font-weight:500;
 }
 
-.hero-small{
-  font-size:14px !important;
+.hero-delivery{
+  font-size:13px !important;
   opacity:.95;
 }
 
-.categories{
+/* =========================================================
+   BUSCADOR
+========================================================= */
+
+.search-box{
+  margin:18px 0 14px;
+  position:relative;
+}
+
+.search-box input{
+  width:100%;
+  height:53px;
+  padding:0 18px 0 49px;
+  border:2px solid #eeeeee;
+  border-radius:17px;
+  background:#fff;
+  font-size:16px;
+  outline:none;
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+}
+
+.search-box input:focus{
+  border-color:#ff8a00;
+}
+
+.search-icon{
+  position:absolute;
+  left:17px;
+  top:14px;
+  font-size:22px;
+}
+
+/* =========================================================
+   CATEGORÍAS
+========================================================= */
+
+.category-row{
   display:flex;
   gap:9px;
   overflow-x:auto;
-  padding:4px 0 18px;
+  padding:3px 1px 17px;
   scrollbar-width:none;
 }
 
-.categories::-webkit-scrollbar{
+.category-row::-webkit-scrollbar{
   display:none;
 }
 
-.category-chip{
-  border:2px solid #eeeeee;
-  padding:11px 18px;
-  border-radius:25px;
-  background:#ffffff;
-  color:#222222;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
-  font-weight:bold;
-  white-space:nowrap;
-  cursor:pointer;
+.category-button{
+  flex:0 0 auto;
+  border:2px solid #eee;
+  background:#fff;
+  color:#333;
+  padding:10px 16px;
+  border-radius:24px;
   font-size:14px;
+  font-weight:800;
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
 }
 
-.category-chip.active{
+.category-button.active{
+  color:#fff;
+  border-color:#43a047;
+  background:#43a047;
+}
+
+.category-button:nth-child(2).active{
   background:#43a047;
   border-color:#43a047;
-  color:#ffffff;
-}
-  border:0;
-  padding:11px 17px;
-  border-radius:25px;
-  background:#fff;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
-  font-weight:bold;
-  white-space:nowrap;
-  cursor:pointer;
 }
 
-.category-chip.active{
-  background:#43a047;
-  color:white;
+.category-button:nth-child(3).active{
+  background:#ff7043;
+  border-color:#ff7043;
 }
 
-.section-title{
+.category-button:nth-child(4).active{
+  background:#8e44ad;
+  border-color:#8e44ad;
+}
+
+.category-button:nth-child(5).active{
+  background:#0097a7;
+  border-color:#0097a7;
+}
+
+/* =========================================================
+   TITULO PRODUCTOS
+========================================================= */
+
+.section-heading{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin:8px 0 15px;
+  margin:5px 0 15px;
 }
 
-.section-title h2{
+.section-heading h2{
   margin:0;
   font-size:24px;
+  font-weight:900;
 }
 
-.section-title span{
+.fresh-label{
   background:#ffca28;
-  padding:7px 11px;
+  color:#4d3b00;
+  padding:7px 10px;
   border-radius:15px;
-  font-size:12px;
-  font-weight:bold;
+  font-size:11px;
+  font-weight:900;
 }
 
-#products{
+/* =========================================================
+   PRODUCTOS
+========================================================= */
+
+.products-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:13px;
@@ -238,15 +352,34 @@ main{
   background:#fff;
   border-radius:20px;
   overflow:hidden;
-  box-shadow:0 4px 15px rgba(0,0,0,.08);
-  border:1px solid #f1f1f1;
+  border:1px solid #eeeeee;
+  box-shadow:0 5px 16px rgba(0,0,0,.08);
+}
+
+.product-image-wrap{
+  position:relative;
+  background:#f4f4f4;
 }
 
 .product-image{
+  display:block;
   width:100%;
-  height:135px;
+  height:145px;
   object-fit:cover;
-  background:#f3f3f3;
+}
+
+.product-emoji{
+  position:absolute;
+  top:8px;
+  left:8px;
+  width:35px;
+  height:35px;
+  border-radius:12px;
+  background:rgba(255,255,255,.92);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
 }
 
 .product-info{
@@ -254,209 +387,302 @@ main{
 }
 
 .product-name{
-  font-size:16px;
-  font-weight:bold;
-  margin-bottom:5px;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.15;
+  min-height:35px;
 }
 
 .product-unit{
-  font-size:12px;
-  color:#777;
-  margin-bottom:8px;
+  margin-top:4px;
+  color:#888;
+  font-size:11px;
 }
 
 .product-price{
+  margin-top:8px;
   font-size:18px;
-  font-weight:bold;
-  margin-bottom:10px;
+  font-weight:900;
 }
 
 .add-button{
   width:100%;
   border:0;
+  margin-top:9px;
+  padding:11px 7px;
   border-radius:12px;
-  padding:11px 8px;
   color:#fff;
-  font-weight:bold;
-  cursor:pointer;
   background:#43a047;
+  font-weight:900;
+  font-size:14px;
 }
 
-.add-button:nth-child(odd){
+.product-card:nth-child(4n+2) .add-button{
   background:#e91e63;
 }
 
-.qty-row{
+.product-card:nth-child(4n+3) .add-button{
+  background:#8e44ad;
+}
+
+.product-card:nth-child(4n+4) .add-button{
+  background:#ff7a00;
+}
+
+.quantity-control{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  margin-top:9px;
   gap:5px;
 }
 
-.qty-row button{
+.quantity-control button{
   width:34px;
   height:34px;
   border:0;
   border-radius:10px;
-  font-size:19px;
-  font-weight:bold;
-  cursor:pointer;
-  background:#eee;
+  background:#eeeeee;
+  font-size:20px;
+  font-weight:900;
 }
 
-.qty-number{
-  font-weight:bold;
+.quantity-control .quantity{
+  font-size:16px;
+  font-weight:900;
 }
 
-.fresh-banner{
-  margin:25px 0;
-  min-height:150px;
-  border-radius:22px;
-  padding:25px;
+/* =========================================================
+   CARGA / ERROR
+========================================================= */
+
+.status-box{
+  grid-column:1/-1;
+  background:#fff;
+  border-radius:18px;
+  padding:30px 18px;
+  text-align:center;
+  color:#666;
+  box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.status-box.error{
+  color:#b3261e;
+}
+
+/* =========================================================
+   BANNER FRUTAS
+========================================================= */
+
+.fruits-banner{
+  margin:26px 0;
+  min-height:165px;
+  border-radius:24px;
+  overflow:hidden;
+  position:relative;
   color:#fff;
   display:flex;
   align-items:center;
+  padding:25px;
   background-image:
-    linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,.05)),
+    linear-gradient(90deg,rgba(0,0,0,.60),rgba(0,0,0,.08)),
     url("https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=1000");
   background-size:cover;
   background-position:center;
 }
 
-.fresh-banner h2{
-  margin:0 0 6px;
-  font-size:25px;
+.fruits-banner h2{
+  margin:0 0 7px;
+  font-size:27px;
+  line-height:1.1;
 }
 
-.bottom-nav{
+.fruits-banner p{
+  margin:0;
+  font-size:15px;
+}
+
+/* =========================================================
+   CARRITO
+========================================================= */
+
+.cart-panel{
   position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:1000;
-  height:70px;
-  background:#fff;
-  box-shadow:0 -3px 15px rgba(0,0,0,.12);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-}
-
-.bottom-nav button{
-  border:0;
-  background:transparent;
-  font-size:11px;
-  color:#777;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3px;
-}
-
-.bottom-nav .cart-nav{
-  width:54px;
-  height:54px;
-  border-radius:50%;
-  background:#43a047;
-  color:#fff;
-  margin-top:-25px;
-  font-size:12px;
-  box-shadow:0 4px 12px rgba(67,160,71,.4);
-}
-
-#cart{
-  display:none !important;
-  position:static !important;
-}
-  position:static;
-  position:fixed;
-  bottom:78px;
   left:12px;
   right:12px;
+  bottom:88px;
   z-index:900;
   background:#fff;
-  border-radius:20px;
-  padding:16px;
-  box-shadow:0 5px 25px rgba(0,0,0,.2);
+  border-radius:22px;
+  padding:17px;
+  box-shadow:0 8px 30px rgba(0,0,0,.22);
+  max-height:70vh;
+  overflow:auto;
 }
 
-#cart strong{
-  font-size:18px;
+.cart-panel.hidden{
+  display:none;
 }
 
-#cart button{
-  width:100%;
+.cart-panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.cart-panel-header h2{
+  margin:0;
+  font-size:21px;
+}
+
+.close-cart{
+  width:34px;
+  height:34px;
   border:0;
-  border-radius:14px;
-  background:#e91e63;
-  color:#fff;
-  padding:13px;
-  font-weight:bold;
-  font-size:16px;
+  border-radius:50%;
+  background:#eee;
+  font-size:20px;
 }
 
-.cart-item{
+.cart-empty{
+  text-align:center;
+  padding:20px;
+  color:#777;
+}
+
+.cart-line{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  gap:8px;
+  gap:9px;
   padding:9px 0;
   border-bottom:1px solid #eee;
 }
 
-.cart-item-name{
+.cart-line-image{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  object-fit:cover;
+}
+
+.cart-line-main{
   flex:1;
-  font-weight:bold;
+}
+
+.cart-line-name{
+  font-weight:800;
   font-size:14px;
 }
 
-.cart-controls{
+.cart-line-price{
+  font-size:12px;
+  color:#777;
+}
+
+.cart-line-controls{
   display:flex;
   align-items:center;
   gap:5px;
 }
 
-.cart-controls button{
-  width:30px !important;
-  height:30px;
-  padding:0 !important;
-  border-radius:8px !important;
-  font-size:15px !important;
-  background:#eee !important;
-  color:#222 !important;
+.cart-line-controls button{
+  width:29px;
+  height:29px;
+  border:0;
+  border-radius:8px;
+  background:#eee;
+  font-weight:900;
 }
 
-.checkout-box{
-  background:#fff;
-  border-radius:20px;
-  padding:20px;
-  box-shadow:0 4px 20px rgba(0,0,0,.1);
-  margin-top:20px;
+.cart-total-row{
+  display:flex;
+  justify-content:space-between;
+  margin-top:14px;
+  font-size:19px;
+  font-weight:900;
 }
 
-.checkout-box input,
-.checkout-box textarea{
+.cart-order-button{
   width:100%;
-  padding:13px;
-  margin:7px 0;
-  border:1px solid #ddd;
-  border-radius:12px;
-  font-size:15px;
+  margin-top:12px;
+  padding:14px;
+  border:0;
+  border-radius:14px;
+  background:#e83269;
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
 }
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+.checkout{
+  margin:25px 0;
+  background:#fff;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.checkout h2{
+  margin:0 0 18px;
+  font-size:25px;
+}
+
+.form-input,
+.form-textarea{
+  width:100%;
+  border:2px solid #e4e4e4;
+  border-radius:15px;
+  padding:14px;
+  font-size:16px;
+  outline:none;
+  margin-bottom:10px;
+  background:#fff;
+}
+
+.form-input:focus,
+.form-textarea:focus{
+  border-color:#43a047;
+}
+
+.form-textarea{
+  min-height:85px;
+  resize:vertical;
+}
+
+.primary-button{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:14px;
+  background:#43a047;
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+}
+
+/* =========================================================
+   PAGOS
+========================================================= */
 
 .payment-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
-  margin:12px 0;
+  margin:10px 0 15px;
 }
 
 .payment-button{
+  min-height:70px;
   border:2px solid #eee;
+  border-radius:15px;
   background:#fff;
-  border-radius:14px;
-  padding:14px 8px;
-  font-weight:bold;
+  font-size:14px;
+  font-weight:900;
 }
 
 .payment-button.selected{
@@ -464,41 +690,125 @@ main{
   background:#e8f5e9;
 }
 
-.primary-button{
-  width:100%;
-  border:0;
-  border-radius:14px;
+.payment-summary{
+  background:#fff8e1;
+  border-radius:15px;
   padding:14px;
-  background:#43a047;
-  color:#fff;
-  font-weight:bold;
-  font-size:16px;
+  margin:12px 0;
 }
 
 .whatsapp-button{
   width:100%;
+  margin-top:10px;
   border:0;
-  border-radius:14px;
+  border-radius:15px;
   padding:14px;
   background:#25d366;
   color:#fff;
-  font-weight:bold;
   font-size:16px;
-  margin-top:10px;
+  font-weight:900;
 }
 
-@media(min-width:700px){
-  main{
-    padding-left:25px;
-    padding-right:25px;
-  }
+/* =========================================================
+   NAVEGAÇÃO
+========================================================= */
 
-  #products{
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:75px;
+  z-index:1000;
+  background:#fff;
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-end;
+  padding:7px 5px 8px;
+  box-shadow:0 -4px 18px rgba(0,0,0,.12);
+}
+
+.nav-button{
+  border:0;
+  background:transparent;
+  color:#777;
+  min-width:62px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  font-size:10px;
+  font-weight:700;
+}
+
+.nav-icon{
+  font-size:21px;
+}
+
+.nav-cart{
+  width:57px;
+  height:57px;
+  margin-top:-30px;
+  border-radius:50%;
+  border:0;
+  background:#43a047;
+  color:#fff;
+  box-shadow:0 6px 18px rgba(67,160,71,.42);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;
+  font-weight:900;
+}
+
+.nav-cart .nav-icon{
+  font-size:21px;
+}
+
+/* =========================================================
+   MODALES INFORMATIVOS
+========================================================= */
+
+.info-message{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+  margin:20px 0;
+  text-align:center;
+}
+
+.info-message button{
+  margin-top:12px;
+  border:0;
+  border-radius:13px;
+  padding:12px 20px;
+  background:#43a047;
+  color:#fff;
+  font-weight:800;
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media(min-width:700px){
+
+  .products-grid{
     grid-template-columns:repeat(3,minmax(0,1fr));
   }
 
   .product-image{
-    height:170px;
+    height:180px;
+  }
+
+  .content{
+    padding:22px;
+  }
+
+  .hero{
+    min-height:300px;
   }
 }
 `;
@@ -506,63 +816,494 @@ main{
 document.head.appendChild(style);
 
 /* =========================================================
-   FUNCIONES AUXILIARES
+   LOGO SVG
 ========================================================= */
 
-function cleanName(name){
-  return String(name || "")
-    .replace(/^[🌱🥬🍅🥕🍋🍎🍌🌿🧅🥦🍊🍉🍇🍓🥔🫑]+/g,"")
-    .trim();
+const LOGO_SVG = `
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="lg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#66bb6a"/>
+      <stop offset="1" stop-color="#2e7d32"/>
+    </linearGradient>
+  </defs>
+  <path
+    d="M48 87C47 66 47 43 56 23"
+    stroke="#fff"
+    stroke-width="7"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <path
+    d="M51 51C29 50 15 38 13 18C34 17 49 28 51 51Z"
+    fill="url(#lg)"
+  />
+  <path
+    d="M52 42C57 20 73 10 91 12C91 32 77 45 52 42Z"
+    fill="#8bc34a"
+  />
+  <path
+    d="M50 65C29 67 15 57 10 40C31 37 46 47 50 65Z"
+    fill="#43a047"
+  />
+</svg>
+`;
+
+/* =========================================================
+   LIMPIAR ESTRUCTURA ANTIGUA
+========================================================= */
+
+function clearOldLayout(){
+
+  const oldHeader = document.querySelector("body > header");
+
+  const oldMain = document.querySelector("body > main");
+
+  if(oldHeader){
+    oldHeader.remove();
+  }
+
+  if(oldMain){
+    oldMain.remove();
+  }
+
+  document
+    .querySelectorAll(".app-shell")
+    .forEach(el => el.remove());
+
+  document
+    .querySelectorAll(".bottom-nav")
+    .forEach(el => el.remove());
+
+  document
+    .querySelectorAll(".topbar")
+    .forEach(el => el.remove());
 }
 
-function getEmoji(name){
-  const n = cleanName(name).toLowerCase();
+/* =========================================================
+   CREAR ESTRUCTURA
+========================================================= */
+
+function createApp(){
+
+  clearOldLayout();
+
+  const shell = document.createElement("div");
+
+  shell.className = "app-shell";
+
+  shell.innerHTML = `
+
+    <div class="topbar">
+
+      <div class="brand-mini">
+
+        <div class="logo-mini">
+          ${LOGO_SVG}
+        </div>
+
+        <div class="brand-mini-text">
+          <strong>Verdulería Terán</strong>
+          <span>Productos frescos</span>
+        </div>
+
+      </div>
+
+      <div class="cart-top">
+
+        <div class="cart-picture-wrap">
+
+          <img
+            class="cart-picture"
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=300"
+            alt="Carrito con verduras"
+          >
+
+          <span
+            class="cart-zero"
+            id="cart-badge"
+          >0</span>
+
+        </div>
+
+        <div class="cart-top-info">
+          <strong>Mi carrito</strong>
+          <span id="cart-count-text">0 productos</span>
+        </div>
+
+        <div
+          class="cart-top-total"
+          id="cart-total-top"
+        >
+          S/ 0.00
+        </div>
+
+      </div>
+
+    </div>
+
+    <main class="content">
+
+      <section class="hero">
+
+        <div class="hero-content">
+
+          <div class="hero-logo">
+            ${LOGO_SVG}
+          </div>
+
+          <h1>
+            Verdulería <span>Terán</span>
+          </h1>
+
+          <p>
+            Productos frescos directo a tu hogar
+          </p>
+
+          <p class="hero-delivery">
+            🚚 San Borja · San Luis · San Isidro · La Victoria
+          </p>
+
+        </div>
+
+      </section>
+
+      <div class="search-box">
+
+        <span class="search-icon">🔎</span>
+
+        <input
+          id="new-search"
+          type="search"
+          placeholder="Buscar producto..."
+          autocomplete="off"
+        >
+
+      </div>
+
+      <div
+        id="categories"
+        class="category-row"
+      ></div>
+
+      <div class="section-heading">
+
+        <h2>Nuestros productos</h2>
+
+        <span class="fresh-label">
+          FRESCOS
+        </span>
+
+      </div>
+
+      <section
+        id="new-products"
+        class="products-grid"
+      >
+        <div class="status-box">
+          Cargando productos...
+        </div>
+      </section>
+
+      <section class="fruits-banner">
+
+        <div>
+          <h2>🍎 Frutas frescas y de temporada</h2>
+          <p>
+            Seleccionamos productos frescos para tu hogar.
+          </p>
+        </div>
+
+      </section>
+
+      <section
+        id="checkout-area"
+      ></section>
+
+    </main>
+
+    <div
+      id="cart-panel"
+      class="cart-panel hidden"
+    ></div>
+
+    <nav class="bottom-nav">
+
+      <button
+        class="nav-button"
+        onclick="goHome()"
+      >
+        <span class="nav-icon">🏠</span>
+        <span>Inicio</span>
+      </button>
+
+      <button
+        class="nav-button"
+        onclick="goCategories()"
+      >
+        <span class="nav-icon">🗂️</span>
+        <span>Categorías</span>
+      </button>
+
+      <button
+        class="nav-cart"
+        onclick="toggleCart()"
+      >
+        <span class="nav-icon">🛒</span>
+        <span>Carrito</span>
+      </button>
+
+      <button
+        class="nav-button"
+        onclick="showOrders()"
+      >
+        <span class="nav-icon">📦</span>
+        <span>Mis pedidos</span>
+      </button>
+
+      <button
+        class="nav-button"
+        onclick="showAccount()"
+      >
+        <span class="nav-icon">👤</span>
+        <span>Mi cuenta</span>
+      </button>
+
+    </nav>
+  `;
+
+  document.body.appendChild(shell);
+
+  createCategories();
+
+  setupSearch();
+
+  updateCartUI();
+
+  loadProducts();
+}
+
+/* =========================================================
+   CATEGORÍAS
+========================================================= */
+
+function createCategories(){
+
+  const container =
+    document.getElementById("categories");
+
+  if(!container) return;
+
+  const categories = [
+    ["Todos",""],
+    ["Verduras","Verduras"],
+    ["Frutas","Frutas"],
+    ["Tubérculos","Tubérculos"],
+    ["Hierbas","Hierbas"]
+  ];
+
+  container.innerHTML = "";
+
+  categories.forEach(([label,value]) => {
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "category-button";
+
+    button.textContent = label;
+
+    if(value === currentCategory){
+      button.classList.add("active");
+    }
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        currentCategory = value;
+
+        document
+          .querySelectorAll(".category-button")
+          .forEach(b =>
+            b.classList.remove("active")
+          );
+
+        button.classList.add("active");
+
+        renderProducts();
+
+      }
+    );
+
+    container.appendChild(button);
+  });
+}
+
+/* =========================================================
+   IMÁGENES
+========================================================= */
+
+const PRODUCT_IMAGES = {
+
+  papa:[
+    "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=600"
+  ],
+
+  tomate:[
+    "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=600"
+  ],
+
+  cebolla:[
+    "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600"
+  ],
+
+  zanahoria:[
+    "https://images.unsplash.com/photo-1445282768818-728615cc910a?w=600"
+  ],
+
+  limon:[
+    "https://images.unsplash.com/photo-1590502593747-42a996133562?w=600"
+  ],
+
+  lechuga:[
+    "https://images.unsplash.com/photo-1622205313162-be1d5712a43b?w=600"
+  ],
+
+  brocoli:[
+    "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=600"
+  ],
+
+  platano:[
+    "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600"
+  ],
+
+  manzana:[
+    "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600"
+  ],
+
+  naranja:[
+    "https://images.unsplash.com/photo-1547514701-42782101795e?w=600"
+  ],
+
+  uva:[
+    "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=600"
+  ],
+
+  fresa:[
+    "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600"
+  ],
+
+  pepino:[
+    "https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=600"
+  ],
+
+  pimiento:[
+    "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=600"
+  ],
+
+  aji:[
+    "https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=600"
+  ],
+
+  palta:[
+    "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600"
+  ],
+
+  espinaca:[
+    "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600"
+  ],
+
+  coliflor:[
+    "https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?w=600"
+  ],
+
+  zapallo:[
+    "https://images.unsplash.com/photo-1570586437263-ab629fccc818?w=600"
+  ],
+
+  beterraga:[
+    "https://images.unsplash.com/photo-1593105544559-ecb03bf76f82?w=600"
+  ]
+
+};
+
+const GENERAL_IMAGES = [
+  "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600",
+  "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600",
+  "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600",
+  "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600"
+];
+
+function getProductImage(name){
+
+  const n =
+    cleanName(name)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"");
+
+  for(const key in PRODUCT_IMAGES){
+
+    if(n.includes(key)){
+      return PRODUCT_IMAGES[key][0];
+    }
+  }
+
+  let hash = 0;
+
+  for(let i=0;i<n.length;i++){
+    hash += n.charCodeAt(i);
+  }
+
+  return GENERAL_IMAGES[
+    Math.abs(hash) % GENERAL_IMAGES.length
+  ];
+}
+
+/* =========================================================
+   EMOJIS
+========================================================= */
+
+function getProductEmoji(name){
+
+  const n =
+    cleanName(name)
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"");
 
   if(n.includes("papa")) return "🥔";
   if(n.includes("tomate")) return "🍅";
   if(n.includes("cebolla")) return "🧅";
   if(n.includes("zanahoria")) return "🥕";
-  if(n.includes("limón") || n.includes("limon")) return "🍋";
+  if(n.includes("limon")) return "🍋";
   if(n.includes("lechuga")) return "🥬";
-  if(n.includes("culantro")) return "🌿";
-  if(n.includes("perejil")) return "🌿";
-  if(n.includes("brócoli") || n.includes("brocoli")) return "🥦";
-  if(n.includes("plátano") || n.includes("platano")) return "🍌";
+  if(n.includes("brocoli")) return "🥦";
+  if(n.includes("platano")) return "🍌";
   if(n.includes("manzana")) return "🍎";
   if(n.includes("naranja")) return "🍊";
   if(n.includes("uva")) return "🍇";
   if(n.includes("fresa")) return "🍓";
-  if(n.includes("sandía") || n.includes("sandia")) return "🍉";
-  if(n.includes("ají") || n.includes("aji")) return "🌶️";
+  if(n.includes("pepino")) return "🥒";
   if(n.includes("pimiento")) return "🫑";
+  if(n.includes("aji")) return "🌶️";
+  if(n.includes("palta")) return "🥑";
+  if(n.includes("espinaca")) return "🥬";
+  if(n.includes("coliflor")) return "🥦";
+  if(n.includes("zapallo")) return "🎃";
+  if(n.includes("beterraga")) return "🫜";
 
   return "🥕";
 }
 
-  function getImage(name){
-    const n = cleanName(name).toLowerCase();
-  
-    const images = {
-      papa:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=500",
-      tomate:"https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=500",
-      cebolla:"https://images.unsplash.com/photo-1518977956818-3c1c7b9f5d0b?w=500",
-      zanahoria:"https://images.unsplash.com/photo-1445282768818-728615cc910a?w=500",
-      limon:"https://images.unsplash.com/photo-1590502593747-42a996133562?w=500",
-      lechuga:"https://images.unsplash.com/photo-1622205313162-be1d5712a43b?w=500",
-      brocoli:"https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=500",
-      platano:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=500",
-      manzana:"https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500",
-      naranja:"https://images.unsplash.com/photo-1547514701-42782101795e?w=500",
-      uva:"https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=500",
-      fresa:"https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=500"
-    };
-  
-    for(const key in images){
-      if(n.includes(key)) return images[key];
-    }
-  
-    return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500";
-  }
+function cleanName(name){
+
+  return String(name || "")
+    .replace(/^[🌱🥬🍅🥕🍋🍎🍌🌿🧅🥦🍊🍉🍇🍓🥔🫑🌶️🥒🥑🎃🫜]+/g,"")
+    .trim();
+}
 
 /* =========================================================
    CARGAR PRODUCTOS
@@ -570,126 +1311,237 @@ function getEmoji(name){
 
 async function loadProducts(){
 
-  const section = document.getElementById("products");
+  const section =
+    document.getElementById("new-products");
+
+  if(!section) return;
+
+  section.innerHTML = `
+    <div class="status-box">
+      Cargando productos...
+    </div>
+  `;
 
   try{
 
-    section.innerHTML = "Cargando productos...";
+    const result = await Promise.race([
 
-    const { data, error } = await client
-      .from("productos")
-      .select("*")
-      .eq("activo", true)
-      .order("id");
+      client
+        .from("productos")
+        .select("*")
+        .eq("activo",true)
+        .order("id"),
 
-    if(error) throw error;
+      new Promise(resolve =>
+        setTimeout(
+          () =>
+            resolve({
+              data:null,
+              error:new Error(
+                "Tiempo de espera agotado."
+              )
+            }),
+          12000
+        )
+      )
+
+    ]);
+
+    const { data,error } = result;
+
+    if(error){
+      throw error;
+    }
+
+    if(!Array.isArray(data)){
+      throw new Error(
+        "Supabase no devolvió productos."
+      );
+    }
 
     products.length = 0;
 
     data.forEach(p => {
 
       products.push({
+
         id:p.id,
+
         name:p.nombre,
+
         category:p.categoria,
+
         unit:p.unidad,
+
         price:Number(p.precio) || 0,
+
         active:p.activo
+
       });
 
     });
 
-    render();
+    renderProducts();
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Error cargando productos:",
+      error
+    );
 
-    section.innerHTML =
-      "<div style='grid-column:1/-1;text-align:center;padding:30px'>No se pudieron cargar los productos.</div>";
+    section.innerHTML = `
+      <div class="status-box error">
+
+        <strong>
+          No se pudieron cargar los productos.
+        </strong>
+
+        <br><br>
+
+        Revisa la conexión con Supabase.
+
+        <br><br>
+
+        <button
+          class="primary-button"
+          onclick="loadProducts()"
+        >
+          Intentar nuevamente
+        </button>
+
+      </div>
+    `;
   }
 }
 
 /* =========================================================
-   RENDER PRODUCTOS
+   MOSTRAR PRODUCTOS
 ========================================================= */
 
-function render(){
+function renderProducts(){
 
-  const section = document.getElementById("products");
+  const section =
+    document.getElementById("new-products");
 
-  const searchInput = document.getElementById("search");
+  if(!section) return;
 
-  const search = searchInput
-    ? searchInput.value.toLowerCase().trim()
-    : "";
+  const search =
+    (
+      document.getElementById("new-search")?.value || ""
+    )
+      .toLowerCase()
+      .trim();
 
-  const filtered = products.filter(p => {
+  const filtered =
+    products.filter(product => {
 
-    const matchesSearch =
-      cleanName(p.name).toLowerCase().includes(search);
+      const name =
+        cleanName(product.name)
+          .toLowerCase();
 
-    const matchesCategory =
-      !currentCategory ||
-      p.category === currentCategory;
+      const category =
+        String(product.category || "");
 
-    return matchesSearch && matchesCategory;
-  });
+      const matchesSearch =
+        !search ||
+        name.includes(search);
+
+      const matchesCategory =
+        !currentCategory ||
+        category === currentCategory;
+
+      return (
+        matchesSearch &&
+        matchesCategory
+      );
+    });
 
   section.innerHTML = "";
 
   if(filtered.length === 0){
 
-    section.innerHTML =
-      "<div style='grid-column:1/-1;text-align:center;padding:35px'>No encontramos productos.</div>";
+    section.innerHTML = `
+      <div class="status-box">
+        No encontramos productos.
+      </div>
+    `;
 
-    updateTopCart();
     return;
   }
 
-  filtered.forEach(p => {
+  filtered.forEach(product => {
 
-    const item = cart.find(x => x.id === p.id);
+    const item =
+      cart.find(
+        p => p.id === product.id
+      );
 
-    const card = document.createElement("article");
+    const card =
+      document.createElement("article");
 
-    card.className = "product-card";
+    card.className =
+      "product-card";
 
     card.innerHTML = `
-      <img
-        class="product-image"
-        src="${getImage(p.name)}"
-        alt="${cleanName(p.name)}"
-        onerror="this.style.display='none'"
-      >
+
+      <div class="product-image-wrap">
+
+        <img
+          class="product-image"
+          src="${getProductImage(product.name)}"
+          alt="${cleanName(product.name)}"
+          loading="lazy"
+          onerror="this.src='${GENERAL_IMAGES[0]}'"
+        >
+
+        <div class="product-emoji">
+          ${getProductEmoji(product.name)}
+        </div>
+
+      </div>
 
       <div class="product-info">
 
         <div class="product-name">
-          ${getEmoji(p.name)} ${cleanName(p.name)}
+          ${cleanName(product.name)}
         </div>
 
         <div class="product-unit">
-          ${p.unit}
+          ${product.unit || "Unidad"}
         </div>
 
         <div class="product-price">
-          S/ ${p.price.toFixed(2)}
+          S/ ${product.price.toFixed(2)}
         </div>
 
         ${
           item
           ? `
-            <div class="qty-row">
-              <button onclick="decrease(${p.id})">−</button>
-              <span class="qty-number">${item.quantity}</span>
-              <button onclick="increase(${p.id})">+</button>
+            <div class="quantity-control">
+
+              <button
+                onclick="decreaseProduct(${product.id})"
+              >
+                −
+              </button>
+
+              <span class="quantity">
+                ${item.quantity}
+              </span>
+
+              <button
+                onclick="increaseProduct(${product.id})"
+              >
+                +
+              </button>
+
             </div>
           `
           : `
             <button
               class="add-button"
-              onclick="add(${p.id})"
+              onclick="addProduct(${product.id})"
             >
               🛒 Agregar
             </button>
@@ -701,453 +1553,290 @@ function render(){
 
     section.appendChild(card);
   });
-
-  updateTopCart();
 }
 
 /* =========================================================
-   CARRITO
+   BUSCADOR
 ========================================================= */
 
-function add(id){
+function setupSearch(){
 
-  const product = products.find(p => p.id === id);
+  const input =
+    document.getElementById("new-search");
+
+  if(!input) return;
+
+  input.addEventListener(
+    "input",
+    renderProducts
+  );
+}
+
+/* =========================================================
+   CARRITO - AGREGAR
+========================================================= */
+
+function addProduct(id){
+
+  const product =
+    products.find(
+      p => p.id === id
+    );
 
   if(!product) return;
 
-  const existing = cart.find(p => p.id === id);
+  const existing =
+    cart.find(
+      p => p.id === id
+    );
 
   if(existing){
+
     existing.quantity++;
+
   }else{
+
     cart.push({
+
       ...product,
+
       quantity:1
+
     });
   }
 
-  render();
-  updateCart();
+  renderProducts();
+
+  updateCartUI();
 }
 
-function increase(id){
+function increaseProduct(id){
 
-  const item = cart.find(p => p.id === id);
+  const item =
+    cart.find(
+      p => p.id === id
+    );
 
   if(item){
     item.quantity++;
   }
 
-  render();
-  updateCart();
+  renderProducts();
+
+  updateCartUI();
 }
 
-function decrease(id){
+function decreaseProduct(id){
 
-  const item = cart.find(p => p.id === id);
+  const item =
+    cart.find(
+      p => p.id === id
+    );
 
   if(!item) return;
 
   item.quantity--;
 
   if(item.quantity <= 0){
-    cart = cart.filter(p => p.id !== id);
+
+    cart =
+      cart.filter(
+        p => p.id !== id
+      );
   }
 
-  render();
-  updateCart();
+  renderProducts();
+
+  updateCartUI();
 }
 
-function removeItem(id){
+function removeProduct(id){
 
-  cart = cart.filter(p => p.id !== id);
+  cart =
+    cart.filter(
+      p => p.id !== id
+    );
 
-  render();
-  updateCart();
+  renderProducts();
+
+  updateCartUI();
 }
 
-function getCartCount(){
+function cartCount(){
 
   return cart.reduce(
-    (total,item) => total + item.quantity,
+    (sum,item) =>
+      sum + item.quantity,
     0
   );
 }
 
-function getCartTotal(){
+function cartTotal(){
 
   return cart.reduce(
-    (total,item) =>
-      total + item.price * item.quantity,
+    (sum,item) =>
+      sum +
+      (
+        item.price *
+        item.quantity
+      ),
     0
   );
 }
 
 /* =========================================================
-   CARRITO SUPERIOR
+   ACTUALIZAR CARRITO SUPERIOR
 ========================================================= */
 
-function createTopCart(){
+function updateCartUI(){
 
-  const existing = document.querySelector(".top-cart");
-
-  if(existing) existing.remove();
-
-  const bar = document.createElement("div");
-
-  bar.className = "top-cart";
-
-  bar.innerHTML = `
-    <div class="top-cart-left">
-
-      <div style="position:relative">
-
-        <img
-          class="top-cart-image"
-          src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=300"
-        >
-
-        <div class="cart-badge" id="top-cart-count">
-          0
-        </div>
-
-      </div>
-
-      <div class="top-cart-title">
-        <strong>Mi carrito</strong>
-        <span id="top-cart-products">
-          0 productos
-        </span>
-      </div>
-
-    </div>
-
-    <div class="cart-total" id="top-cart-total">
-      S/ 0.00
-    </div>
-  `;
-
-  document.body.prepend(bar);
-}
-
-function updateTopCart(){
-
-  const count = getCartCount();
-
-  const badge =
-    document.getElementById("top-cart-count");
-
-  const productsText =
-    document.getElementById("top-cart-products");
+  const count =
+    cartCount();
 
   const total =
-    document.getElementById("top-cart-total");
+    cartTotal();
 
-  if(badge) badge.textContent = count;
+  const badge =
+    document.getElementById(
+      "cart-badge"
+    );
 
-  if(productsText){
+  const countText =
+    document.getElementById(
+      "cart-count-text"
+    );
 
-    productsText.textContent =
+  const totalText =
+    document.getElementById(
+      "cart-total-top"
+    );
+
+  if(badge){
+    badge.textContent =
+      count;
+  }
+
+  if(countText){
+
+    countText.textContent =
       count === 1
         ? "1 producto"
         : `${count} productos`;
   }
 
-  if(total){
+  if(totalText){
 
-    total.textContent =
-      `S/ ${getCartTotal().toFixed(2)}`;
+    totalText.textContent =
+      `S/ ${total.toFixed(2)}`;
   }
+
+  renderCartPanel();
 }
 
 /* =========================================================
-   HERO
+   PANEL DEL CARRITO
 ========================================================= */
 
-function createHero(){
+function toggleCart(){
 
-  const main = document.querySelector("main");
+  const panel =
+    document.getElementById(
+      "cart-panel"
+    );
 
-  if(!main) return;
+  if(!panel) return;
 
-  const old = document.querySelector(".hero");
-
-  if(old) old.remove();
-
-  const hero = document.createElement("section");
-
-  hero.className = "hero";
-
-  hero.innerHTML = `
-    <div>
-      <h2>
-        Verdulería <span>Terán</span>
-      </h2>
-
-      <p>
-        Productos frescos directo a tu hogar
-      </p>
-
-      <p class="hero-small">
-        🚚 Delivery en San Borja · San Luis ·
-        San Isidro · La Victoria
-      </p>
-    </div>
-  `;
-
-  main.prepend(hero);
-}
-
-/* =========================================================
-   CATEGORÍAS
-========================================================= */
-
-function createCategories(){
-
-  const search = document.getElementById("search");
-
-  if(!search) return;
-
-  const old = document.querySelector(".categories");
-
-  if(old) old.remove();
-
-  const box = document.createElement("div");
-
-  box.className = "categories";
-
-  const categories = [
-    ["Todos",""],
-    ["Verduras","Verduras"],
-    ["Frutas","Frutas"],
-    ["Tubérculos","Tubérculos"],
-    ["Hierbas","Hierbas"]
-  ];
-
-  categories.forEach(([label,value]) => {
-
-    const button = document.createElement("button");
-
-    button.className = "category-chip";
-
-    if(value === currentCategory){
-      button.classList.add("active");
-    }
-
-    button.textContent = label;
-
-    button.onclick = () => {
-
-      currentCategory = value;
-
-      document
-        .querySelectorAll(".category-chip")
-        .forEach(b => b.classList.remove("active"));
-
-      button.classList.add("active");
-
-      render();
-    };
-
-    box.appendChild(button);
-  });
-
-  search.insertAdjacentElement(
-    "afterend",
-    box
+  panel.classList.toggle(
+    "hidden"
   );
+
+  renderCartPanel();
 }
 
-/* =========================================================
-   TÍTULO
-========================================================= */
+function renderCartPanel(){
 
-function createSectionTitle(){
+  const panel =
+    document.getElementById(
+      "cart-panel"
+    );
 
-  const productsSection =
-    document.getElementById("products");
+  if(!panel) return;
 
-  if(!productsSection) return;
-
-  const old =
-    document.querySelector(".section-title");
-
-  if(old) old.remove();
-
-  const title =
-    document.createElement("div");
-
-  title.className = "section-title";
-
-  title.innerHTML = `
-    <h2>Nuestros productos</h2>
-    <span>FRESCOS</span>
-  `;
-
-  productsSection.parentNode.insertBefore(
-    title,
-    productsSection
-  );
-}
-
-/* =========================================================
-   BANNER FRUTAS
-========================================================= */
-
-function createFreshBanner(){
-
-  const productsSection =
-    document.getElementById("products");
-
-  if(!productsSection) return;
-
-  const old =
-    document.querySelector(".fresh-banner");
-
-  if(old) old.remove();
-
-  const banner =
-    document.createElement("section");
-
-  banner.className = "fresh-banner";
-
-  banner.innerHTML = `
-    <div>
-      <h2>🍎 Frutas frescas y de temporada</h2>
-      <div>
-        Seleccionamos productos frescos para tu hogar.
-      </div>
-    </div>
-  `;
-
-  productsSection.insertAdjacentElement(
-    "afterend",
-    banner
-  );
-}
-
-/* =========================================================
-   NAVEGACIÓN INFERIOR
-========================================================= */
-
-function createBottomNav(){
-
-  const old =
-    document.querySelector(".bottom-nav");
-
-  if(old) old.remove();
-
-  const nav =
-    document.createElement("nav");
-
-  nav.className = "bottom-nav";
-
-  nav.innerHTML = `
-    <button onclick="window.scrollTo({top:0,behavior:'smooth'})">
-      🏠
-      <span>Inicio</span>
-    </button>
-
-    <button onclick="document.querySelector('.categories')?.scrollIntoView({behavior:'smooth'})">
-      🗂️
-      <span>Categorías</span>
-    </button>
-
-    <button
-      class="cart-nav"
-      onclick="showCart()"
-    >
-      🛒
-      <span>Carrito</span>
-    </button>
-
-    <button onclick="showOrdersInfo()">
-      📦
-      <span>Mis pedidos</span>
-    </button>
-
-    <button onclick="showAccountInfo()">
-      👤
-      <span>Mi cuenta</span>
-    </button>
-  `;
-
-  document.body.appendChild(nav);
-}
-
-/* =========================================================
-   CARRITO DETALLADO
-========================================================= */
-
-function updateCart(){
-  const cartBox = document.getElementById("cart");
-
-  if(cartBox){
-    cartBox.hidden = true;
-    cartBox.style.display = "none";
-  }
-}
-
-  const cartBox =
-    document.getElementById("cart");
-
-  if(!cartBox) return;
-
-  const count =
-    document.getElementById("count");
-
-  const total =
-    document.getElementById("total");
-
-  if(count){
-    count.textContent = getCartCount();
-  }
-
-  if(total){
-    total.textContent =
-      `S/ ${getCartTotal().toFixed(2)}`;
-  }
-
-  if(getCartCount() === 0){
-
-    cartBox.hidden = true;
+  if(panel.classList.contains("hidden")){
     return;
   }
 
-  cartBox.hidden = false;
-}
+  if(cart.length === 0){
 
-function showCart(){
+    panel.innerHTML = `
 
-  if(getCartCount() === 0){
+      <div class="cart-panel-header">
 
-    alert("Tu carrito está vacío.");
+        <h2>🛒 Mi carrito</h2>
+
+        <button
+          class="close-cart"
+          onclick="toggleCart()"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="cart-empty">
+        Tu carrito está vacío.
+      </div>
+    `;
+
     return;
   }
 
   let html = `
-    <div class="checkout-box">
+
+    <div class="cart-panel-header">
 
       <h2>🛒 Mi carrito</h2>
+
+      <button
+        class="close-cart"
+        onclick="toggleCart()"
+      >
+        ×
+      </button>
+
+    </div>
   `;
 
   cart.forEach(item => {
 
     html += `
-      <div class="cart-item">
 
-        <div class="cart-item-name">
-          ${getEmoji(item.name)}
-          ${cleanName(item.name)}
-          <br>
-          <small>
+      <div class="cart-line">
+
+        <img
+          class="cart-line-image"
+          src="${getProductImage(item.name)}"
+          alt=""
+        >
+
+        <div class="cart-line-main">
+
+          <div class="cart-line-name">
+            ${getProductEmoji(item.name)}
+            ${cleanName(item.name)}
+          </div>
+
+          <div class="cart-line-price">
             S/ ${item.price.toFixed(2)}
-          </small>
+          </div>
+
         </div>
 
-        <div class="cart-controls">
+        <div class="cart-line-controls">
 
-          <button onclick="decrease(${item.id})">
+          <button
+            onclick="decreaseProduct(${item.id})"
+          >
             −
           </button>
 
@@ -1155,11 +1844,15 @@ function showCart(){
             ${item.quantity}
           </strong>
 
-          <button onclick="increase(${item.id})">
+          <button
+            onclick="increaseProduct(${item.id})"
+          >
             +
           </button>
 
-          <button onclick="removeItem(${item.id})">
+          <button
+            onclick="removeProduct(${item.id})"
+          >
             🗑️
           </button>
 
@@ -1170,116 +1863,159 @@ function showCart(){
   });
 
   html += `
-      <h3>
-        Total:
-        S/ ${getCartTotal().toFixed(2)}
-      </h3>
+
+    <div class="cart-total-row">
+
+      <span>Total</span>
+
+      <span>
+        S/ ${cartTotal().toFixed(2)}
+      </span>
+
+    </div>
+
+    <button
+      class="cart-order-button"
+      onclick="startCheckout()"
+    >
+      Continuar pedido
+    </button>
+  `;
+
+  panel.innerHTML = html;
+}
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+function startCheckout(){
+
+  if(cart.length === 0){
+
+    alert(
+      "Agrega productos al carrito."
+    );
+
+    return;
+  }
+
+  const panel =
+    document.getElementById(
+      "cart-panel"
+    );
+
+  if(panel){
+    panel.classList.add("hidden");
+  }
+
+  const area =
+    document.getElementById(
+      "checkout-area"
+    );
+
+  if(!area) return;
+
+  area.innerHTML = `
+
+    <section class="checkout">
+
+      <h2>📋 Datos de entrega</h2>
+
+      <input
+        id="customer-name"
+        class="form-input"
+        type="text"
+        placeholder="Nombre completo"
+        autocomplete="name"
+      >
+
+      <input
+        id="customer-phone"
+        class="form-input"
+        type="tel"
+        placeholder="Teléfono / WhatsApp"
+        autocomplete="tel"
+      >
+
+      <input
+        id="customer-address"
+        class="form-input"
+        type="text"
+        placeholder="Dirección de entrega"
+        autocomplete="street-address"
+      >
+
+      <textarea
+        id="customer-reference"
+        class="form-textarea"
+        placeholder="Referencia (opcional)"
+      ></textarea>
 
       <button
         class="primary-button"
-        onclick="showOrder()"
+        onclick="continueToPayment()"
       >
-        Continuar pedido
+        Continuar
       </button>
 
-    </div>
+    </section>
   `;
 
-  const main = document.querySelector("main");
-
-  const existing =
-    document.querySelector(".checkout-box");
-
-  if(existing) existing.remove();
-
-  main.insertAdjacentHTML(
-    "beforeend",
-    html
-  );
-
-  window.scrollTo({
-    top:document.body.scrollHeight,
-    behavior:"smooth"
+  area.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
   });
 }
 
 /* =========================================================
-   PEDIDO
+   DATOS CLIENTE
 ========================================================= */
 
-function showOrder(){
+function continueToPayment(){
 
-  if(getCartCount() === 0){
+  const name =
+    document.getElementById(
+      "customer-name"
+    )?.value.trim();
 
-    alert("Agrega productos al carrito.");
+  const phone =
+    document.getElementById(
+      "customer-phone"
+    )?.value.trim();
+
+  const address =
+    document.getElementById(
+      "customer-address"
+    )?.value.trim();
+
+  const reference =
+    document.getElementById(
+      "customer-reference"
+    )?.value.trim();
+
+  if(!name){
+
+    alert(
+      "Escribe tu nombre completo."
+    );
+
     return;
   }
 
-  const old =
-    document.querySelector(".checkout-box");
-
-  if(old) old.remove();
-
-  const box =
-    document.createElement("section");
-
-  box.className = "checkout-box";
-
-  box.innerHTML = `
-    <h2>📋 Datos de entrega</h2>
-
-    <input
-      id="customer-name"
-      placeholder="Nombre completo"
-    >
-
-    <input
-      id="customer-phone"
-      placeholder="Teléfono / WhatsApp"
-      type="tel"
-    >
-
-    <input
-      id="customer-address"
-      placeholder="Dirección de entrega"
-    >
-
-    <input
-      id="customer-reference"
-      placeholder="Referencia (opcional)"
-    >
-
-    <button
-      class="primary-button"
-      onclick="confirmCustomerData()"
-    >
-      Continuar
-    </button>
-  `;
-
-  document.querySelector("main")
-    .appendChild(box);
-
-  box.scrollIntoView({
-    behavior:"smooth"
-  });
-}
-
-function confirmCustomerData(){
-
-  const name =
-    document.getElementById("customer-name").value.trim();
-
-  const phone =
-    document.getElementById("customer-phone").value.trim();
-
-  const address =
-    document.getElementById("customer-address").value.trim();
-
-  if(!name || !phone || !address){
+  if(!phone){
 
     alert(
-      "Completa nombre, teléfono y dirección."
+      "Escribe tu teléfono o WhatsApp."
+    );
+
+    return;
+  }
+
+  if(!address){
+
+    alert(
+      "Escribe tu dirección de entrega."
     );
 
     return;
@@ -1288,7 +2024,8 @@ function confirmCustomerData(){
   showPayment(
     name,
     phone,
-    address
+    address,
+    reference
   );
 }
 
@@ -1299,89 +2036,117 @@ function confirmCustomerData(){
 function showPayment(
   name,
   phone,
-  address
+  address,
+  reference
 ){
 
-  const reference =
+  currentPayment = "";
+
+  const area =
     document.getElementById(
-      "customer-reference"
-    ).value.trim();
+      "checkout-area"
+    );
 
-  const box =
-    document.querySelector(".checkout-box");
+  area.innerHTML = `
 
-  box.innerHTML = `
+    <section class="checkout">
 
-    <h2>💳 Forma de pago</h2>
+      <h2>💳 Forma de pago</h2>
 
-    <div class="payment-grid">
+      <div class="payment-grid">
+
+        <button
+          class="payment-button"
+          data-payment="Yape"
+          onclick="choosePayment(this)"
+        >
+          📱<br>
+          Yape
+        </button>
+
+        <button
+          class="payment-button"
+          data-payment="Plin"
+          onclick="choosePayment(this)"
+        >
+          📱<br>
+          Plin
+        </button>
+
+        <button
+          class="payment-button"
+          data-payment="Transferencia bancaria"
+          onclick="choosePayment(this)"
+        >
+          🏦<br>
+          Transferencia
+        </button>
+
+        <button
+          class="payment-button"
+          data-payment="Pago contra entrega"
+          onclick="choosePayment(this)"
+        >
+          💵<br>
+          Contra entrega
+        </button>
+
+      </div>
+
+      <div
+        id="payment-status"
+        class="payment-summary"
+      >
+        Selecciona una forma de pago.
+      </div>
+
+      <div class="payment-summary">
+
+        <strong>Resumen del pedido</strong>
+
+        <br><br>
+
+        ${cart.map(item => `
+          ${getProductEmoji(item.name)}
+          ${cleanName(item.name)}
+          × ${item.quantity}
+          — S/ ${(item.price * item.quantity).toFixed(2)}
+          <br>
+        `).join("")}
+
+        <br>
+
+        <strong>
+          TOTAL: S/ ${cartTotal().toFixed(2)}
+        </strong>
+
+      </div>
 
       <button
-        class="payment-button"
-        onclick="selectPayment('Yape',this)"
+        class="primary-button"
+        onclick="confirmOrder(
+          ${JSON.stringify(name)},
+          ${JSON.stringify(phone)},
+          ${JSON.stringify(address)},
+          ${JSON.stringify(reference || "")}
+        )"
       >
-        📱 Yape
+        Confirmar pedido
       </button>
 
-      <button
-        class="payment-button"
-        onclick="selectPayment('Plin',this)"
-      >
-        📱 Plin
-      </button>
-
-      <button
-        class="payment-button"
-        onclick="selectPayment('Transferencia bancaria',this)"
-      >
-        🏦 Transferencia
-      </button>
-
-      <button
-        class="payment-button"
-        onclick="selectPayment('Pago contra entrega',this)"
-      >
-        💵 Contra entrega
-      </button>
-
-    </div>
-
-    <div id="payment-selected"
-      style="margin:12px 0;font-weight:bold">
-      Selecciona una forma de pago
-    </div>
-
-    <h3>
-      Total:
-      S/ ${getCartTotal().toFixed(2)}
-    </h3>
-
-    <button
-      class="primary-button"
-      onclick="finishOrder(
-        '${encodeURIComponent(name)}',
-        '${encodeURIComponent(phone)}',
-        '${encodeURIComponent(address)}',
-        '${encodeURIComponent(reference)}'
-      )"
-    >
-      Confirmar pedido
-    </button>
+    </section>
   `;
 
-  window.currentPayment = "";
-
-  box.scrollIntoView({
-    behavior:"smooth"
+  area.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
   });
 }
 
-function selectPayment(
-  payment,
-  button
-){
+function choosePayment(button){
 
-  window.currentPayment = payment;
+  currentPayment =
+    button.dataset.payment;
 
   document
     .querySelectorAll(".payment-button")
@@ -1389,15 +2154,20 @@ function selectPayment(
       b.classList.remove("selected")
     );
 
-  button.classList.add("selected");
+  button.classList.add(
+    "selected"
+  );
 
-  const selected =
+  const status =
     document.getElementById(
-      "payment-selected"
+      "payment-status"
     );
 
-  selected.textContent =
-    `Forma de pago: ${payment}`;
+  if(status){
+
+    status.innerHTML =
+      `<strong>Forma de pago:</strong> ${currentPayment}`;
+  }
 }
 
 /* =========================================================
@@ -1414,50 +2184,64 @@ async function saveOrder(
 
   const orderProducts =
     cart.map(item => ({
+
       id:item.id,
-      nombre:cleanName(item.name),
+
+      nombre:cleanName(
+        item.name
+      ),
+
       unidad:item.unit,
+
       precio:item.price,
+
       cantidad:item.quantity
+
     }));
 
-  const { error } = await client
-    .from("pedidos")
-    .insert({
-      nombre_cliente:name,
-      telefono:phone,
-      direccion:address,
-      referencia:reference || null,
-      forma_pago:payment,
-      productos:orderProducts,
-      total:Number(
-        getCartTotal().toFixed(2)
-      ),
-      estado:"Pendiente"
-    });
+  const { error } =
+    await client
+      .from("pedidos")
+      .insert({
+
+        nombre_cliente:name,
+
+        telefono:phone,
+
+        direccion:address,
+
+        referencia:
+          reference || null,
+
+        forma_pago:payment,
+
+        productos:orderProducts,
+
+        total:Number(
+          cartTotal().toFixed(2)
+        ),
+
+        estado:"Pendiente"
+
+      });
 
   if(error){
-
-    console.error(error);
-
     throw error;
   }
-
-  return true;
 }
 
 /* =========================================================
-   FINALIZAR PEDIDO
+   CONFIRMAR PEDIDO
 ========================================================= */
 
-async function finishOrder(
-  encodedName,
-  encodedPhone,
-  encodedAddress,
-  encodedReference
+async function confirmOrder(
+  name,
+  phone,
+  address,
+  reference
 ){
 
-  if(!window.currentPayment){
+  if(!currentPayment){
 
     alert(
       "Selecciona una forma de pago."
@@ -1466,17 +2250,18 @@ async function finishOrder(
     return;
   }
 
-  const name =
-    decodeURIComponent(encodedName);
+  const button =
+    document.querySelector(
+      ".checkout .primary-button"
+    );
 
-  const phone =
-    decodeURIComponent(encodedPhone);
+  if(button){
 
-  const address =
-    decodeURIComponent(encodedAddress);
+    button.disabled = true;
 
-  const reference =
-    decodeURIComponent(encodedReference);
+    button.textContent =
+      "Guardando pedido...";
+  }
 
   try{
 
@@ -1485,22 +2270,35 @@ async function finishOrder(
       phone,
       address,
       reference,
-      window.currentPayment
+      currentPayment
     );
 
-    sendWhatsAppOrder(
+    sendWhatsApp(
       name,
       phone,
       address,
       reference,
-      window.currentPayment
+      currentPayment
     );
 
   }catch(error){
 
-    alert(
-      "No se pudo guardar el pedido. Intenta nuevamente."
+    console.error(
+      "Error guardando pedido:",
+      error
     );
+
+    alert(
+      "No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente."
+    );
+
+    if(button){
+
+      button.disabled = false;
+
+      button.textContent =
+        "Confirmar pedido";
+    }
   }
 }
 
@@ -1508,7 +2306,7 @@ async function finishOrder(
    WHATSAPP
 ========================================================= */
 
-function sendWhatsAppOrder(
+function sendWhatsApp(
   name,
   phone,
   address,
@@ -1517,7 +2315,7 @@ function sendWhatsAppOrder(
 ){
 
   let message =
-    `*NUEVO PEDIDO - VERDULERÍA TERÁN*\\n\\n`;
+    "*NUEVO PEDIDO - VERDULERÍA TERÁN*\\n\\n";
 
   message +=
     `*Cliente:* ${name}\\n`;
@@ -1538,12 +2336,12 @@ function sendWhatsAppOrder(
     `*Forma de pago:* ${payment}\\n\\n`;
 
   message +=
-    `*PRODUCTOS:*\\n`;
+    "*PRODUCTOS:*\\n";
 
   cart.forEach(item => {
 
     message +=
-      `• ${cleanName(item.name)} x${item.quantity} - S/ ` +
+      `• ${cleanName(item.name)} x${item.quantity} — S/ ` +
       `${(
         item.price *
         item.quantity
@@ -1551,80 +2349,146 @@ function sendWhatsAppOrder(
   });
 
   message +=
-    `\\n*TOTAL: S/ ` +
-    `${getCartTotal().toFixed(2)}*`;
+    `\\n*TOTAL: S/ ${cartTotal().toFixed(2)}*`;
 
   const url =
-    `https://wa.me/${BUSINESS_WHATSAPP}` +
-    `?text=${encodeURIComponent(message)}`;
+    "https://wa.me/" +
+    BUSINESS_WHATSAPP +
+    "?text=" +
+    encodeURIComponent(message);
 
-  window.open(url,"_blank");
+  /*
+    En iPhone usamos la navegación directa para
+    evitar que Safari bloquee la apertura.
+  */
 
-  alert(
-    "Pedido registrado. Se abrirá WhatsApp para enviarlo."
-  );
-
-  cart = [];
-
-  render();
-  updateCart();
-  updateTopCart();
+  window.location.href = url;
 }
 
 /* =========================================================
-   INFORMACIÓN
+   INICIO
 ========================================================= */
 
-function showOrdersInfo(){
+function goHome(){
 
-  alert(
-    "Tus pedidos se registran en Verdulería Terán. Para consultar el estado de un pedido, escríbenos por WhatsApp."
-  );
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
-function showAccountInfo(){
+function goCategories(){
 
-  alert(
-    "Verdulería Terán\\n\\nDelivery en San Borja, San Luis, San Isidro y La Victoria."
-  );
-}
+  const categories =
+    document.getElementById(
+      "categories"
+    );
 
-/* =========================================================
-   BUSCADOR
-========================================================= */
+  if(categories){
 
-function setupSearch(){
-
-  const search =
-    document.getElementById("search");
-
-  if(!search) return;
-
-  search.addEventListener(
-    "input",
-    () => render()
-  );
+    categories.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+  }
 }
 
 /* =========================================================
-   INICIALIZACIÓN
+   MIS PEDIDOS
 ========================================================= */
 
-function initializeApp(){
+function showOrders(){
 
-  createTopCart();
-  createHero();
-  createCategories();
-  createSectionTitle();
-  createFreshBanner();
-  createBottomNav();
+  const area =
+    document.getElementById(
+      "checkout-area"
+    );
 
-  setupSearch();
+  if(!area) return;
 
-  updateCart();
-  updateTopCart();
+  area.innerHTML = `
 
-  loadProducts();
+    <section class="info-message">
+
+      <h2>📦 Mis pedidos</h2>
+
+      <p>
+        Tus pedidos se registran en
+        Verdulería Terán.
+      </p>
+
+      <p>
+        Para consultar el estado de un pedido,
+        comunícate con nosotros por WhatsApp.
+      </p>
+
+      <button
+        onclick="goHome()"
+      >
+        Volver al inicio
+      </button>
+
+    </section>
+  `;
+
+  area.scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+/* =========================================================
+   MI CUENTA
+========================================================= */
+
+function showAccount(){
+
+  const area =
+    document.getElementById(
+      "checkout-area"
+    );
+
+  if(!area) return;
+
+  area.innerHTML = `
+
+    <section class="info-message">
+
+      <h2>👤 Mi cuenta</h2>
+
+      <p>
+        <strong>Verdulería Terán</strong>
+      </p>
+
+      <p>
+        Delivery en:
+      </p>
+
+      <p>
+        San Borja · San Luis ·
+        San Isidro · La Victoria
+      </p>
+
+      <button
+        onclick="goHome()"
+      >
+        Volver al inicio
+      </button>
+
+    </section>
+  `;
+
+  area.scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+/* =========================================================
+   INICIAR APP
+========================================================= */
+
+function initializeTeran(){
+
+  createApp();
 }
 
 if(
@@ -1633,19 +2497,21 @@ if(
 
   document.addEventListener(
     "DOMContentLoaded",
-    initializeApp
+    initializeTeran
   );
 
 }else{
 
-  initializeApp();
+  initializeTeran();
 }
 
 /* =========================================================
    SERVICE WORKER
 ========================================================= */
 
-if("serviceWorker" in navigator){
+if(
+  "serviceWorker" in navigator
+){
 
   window.addEventListener(
     "load",
@@ -1653,12 +2519,14 @@ if("serviceWorker" in navigator){
 
       navigator.serviceWorker
         .register("./sw.js")
-        .catch(error =>
+        .catch(error => {
+
           console.error(
             "Service Worker:",
             error
-          )
-        );
+          );
+
+        });
 
     }
   );
