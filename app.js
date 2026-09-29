@@ -1531,11 +1531,9 @@ async function saveOrder(){
 
     console.error("Error registrando pedido:",error);
 
-    button.disabled=false;
-    button.textContent="✓ Confirmar pedido";
-
-   alert("No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente.");
-  }
+button.disabled=false;
+button.textContent="✓ Confirmar pedido";
+}
 }
 
 function buildWhatsAppMessage(order){
