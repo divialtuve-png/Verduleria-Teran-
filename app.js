@@ -5,13 +5,8 @@ async function loadProducts() {
   const box = document.querySelector("#products");
 
   try {
-    if (!window.supabase) {
-      throw new Error("Supabase no se cargó");
-    }
-
-    if (!window.SUPABASE_CONFIG) {
-      throw new Error("Falta config.js");
-    }
+    if (!window.supabase) throw new Error("Supabase no se cargó");
+    if (!window.SUPABASE_CONFIG) throw new Error("Falta config.js");
 
     const client = window.supabase.createClient(
       window.SUPABASE_CONFIG.url,
@@ -42,10 +37,12 @@ async function loadProducts() {
 
   } catch (error) {
     console.error(error);
-    box.innerHTML =
-      `<div style="padding:20px;color:#b00020">
+
+    box.innerHTML = `
+      <div style="padding:20px;color:#b00020">
         Error: ${error.message}
-      </div>`;
+      </div>
+    `;
   }
 }
 
@@ -168,26 +165,18 @@ function render() {
           ">
             ${
               p.image
-                ? `<img
-                    src="${p.image}"
+                ? `<img src="${p.image}"
                     alt="${p.name}"
-                    style="
-                      width:100%;
-                      height:100%;
-                      object-fit:cover;
-                    "
-                    onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
-                  >
-                  <div style="
-                    display:none;
-                    font-size:70px;
-                  ">${p.emoji}</div>`
+                    style="width:100%;height:100%;object-fit:cover;"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                   <div style="display:none;font-size:70px">${p.emoji}</div>`
                 : `<div style="font-size:70px">${p.emoji}</div>`
             }
           </div>
 
           <div style="padding:14px 16px 0">
-            <div class="name" style="
+
+            <div style="
               font-size:20px;
               font-weight:700;
               margin-bottom:6px;
@@ -195,14 +184,14 @@ function render() {
               ${p.name}
             </div>
 
-            <div class="unit" style="
+            <div style="
               color:#666;
               margin-bottom:8px;
             ">
               Venta por ${p.unit}
             </div>
 
-            <div class="price" style="
+            <div style="
               font-size:21px;
               font-weight:800;
               margin-bottom:12px;
@@ -225,8 +214,8 @@ function render() {
             >
               Agregar
             </button>
-          </div>
 
+          </div>
         </article>
       `).join("")
       : "<div>No encontramos productos.</div>";
@@ -237,10 +226,48 @@ function render() {
 function add(id) {
   const product = products.find(p => p.id === id);
 
-  if (product) {
-    cart.push(product);
+  if (!product) return;
+
+  const existing = cart.find(item => item.id === id);
+
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({
+      ...product,
+      quantity: 1
+    });
   }
 
+  updateCart();
+}
+
+function increase(id) {
+  const item = cart.find(p => p.id === id);
+
+  if (item) {
+    item.quantity++;
+  }
+
+  updateCart();
+}
+
+function decrease(id) {
+  const item = cart.find(p => p.id === id);
+
+  if (!item) return;
+
+  item.quantity--;
+
+  if (item.quantity <= 0) {
+    cart = cart.filter(p => p.id !== id);
+  }
+
+  updateCart();
+}
+
+function removeItem(id) {
+  cart = cart.filter(p => p.id !== id);
   updateCart();
 }
 
@@ -249,23 +276,104 @@ function updateCart() {
 
   cartBox.hidden = cart.length === 0;
 
-  document.querySelector("#count").textContent = cart.length;
+  document.querySelector("#count").textContent =
+    cart.reduce((sum, p) => sum + p.quantity, 0);
 
-  const total = cart.reduce((sum, p) => sum + p.price, 0);
+  const total = cart.reduce(
+    (sum, p) => sum + (p.price * p.quantity),
+    0
+  );
 
   document.querySelector("#total").textContent =
     `S/ ${total.toFixed(2)}`;
+
+  if (cart.length === 0) return;
+
+  let oldList = document.querySelector("#cartItems");
+
+  if (!oldList) {
+    oldList = document.createElement("div");
+    oldList.id = "cartItems";
+    cartBox.insertBefore(oldList, cartBox.querySelector("button"));
+  }
+
+  oldList.innerHTML = cart.map(p => `
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      padding:12px 0;
+      border-bottom:1px solid #ddd;
+    ">
+
+      <div style="flex:1">
+        <strong>${p.name}</strong>
+        <br>
+        <small>
+          S/ ${p.price.toFixed(2)} c/u
+        </small>
+      </div>
+
+      <button
+        onclick="decrease(${p.id})"
+        style="
+          width:34px;
+          height:34px;
+          border:0;
+          border-radius:8px;
+          font-size:20px;
+        "
+      >
+        −
+      </button>
+
+      <strong>${p.quantity}</strong>
+
+      <button
+        onclick="increase(${p.id})"
+        style="
+          width:34px;
+          height:34px;
+          border:0;
+          border-radius:8px;
+          font-size:20px;
+        "
+      >
+        +
+      </button>
+
+      <button
+        onclick="removeItem(${p.id})"
+        style="
+          border:0;
+          background:transparent;
+          font-size:20px;
+        "
+      >
+        🗑️
+      </button>
+
+    </div>
+  `).join("");
 }
 
 function showOrder() {
+  if (cart.length === 0) return;
+
   const text = cart
-    .map(p => `• ${p.name} - S/ ${p.price.toFixed(2)}`)
+    .map(p =>
+      `• ${p.name} x${p.quantity} - S/ ${(p.price * p.quantity).toFixed(2)}`
+    )
     .join("\n");
 
+  const total = cart.reduce(
+    (s, p) => s + (p.price * p.quantity),
+    0
+  );
+
   alert(
-    `PEDIDO VERDULERÍA TERÁN\n\n${text}\n\nTotal: S/ ${
-      cart.reduce((s, p) => s + p.price, 0).toFixed(2)
-    }`
+    `PEDIDO VERDULERÍA TERÁN\n\n${text}\n\nTotal: S/ ${total.toFixed(2)}`
   );
 }
 
