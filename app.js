@@ -900,6 +900,30 @@ img{display:block;max-width:100%}
   .card-body{padding:6px}
   .card-name{font-size:11px}
 }
+
+/* ===== REFENCIA VISUAL APROBADA ===== */
+.brand-mark{width:54px;height:54px;border-radius:0;background:transparent;overflow:visible;flex:none}
+.logo-svg{width:54px;height:54px;display:block}
+.brand-name{font-size:19px;line-height:.93;letter-spacing:-.3px}
+.brand-name span{font-size:19px}
+.brand-sub{font-size:10px;margin-top:4px}
+.topbar{height:82px;padding:7px 13px;border-bottom:1px solid #ececec}
+.top-cart{gap:5px}
+.top-cart-icon{width:46px;height:46px;font-size:24px;background:#fff7f2}
+.top-cart-total{border-radius:17px;padding:10px 12px;font-size:13px}
+.page{padding-bottom:82px}
+.hero{margin:10px 12px 0;min-height:195px;border-radius:17px}
+.search-wrap{margin:9px 12px 7px}.search{height:42px;border-radius:23px;font-size:13px}
+.categories{gap:8px;padding:4px 12px 10px}.category{padding:9px 15px;border-radius:19px;font-size:11px}
+.section-head{margin:1px 12px 8px}.section-head h2{font-size:20px}.section-chip{font-size:10px;padding:8px 10px;border-radius:15px}
+.products{gap:8px;padding:0 12px}.card{border-radius:14px}.card-image{aspect-ratio:1/1}.card-body{padding:6px}.card-name{font-size:12px;min-height:28px}.card-unit{font-size:9px}.card-bottom{margin-top:5px}.price{font-size:13px}.add{width:31px;height:31px;border-radius:9px;min-width:31px}
+.bottom-nav{height:64px;box-shadow:0 -2px 10px rgba(0,0,0,.07)}.nav{font-size:9px}.nav-icon{font-size:19px}.nav.cart{width:55px;height:55px;margin:-18px auto 0}
+.flow-header{height:82px;background:#fff;display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:7px;padding:7px 12px;border-bottom:1px solid #ececec;position:sticky;top:0;z-index:40}
+.flow-back{border:0;background:transparent;font-size:34px;line-height:1;color:#171717;padding:0;width:30px;height:42px}.flow-title{font-size:20px;margin:0;font-weight:900}.flow-brand{display:flex;align-items:center;gap:6px;min-width:0}.flow-brand .brand-mark{width:47px;height:47px}.flow-brand .logo-svg{width:47px;height:47px}.flow-brand .brand-name{font-size:16px}.flow-brand .brand-name span{font-size:16px}.flow-brand .brand-sub{font-size:8px}.flow-cart{justify-self:end}
+.cart-page{padding-top:4px}.cart-list{padding:8px 10px}.cart-item{border-radius:12px;padding:7px;grid-template-columns:68px 1fr auto;gap:9px;margin-bottom:7px}.cart-item img{width:68px;height:68px;border-radius:10px}.cart-item-name{font-size:13px}.cart-item-meta{font-size:10px}.qty{margin-top:6px;gap:7px}.qty button{width:27px;height:27px;border-radius:8px}.remove{font-size:17px}.cart-subtotal{margin:3px 10px 10px;padding:13px 12px;border-radius:14px;font-size:14px}.primary{border-radius:13px;padding:13px;font-size:14px}
+.checkout-ref{padding:9px 10px 84px}.checkout-card{border-radius:15px;padding:13px;margin-bottom:9px}.checkout-heading{font-size:18px;margin-bottom:10px}.heading-icon{width:31px;height:31px}.field label{font-size:10px}.field input{height:38px;border-radius:10px;font-size:11px}.payment{min-height:100px;border-radius:13px}.payment-logo{width:46px;height:46px}.payment-note{font-size:9px}.summary{border-radius:15px;padding:13px}.summary-line{grid-template-columns:48px 1fr auto}.summary-line img{width:48px;height:48px}.confirm{border-radius:13px;padding:13px}
+.success-ref{padding:26px 16px 90px;min-height:calc(100vh - 82px)}.success-card{max-width:360px;border-radius:18px;padding:20px 17px}.success-check{width:82px;height:82px;border-radius:50%;font-size:48px}.success-card h2{font-size:25px}.success-card p{font-size:13px;line-height:1.4}.order-box{border-radius:15px;padding:13px}.order-number{font-size:18px;font-weight:900}.order-state{font-size:11px;color:#277443}.whatsapp,.secondary{border-radius:13px;padding:13px;font-size:13px}
+
 `;
 
 document.head.appendChild(style);
@@ -1025,26 +1049,43 @@ function renderShell(){
   });
 }
 
+function logoMarkup(){
+  return `<svg viewBox="0 0 64 64" aria-hidden="true" class="logo-svg">
+    <path d="M31 57C29 45 30 34 36 23" fill="none" stroke="#16863f" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M32 45C23 45 14 39 12 30c9-2 18 2 20 11Z" fill="#4fae42"/>
+    <path d="M34 35C25 34 18 28 18 20c8-1 16 4 18 12Z" fill="#1f9147"/>
+    <path d="M36 27C31 20 32 12 39 8c6 6 5 13-3 19Z" fill="#6bbd3f"/>
+    <path d="M34 42C43 42 51 37 53 29c-9-1-17 3-19 11Z" fill="#159447"/>
+    <path d="M35 33C43 32 48 27 48 20c-7 0-13 4-15 10Z" fill="#8cc63f"/>
+  </svg>`;
+}
+
 function header(){
   return `
     <header class="topbar">
       <div class="brand">
-        <div class="brand-mark">
-          <img src="icon.svg" alt="Verdulería Terán" onerror="this.style.display='none';this.parentElement.textContent='🌿';">
-        </div>
+        <div class="brand-mark">${logoMarkup()}</div>
         <div>
           <div class="brand-name">Verdulería <span>Terán</span></div>
           <div class="brand-sub">Productos frescos</div>
         </div>
       </div>
-
-      <button class="top-cart" id="topCart">
-        <div class="top-cart-icon">
-          🛒
-          <span class="badge" id="topBadge">${cartQuantity()}</span>
-        </div>
+      <button class="top-cart" id="topCart" aria-label="Abrir carrito">
+        <div class="top-cart-icon">🛒<span class="badge" id="topBadge">${cartQuantity()}</span></div>
         <div class="top-cart-total">S/ ${cartTotal().toFixed(2)} ›</div>
       </button>
+    </header>
+  `;
+}
+
+function flowHeader(title,backView="home",showTitle=false){
+  return `
+    <header class="flow-header">
+      <button class="flow-back" id="flowBack" aria-label="Volver">‹</button>
+      ${showTitle ? `<h1 class="flow-title">${esc(title)}</h1>` : `
+        <div class="flow-brand"><div class="brand-mark">${logoMarkup()}</div><div><div class="brand-name">Verdulería <span>Terán</span></div><div class="brand-sub">Productos frescos</div></div></div>
+      `}
+      <button class="top-cart flow-cart" id="flowCart" aria-label="Carrito"><div class="top-cart-icon">🛒<span class="badge">${cartQuantity()}</span></div><div class="top-cart-total">S/ ${cartTotal().toFixed(2)}</div></button>
     </header>
   `;
 }
@@ -1252,91 +1293,34 @@ function removeItem(id){
 
 function renderCart(){
   currentView="cart";
-
   const app=document.getElementById("app");
-
   app.innerHTML=`
-    ${header()}
-
-    <div class="screen-head">
-      <button class="back" id="backHome">‹</button>
-      <h1 class="screen-title">Mi carrito</h1>
-    </div>
-
-    ${
-      cart.length
-      ? `
-        <main class="page">
-
-          <section class="cart-list">
-            ${cart.map(item=>`
-              <article class="cart-item">
-
-                <img
-                  src="${esc(item.image)}"
-                  alt="${esc(item.name)}"
-                  onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'"
-                >
-
-                <div>
-                  <div class="cart-item-name">${esc(item.name)}</div>
-                  <div class="cart-item-meta">S/ ${item.price.toFixed(2)} · ${esc(item.unitLabel)}</div>
-
-                  <div class="qty">
-                    <button data-minus="${item.id}">−</button>
-                    <strong>${item.quantity}</strong>
-                    <button data-plus="${item.id}">+</button>
-                  </div>
-                </div>
-
-                <div class="cart-item-right">
-                  <button class="remove" data-remove="${item.id}">🗑</button>
-                  <strong>S/ ${(item.price*item.quantity).toFixed(2)}</strong>
-                </div>
-
-              </article>
-            `).join("")}
-          </section>
-
-          <div class="cart-subtotal">
-            <span>Total (${cartQuantity()} productos)</span>
-            <strong>S/ ${cartTotal().toFixed(2)}</strong>
-          </div>
-
-          <button class="primary" id="continueOrder">
-            Continuar con el pedido →
-          </button>
-
-        </main>
-      `
-      : `
-        <div class="empty">
-          <div style="font-size:48px">🛒</div>
-          <strong>Tu carrito está vacío.</strong>
-          <p>Agrega productos para continuar.</p>
-        </div>
-      `
-    }
+    ${flowHeader("Mi carrito","home",true)}
+    ${cart.length ? `
+      <main class="page cart-page">
+        <section class="cart-list">
+          ${cart.map(item=>`
+            <article class="cart-item">
+              <img src="${esc(item.image)}" alt="${esc(item.name)}" onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'">
+              <div class="cart-item-main">
+                <div class="cart-item-name">${esc(item.name)}</div>
+                <div class="cart-item-meta">S/ ${item.price.toFixed(2)} · ${esc(item.unitLabel.replace('Venta por ','').replace('unidad','unidad'))}</div>
+                <div class="qty"><button data-minus="${item.id}">−</button><strong>${item.quantity}</strong><button data-plus="${item.id}">+</button></div>
+              </div>
+              <div class="cart-item-right"><button class="remove" data-remove="${item.id}">⌫</button><strong>S/ ${(item.price*item.quantity).toFixed(2)}</strong></div>
+            </article>`).join("")}
+        </section>
+        <div class="cart-subtotal"><span>Total (${cartQuantity()} productos)</span><strong>S/ ${cartTotal().toFixed(2)}</strong></div>
+        <button class="primary" id="continueOrder">Continuar con el pedido →</button>
+      </main>` : `<div class="empty"><div style="font-size:48px">🛒</div><strong>Tu carrito está vacío.</strong><p>Agrega productos para continuar.</p></div>`}
   `;
-
-  document.getElementById("backHome")?.addEventListener("click",()=>navigate("home"));
-  document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
-
-  document.querySelectorAll("[data-minus]").forEach(b=>{
-    b.addEventListener("click",()=>changeQty(Number(b.dataset.minus),-1));
-  });
-
-  document.querySelectorAll("[data-plus]").forEach(b=>{
-    b.addEventListener("click",()=>changeQty(Number(b.dataset.plus),1));
-  });
-
-  document.querySelectorAll("[data-remove]").forEach(b=>{
-    b.addEventListener("click",()=>removeItem(Number(b.dataset.remove)));
-  });
-
+  document.getElementById("flowBack")?.addEventListener("click",()=>navigate("home"));
+  document.getElementById("flowCart")?.addEventListener("click",()=>navigate("cart"));
+  document.querySelectorAll("[data-minus]").forEach(b=>b.addEventListener("click",()=>changeQty(String(b.dataset.minus),-1)));
+  document.querySelectorAll("[data-plus]").forEach(b=>b.addEventListener("click",()=>changeQty(String(b.dataset.plus),1)));
+  document.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>removeItem(String(b.dataset.remove))));
   document.getElementById("continueOrder")?.addEventListener("click",openCheckout);
-
-  updateBadges();
+  updateBadges(); window.scrollTo(0,0);
 }
 
 /* =================================================
@@ -1349,9 +1333,8 @@ function openCheckout(){
   selectedPayment="";
   const app=document.getElementById("app");
   app.innerHTML=`
-    ${header()}
-    <main class="page checkout">
-      <button class="back-inline" id="backCart">‹ Mi carrito</button>
+    ${flowHeader("Datos de entrega","cart",false)}
+    <main class="page checkout checkout-ref">
       <section class="checkout-card">
         <h2 class="checkout-heading"><span class="heading-icon">🚚</span>Datos de entrega</h2>
         <div class="form-row"><div class="form-icon">♙</div><div class="field"><label>Nombre completo</label><input id="name" placeholder="Tu nombre completo"></div></div>
@@ -1369,41 +1352,38 @@ function openCheckout(){
         </div>
         <p class="payment-note">Selecciona una forma de pago.</p>
       </section>
-      <button class="primary" id="continueSummary">Continuar con el pedido →</button>
     </main>`;
-  document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
-  document.getElementById("backCart")?.addEventListener("click",renderCart);
+  document.getElementById("flowBack")?.addEventListener("click",()=>navigate("cart"));
+  document.getElementById("flowCart")?.addEventListener("click",()=>navigate("cart"));
   document.querySelectorAll("[data-payment]").forEach(btn=>btn.addEventListener("click",()=>{
-    document.querySelectorAll("[data-payment]").forEach(x=>x.classList.remove("selected"));
-    btn.classList.add("selected"); selectedPayment=btn.dataset.payment;
+    document.querySelectorAll("[data-payment]").forEach(x=>x.classList.remove("selected")); btn.classList.add("selected"); selectedPayment=btn.dataset.payment;
+    openSummary();
   }));
-  document.getElementById("continueSummary").addEventListener("click",openSummary);
   updateBadges(); window.scrollTo(0,0);
 }
 
 function openSummary(){
-  const name=document.getElementById("name")?.value.trim() || "";
-  const phone=document.getElementById("phone")?.value.trim() || "";
-  const address=document.getElementById("address")?.value.trim() || "";
-  const reference=document.getElementById("reference")?.value.trim() || "";
+  const name=document.getElementById("name")?.value.trim() || window.__checkoutData?.name || "";
+  const phone=document.getElementById("phone")?.value.trim() || window.__checkoutData?.phone || "";
+  const address=document.getElementById("address")?.value.trim() || window.__checkoutData?.address || "";
+  const reference=document.getElementById("reference")?.value.trim() || window.__checkoutData?.reference || "";
   if(!name || !phone || !address){ alert("Completa nombre, teléfono y dirección."); return; }
   if(!selectedPayment){ alert("Selecciona una forma de pago."); return; }
   window.__checkoutData={name,phone,address,reference,payment:selectedPayment};
   currentView="summary";
   const app=document.getElementById("app");
   app.innerHTML=`
-    ${header()}
-    <main class="page checkout">
-      <button class="back-inline" id="backCheckout">‹ Datos de entrega</button>
+    ${flowHeader("Resumen del pedido","checkout",false)}
+    <main class="page checkout checkout-ref">
       <section class="summary">
         <h2 class="checkout-heading"><span class="heading-icon">▤</span>Resumen del pedido</h2>
-        ${cart.map(item=>`<div class="summary-line"><img src="${esc(item.image)}" alt="${esc(item.name)}"><div><div class="summary-name">${esc(item.name)}</div><div class="summary-meta">${item.quantity} ${esc(item.unitLabel)} × S/ ${item.price.toFixed(2)}</div></div><div class="summary-price">S/ ${(item.price*item.quantity).toFixed(2)}</div></div>`).join("")}
+        ${cart.map(item=>`<div class="summary-line"><img src="${esc(item.image)}" alt="${esc(item.name)}"><div><div class="summary-name">${esc(item.name)}</div><div class="summary-meta">${item.quantity} ${esc(item.unitLabel.replace('Venta por ','').replace('unidad','unidad'))} × S/ ${item.price.toFixed(2)}</div></div><div class="summary-price">S/ ${(item.price*item.quantity).toFixed(2)}</div></div>`).join("")}
         <div class="totals"><div class="total-line"><span>Subtotal</span><strong>S/ ${cartTotal().toFixed(2)}</strong></div><div class="total-line"><span>Costo de envío</span><strong>S/ 0.00</strong></div><div class="total-final"><span>TOTAL</span><strong>S/ ${cartTotal().toFixed(2)}</strong></div></div>
         <button class="confirm" id="confirm">✓ Confirmar pedido</button>
       </section>
     </main>`;
-  document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
-  document.getElementById("backCheckout")?.addEventListener("click",()=>openCheckoutWithData());
+  document.getElementById("flowBack")?.addEventListener("click",()=>openCheckoutWithData());
+  document.getElementById("flowCart")?.addEventListener("click",()=>navigate("cart"));
   document.getElementById("confirm").addEventListener("click",saveOrder);
   updateBadges(); window.scrollTo(0,0);
 }
@@ -1535,61 +1515,26 @@ function buildWhatsAppMessage(order){
 ================================================= */
 
 function showSuccess(whatsappUrl,orderNumber){
-
   currentView="success";
-
-  document.getElementById("app").innerHTML=`
-    ${header()}
-
-    <main class="success-wrap">
-
+  const app=document.getElementById("app");
+  app.innerHTML=`
+    ${flowHeader("Pedido registrado","home",false)}
+    <main class="success-wrap success-ref">
       <section class="success-card">
-
         <div class="success-check">✓</div>
-
         <h2>¡Pedido registrado!</h2>
-
-        <p>
-          Tu pedido fue registrado correctamente en Verdulería Terán.
-        </p>
-
-        <p>
-          Ahora puedes enviarlo por WhatsApp para que podamos confirmarlo.
-        </p>
-
-        <div class="order-box">
-          <strong>N° de pedido: ${esc(orderNumber)}</strong><br>
-          <span style="font-size:12px;color:#277443">Estado: Pendiente</span>
-        </div>
-
-        <button class="whatsapp" id="sendWhatsApp">
-          ◉ Enviar pedido por WhatsApp
-        </button>
-
-        <button class="secondary" id="buyAgain">
-          ⌂ Volver a comprar
-        </button>
-
+        <p>Tu pedido fue registrado correctamente<br>en Verdulería Terán.</p>
+        <p>Ahora puedes enviarlo por WhatsApp<br>para que podamos confirmarlo.</p>
+        <div class="order-box"><strong>📋 N° de pedido</strong><br><span class="order-number">#${esc(orderNumber)}</span><br><span class="order-state">Estado: Pendiente</span></div>
+        <button class="whatsapp" id="sendWhatsApp">◉ Enviar pedido por WhatsApp</button>
+        <button class="secondary" id="buyAgain">⌂ Volver a comprar</button>
       </section>
-
-    </main>
-  `;
-
-  document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
-
-  document.getElementById("sendWhatsApp").addEventListener("click",()=>{
-    window.open(whatsappUrl,"_blank");
-  });
-
-  document.getElementById("buyAgain").addEventListener("click",()=>{
-    cart=[];
-    selectedPayment="";
-    window.__checkoutData=null;
-    updateBadges();
-    navigate("home");
-  });
-
-  updateBadges();
+    </main>`;
+  document.getElementById("flowBack")?.addEventListener("click",()=>navigate("home"));
+  document.getElementById("flowCart")?.addEventListener("click",()=>navigate("cart"));
+  document.getElementById("sendWhatsApp").addEventListener("click",()=>window.open(whatsappUrl,"_blank"));
+  document.getElementById("buyAgain").addEventListener("click",()=>{cart=[];selectedPayment="";window.__checkoutData=null;saveCart();updateBadges();navigate("home");});
+  updateBadges(); window.scrollTo(0,0);
 }
 
 /* =================================================
