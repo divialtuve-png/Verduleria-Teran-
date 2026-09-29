@@ -348,6 +348,7 @@ main{
 }
 
 #cart{
+  position:static;
   position:fixed;
   bottom:78px;
   left:12px;
