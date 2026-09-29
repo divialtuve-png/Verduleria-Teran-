@@ -1,7 +1,7 @@
 
 /*
 ====================================================
- VERDULERÍA TERÁN — VERSIÓN FINAL
+ VERDULERÍA TERÁN — VERSIÓN FINAL V6
  Diseño: referencia aprobada
  Funciones: Supabase + carrito + checkout + pagos
            + pedidos + WhatsApp
