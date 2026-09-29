@@ -365,6 +365,9 @@ main{
 }
 
 #cart{
+  display:none !important;
+  position:static !important;
+}
   position:static;
   position:fixed;
   bottom:78px;
