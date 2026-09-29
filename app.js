@@ -1,4 +1,3 @@
-
 /*
 ====================================================
  VERDULERÍA TERÁN — VERSIÓN FINAL
@@ -64,6 +63,7 @@ img{display:block;max-width:100%}
 .topbar{
   position:sticky;
   top:0;
+  transform:translateZ(0);
   z-index:40;
   height:76px;
   background:#fff;
@@ -168,8 +168,8 @@ img{display:block;max-width:100%}
 }
 
 .hero{
-  margin:10px 10px 0;
-  min-height:205px;
+  margin:12px 10px 0;
+  min-height:225px;
   border-radius:19px;
   overflow:hidden;
   position:relative;
@@ -183,7 +183,7 @@ img{display:block;max-width:100%}
 
 .hero h1{
   margin:0;
-  font-size:31px;
+  font-size:29px;
   line-height:.98;
   font-weight:950;
   letter-spacing:-.8px;
@@ -291,15 +291,17 @@ img{display:block;max-width:100%}
 
 .card-image{
   width:100%;
-  aspect-ratio:1/1;
-  background:#eef3ea;
+  aspect-ratio:1/0.92;
+  background:#f7faf4;
   overflow:hidden;
+  padding:5px;
 }
 
 .card-image img{
   width:100%;
   height:100%;
   object-fit:cover;
+  border-radius:12px;
 }
 
 .card-body{padding:7px}
@@ -931,8 +933,27 @@ function productKind(name){
   return 'generic';
 }
 
+const PHOTO_LIBRARY = {
+  tomate: "https://images.unsplash.com/photo-1531730724745-a8d774fd1e64?auto=format&fit=crop&w=700&q=82",
+  cebolla: "https://images.unsplash.com/photo-1594100585814-106545bd6e49?auto=format&fit=crop&w=700&q=82",
+  zanahoria: "https://images.unsplash.com/photo-1445282768818-728615cc910a?auto=format&fit=crop&w=700&q=82",
+  lechuga: "https://images.unsplash.com/photo-1692606280428-7df25e4daefb?auto=format&fit=crop&w=700&q=82",
+  limon: "https://images.unsplash.com/photo-1592951271867-b4e76e837658?auto=format&fit=crop&w=700&q=82",
+  manzana: "https://images.unsplash.com/photo-1630563451961-ac2ff27616ab?auto=format&fit=crop&w=700&q=82",
+  platano: "https://images.unsplash.com/photo-1623810836868-057b23aef3aa?auto=format&fit=crop&w=700&q=82",
+  papa: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Potatoes.jpg?auto=format&fit=crop&w=700&q=82"
+};
+
+function photoFallback(name,category){
+  const n=normalize(name);
+  for(const [key,url] of Object.entries(PHOTO_LIBRARY)){
+    if(n.includes(key)) return url;
+  }
+  return null;
+}
+
 function fallbackImage(name,category){
-  return svgImage(productKind(name),name);
+  return photoFallback(name,category) || svgImage(productKind(name),name);
 }
 
 /* =================================================
@@ -1106,7 +1127,7 @@ function renderProductGrid(){
           src="${esc(p.image)}"
           alt="${esc(p.name)}"
           loading="lazy"
-          onerror="this.onerror=null;this.src='${esc(fallbackImage(p.name,p.category))}'"
+          onerror="this.onerror=null;this.src='${esc(svgImage(productKind(p.name),p.name))}'"
         >
       </div>
 
@@ -1200,7 +1221,7 @@ function renderCart(){
                 <img
                   src="${esc(item.image)}"
                   alt="${esc(item.name)}"
-                  onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'"
+                  onerror="this.onerror=null;this.src='${esc(svgImage(productKind(item.name),item.name))}'"
                 >
 
                 <div>
@@ -1335,12 +1356,12 @@ function openCheckout(){
         <div class="payment-grid">
 
           <button class="payment" data-payment="Yape">
-            <div class="payment-logo yape-logo">yape</div>
+            <div class="payment-logo yape-logo"><span>Yape</span></div>
             <div class="payment-name">Yape</div>
           </button>
 
           <button class="payment" data-payment="Plin">
-            <div class="payment-logo plin-logo">plin</div>
+            <div class="payment-logo plin-logo"><span>Plin</span></div>
             <div class="payment-name">Plin</div>
           </button>
 
@@ -1372,7 +1393,7 @@ function openCheckout(){
             <img
               src="${esc(item.image)}"
               alt="${esc(item.name)}"
-              onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'"
+              onerror="this.onerror=null;this.src='${esc(svgImage(productKind(item.name),item.name))}'"
             >
             <div>
               <div class="summary-name">${esc(item.name)}</div>
@@ -1717,6 +1738,7 @@ async function loadProducts(){
     const name=row.nombre || "Producto";
 
     const mappedImage=imageMap.get(normalize(name));
+    const photoImage=photoFallback(name,category);
 
     products.push({
       id:row.id,
@@ -1725,7 +1747,7 @@ async function loadProducts(){
       unit:row.unidad || "kg",
       unitLabel:unitLabel(row.unidad),
       price:Number(row.precio)||0,
-      image:mappedImage || fallbackImage(name,category)
+      image:mappedImage || photoImage || svgImage(productKind(name),name)
     });
   });
 
