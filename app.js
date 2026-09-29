@@ -47,7 +47,51 @@ async function loadProducts() {
       </div>`;
   }
 }
+function getEmoji(nombre) {
+  const n = nombre.toLowerCase();
 
+  const emojis = {
+    papa: "🥔",
+    tomate: "🍅",
+    cebolla: "🧅",
+    zanahoria: "🥕",
+    limón: "🍋",
+    limon: "🍋",
+    lechuga: "🥬",
+    brócoli: "🥦",
+    brocoli: "🥦",
+    plátano: "🍌",
+    platano: "🍌",
+    manzana: "🍎",
+    naranja: "🍊",
+    fresa: "🍓",
+    uva: "🍇",
+    sandía: "🍉",
+    sandia: "🍉",
+    piña: "🍍",
+    pina: "🍍",
+    palta: "🥑",
+    aguacate: "🥑",
+    pepino: "🥒",
+    ajo: "🧄",
+    aji: "🌶️",
+    ají: "🌶️",
+    pimiento: "🫑",
+    choclo: "🌽",
+    maíz: "🌽",
+    maiz: "🌽",
+    apio: "🥬",
+    espinaca: "🥬",
+    culantro: "🌿",
+    perejil: "🌿"
+  };
+
+  for (const clave in emojis) {
+    if (n.includes(clave)) return emojis[clave];
+  }
+
+  return "🥬";
+}
 function render() {
   const q = document.querySelector("#search").value.toLowerCase();
   const c = document.querySelector("#category").value;
