@@ -8,20 +8,14 @@
 ====================================================
 */
 
+const SUPABASE_CONFIG = window.SUPABASE_CONFIG || {};
 const SUPABASE_READY = Boolean(
   window.supabase &&
-  window.SUPABASE_CONFIG &&
-  window.SUPABASE_CONFIG.url &&
-  window.SUPABASE_CONFIG.publishableKey &&
-  !String(window.SUPABASE_CONFIG.url).includes("TU-PROYECTO") &&
-  !String(window.SUPABASE_CONFIG.publishableKey).includes("TU-PUBLISHABLE-KEY")
+  /^https:\/\/.+/.test(String(SUPABASE_CONFIG.url || "")) &&
+  String(SUPABASE_CONFIG.publishableKey || "").length > 20
 );
-
 const client = SUPABASE_READY
-  ? window.supabase.createClient(
-      window.SUPABASE_CONFIG.url,
-      window.SUPABASE_CONFIG.publishableKey
-    )
+  ? window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.publishableKey)
   : null;
 
 const BUSINESS_WHATSAPP = "51983130700";
@@ -1500,10 +1494,6 @@ async function saveOrder(){
 
   try{
 
-    if(!client){
-      throw new Error("SUPABASE_NOT_CONFIGURED");
-    }
-
     const {error}=await client
       .from("pedidos")
       .insert({
@@ -1747,8 +1737,7 @@ async function loadProducts(){
   // vacía mientras Supabase responde.
   useCatalogRows(starterCatalog);
 
-  if(!client){
-    console.warn("Supabase aún no está configurado. Se mantiene el catálogo de respaldo.");
+  if(!SUPABASE_READY || !client){
     return;
   }
 
@@ -1771,63 +1760,6 @@ async function loadProducts(){
   }catch(error){
     console.warn("Catálogo remoto no disponible; se mantiene el catálogo de respaldo.",error);
   }
-}
-
-
-  // Cargar el catálogo desde la tabla principal `productos`.
-  // Las imágenes se resuelven SIEMPRE por nombre con nuestra biblioteca
-  // para evitar las imágenes cruzadas de la tabla `products`.
-  let productosResult=await client
-    .from("productos")
-    .select("*")
-    .eq("activo",true)
-    .order("id");
-
-  // Si Supabase devuelve 0 productos activos, hacemos una segunda lectura
-  // sin el filtro para evitar que un valor de `activo` distinto bloquee
-  // todo el catálogo. Si existen registros, los mostramos.
-  if(!productosResult.error && (!productosResult.data || productosResult.data.length===0)){
-    const allResult=await client
-      .from("productos")
-      .select("*")
-      .order("id");
-
-    if(!allResult.error && Array.isArray(allResult.data) && allResult.data.length){
-      productosResult=allResult;
-    }
-  }
-
-  if(productosResult.error){
-    console.error("Error cargando productos:",productosResult.error);
-    const box=document.getElementById("products");
-    if(box){
-      box.innerHTML=`
-        <div class="empty" style="grid-column:1/-1">
-          No se pudieron cargar los productos.
-        </div>
-      `;
-    }
-    return;
-  }
-
-  products.length=0;
-
-  (productosResult.data || []).forEach(row=>{
-    const category=row.categoria || "Otros";
-    const name=row.nombre || "Producto";
-
-    products.push({
-      id:row.id,
-      name,
-      category,
-      unit:row.unidad || "kg",
-      unitLabel:unitLabel(row.unidad),
-      price:Number(row.precio)||0,
-      image:fallbackImage(name,category)
-    });
-  });
-
-  renderHome();
 }
 
 function unitLabel(unit){
