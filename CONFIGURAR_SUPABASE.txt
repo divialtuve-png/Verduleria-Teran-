@@ -1,0 +1,7 @@
+1. Abre config.js.
+2. Reemplaza TU-PROYECTO por la URL real de Supabase.
+3. Reemplaza TU-PUBLISHABLE-KEY por la Publishable key.
+4. Guarda el archivo.
+5. Sube nuevamente la carpeta completa.
+
+NO uses la service_role key en este archivo.

@@ -1,124 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2e7d32">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#149447">
+  <meta name="description" content="Verdulería Terán — productos frescos directo a tu hogar.">
   <title>Verdulería Terán</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icon.svg">
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7f5;
-      color: #222;
-    }
-
-    header {
-      background: #2e7d32;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    main {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-
-    #products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-    }
-
-    .card {
-      background: white;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px #0001;
-    }
-
-    .emoji {
-      font-size: 42px;
-    }
-
-    .name {
-      font-weight: bold;
-      font-size: 18px;
-      margin: 8px 0;
-    }
-
-    .unit {
-      color: #666;
-      font-size: 14px;
-    }
-
-    .price {
-      font-weight: bold;
-      font-size: 18px;
-      margin: 10px 0;
-    }
-
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      background: #2e7d32;
-      color: white;
-      cursor: pointer;
-    }
-
-    #cart {
-      margin-top: 20px;
-      padding: 15px;
-      background: white;
-      border-radius: 12px;
-    }
-  </style>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🥬%3C/text%3E%3C/svg%3E">
 </head>
-
 <body>
-
-<header>
-  <h1>🥬 Verdulería Terán</h1>
-  <p>Verduras frescas a domicilio</p>
-</header>
-
-<main>
-
-  <input id="search" type="search" placeholder="Buscar producto...">
-
-  <select id="category">
-    <option value="">Todas las categorías</option>
-    <option value="Verduras">Verduras</option>
-    <option value="Frutas">Frutas</option>
-    <option value="Hierbas">Hierbas</option>
-  </select>
-
-  <section id="products">
-    Cargando productos...
-  </section>
-
-
-
-</main>
-
-<script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js?v=9"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
+    }
+  </script>
 </body>
 </html>

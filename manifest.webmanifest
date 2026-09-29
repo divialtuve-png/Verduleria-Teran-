@@ -1,17 +1,11 @@
 {
   "name": "Verdulería Terán",
   "short_name": "Terán",
-  "start_url": ".",
+  "description": "Productos frescos directo a tu hogar",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#f5f8f4",
-  "theme_color": "#16823b",
-  "lang": "es",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#fffaf4",
+  "theme_color": "#149447",
+  "lang": "es-PE",
+  "icons": []
 }
