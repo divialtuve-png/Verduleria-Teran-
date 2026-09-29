@@ -1,7 +1,5 @@
 // Configuración de Supabase.
-// Coloca aquí los datos de tu proyecto cuando los tengas.
-// No uses la service_role key en una aplicación web.
 window.SUPABASE_CONFIG = {
-  url: "",
-  publishableKey: ""
+  url: "https://ldkalvjtxbmnznxwjdfc.supabase.co",
+  publishableKey: "sb_publishable_mC_5iC3_C3WZCUDqlzuteg_Fq_vYm-s"
 };
