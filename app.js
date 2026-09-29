@@ -176,6 +176,23 @@ main{
 }
 
 .category-chip{
+  border:2px solid #eeeeee;
+  padding:11px 18px;
+  border-radius:25px;
+  background:#ffffff;
+  color:#222222;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+  font-weight:bold;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.category-chip.active{
+  background:#43a047;
+  border-color:#43a047;
+  color:#ffffff;
+}
   border:0;
   padding:11px 17px;
   border-radius:25px;
