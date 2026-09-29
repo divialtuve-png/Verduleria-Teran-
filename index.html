@@ -5,21 +5,24 @@ const supabase = window.supabase.createClient(
 
 let products = [];
 let cart = [];
-let isAdmin = false;
 
 function loadCart() {
   const saved = localStorage.getItem("cart");
-  if (saved) {
-    try {
-      cart = JSON.parse(saved);
-    } catch (e) {
-      cart = [];
-    }
+  if (!saved) return;
+
+  try {
+    cart = JSON.parse(saved);
+  } catch (e) {
+    cart = [];
   }
 }
 
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function money(n) {
+  return `S/ ${Number(n || 0).toFixed(2)}`;
 }
 
 async function loadProducts() {
@@ -31,36 +34,30 @@ async function loadProducts() {
 
     if (error) {
       console.error("Error cargando productos:", error);
-      document.querySelector("#products").innerHTML = 
+      document.querySelector("#products").innerHTML =
         `<div class="empty">Error al cargar productos: ${error.message}</div>`;
       return;
     }
 
     if (!data || data.length === 0) {
-      document.querySelector("#products").innerHTML = 
-        `<div class="empty">No hay productos disponibles</div>`;
+      document.querySelector("#products").innerHTML =
+        `<div class="empty">No hay productos disponibles.</div>`;
       return;
     }
 
-    products = data.map(p => ({
+    products = data.map((p) => ({
       id: p.id,
       name: p.nombre,
       category: p.categoria,
       unit: p.unidad,
       price: Number(p.precio),
-      emoji: p.emoji || "🥬",
-      activo: p.activo !== false,
-      stock: p.stock || null
+      emoji: p.emoji || "🥬"
     }));
 
     render();
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Error general:", err);
   }
-}
-
-function money(n) {
-  return `S/ ${Number(n).toFixed(2)}`;
 }
 
 function render() {
@@ -68,7 +65,7 @@ function render() {
   const c = document.querySelector("#category").value;
 
   const list = products.filter(
-    p =>
+    (p) =>
       (!q || p.name.toLowerCase().includes(q)) &&
       (!c || p.category === c)
   );
@@ -76,8 +73,8 @@ function render() {
   const el = document.querySelector("#products");
 
   el.innerHTML = list.length
-    ? list.map(p => `
-      <article class="card" data-id="${p.id}">
+    ? list.map((p) => `
+      <article class="card">
         <div class="emoji">${p.emoji}</div>
         <div class="name">${p.name}</div>
         <div class="unit">Venta por ${p.unit}</div>
@@ -91,12 +88,12 @@ function render() {
 }
 
 function add(id) {
-  const p = products.find(x => x.id === id);
-  if (p) {
-    cart.push({ ...p });
-    saveCart();
-    updateCart();
-  }
+  const p = products.find((x) => x.id === id);
+  if (!p) return;
+
+  cart.push({ ...p });
+  saveCart();
+  updateCart();
 }
 
 function removeFromCart(index) {
@@ -105,45 +102,54 @@ function removeFromCart(index) {
   updateCart();
 }
 
+function clearCart() {
+  cart = [];
+  saveCart();
+  updateCart();
+}
+
 function updateCart() {
-  const cartEl = document.querySelector("#cart");
-  const countEl = document.querySelector("#count");
-  const totalEl = document.querySelector("#total");
-  const itemsEl = document.querySelector("#cart-items");
-  const totalDetalleEl = document.querySelector("#cart-total");
+  const cartWrap = document.querySelector("#cart");
+  const cartPanel = document.querySelector("#cart-panel");
+  const count = document.querySelector("#count");
+  const total = document.querySelector("#total");
+  const items = document.querySelector("#cart-items");
+  const totalDetail = document.querySelector("#cart-total");
 
-  cartEl.hidden = !cart.length;
+  const hasItems = cart.length > 0;
+  cartWrap.hidden = !hasItems;
+  cartPanel.hidden = !hasItems;
 
-  if (!cart.length) {
-    itemsEl.innerHTML = "";
-    totalDetalleEl.textContent = money(0);
-    countEl.textContent = "0";
-    totalEl.textContent = money(0);
+  if (!hasItems) {
+    count.textContent = "0";
+    total.textContent = money(0);
+    items.innerHTML = "";
+    totalDetail.textContent = money(0);
     return;
   }
 
-  countEl.textContent = cart.length;
-  const total = cart.reduce((s, p) => s + p.price, 0);
-  totalEl.textContent = money(total);
+  const subtotal = cart.reduce((sum, p) => sum + Number(p.price || 0), 0);
 
-  itemsEl.innerHTML = cart.map((p, i) => `
+  count.textContent = cart.length;
+  total.textContent = money(subtotal);
+  totalDetail.textContent = money(subtotal);
+
+  items.innerHTML = cart.map((p, i) => `
     <div class="cart-item">
       <span>${p.emoji} ${p.name}</span>
       <span>${money(p.price)}</span>
-      <button onclick="removeFromCart(${i})" class="remove-btn">✕</button>
+      <button class="remove-btn" onclick="removeFromCart(${i})">✕</button>
     </div>
   `).join("");
-
-  totalDetalleEl.textContent = money(total);
 }
 
 async function showOrder() {
   if (!cart.length) {
-    alert("El carrito está vacío");
+    alert("El carrito está vacío.");
     return;
   }
 
-  const total = cart.reduce((s, p) => s + p.price, 0);
+  const total = cart.reduce((sum, p) => sum + Number(p.price || 0), 0);
   const text = cart
     .map((p, i) => `${i + 1}. ${p.emoji} ${p.name} — ${money(p.price)}`)
     .join("\n");
@@ -157,41 +163,39 @@ async function showOrder() {
 
 async function guardarPedido(total, detalle) {
   try {
-    const { error } = await supabase
-      .from("pedidos")
-      .insert([
-        {
-          items: cart.length,
-          total: total,
-          detalle: detalle,
-          estado: "pendiente",
-          fecha: new Date().toISOString()
-        }
-      ]);
+    const { error } = await supabase.from("pedidos").insert([
+      {
+        items: cart.length,
+        total: Number(total),
+        detalle,
+        estado: "pendiente",
+        fecha: new Date().toISOString()
+      }
+    ]);
 
     if (error) {
       console.error("Error guardando pedido:", error);
-      alert("Error al guardar el pedido: " + error.message);
+      alert("No se pudo guardar el pedido. Revisa la tabla 'pedidos' en Supabase.");
       return;
     }
 
-    alert("✅ Pedido guardado correctamente!\n\nNos pondremos en contacto pronto.");
-    cart = [];
-    saveCart();
-    updateCart();
+    alert("✅ Pedido guardado correctamente. Nos contactaremos pronto.");
+    clearCart();
   } catch (err) {
-    console.error("Error:", err);
+    console.error("Error general al guardar pedido:", err);
+    alert("Hubo un error al procesar el pedido.");
   }
 }
 
 document.querySelector("#search").addEventListener("input", render);
 document.querySelector("#category").addEventListener("change", render);
+document.querySelector("#clear-cart").addEventListener("click", clearCart);
 
 loadCart();
 loadProducts();
 
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker
-    .register("./sw.js")
-    .catch(() => {});
+  navigator.serviceWorker.register("./sw.js").catch(() => {});
 }
+
+updateCart();
