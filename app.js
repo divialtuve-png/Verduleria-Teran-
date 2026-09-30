@@ -8,14 +8,20 @@
 ====================================================
 */
 
-const SUPABASE_CONFIG = window.SUPABASE_CONFIG || {};
 const SUPABASE_READY = Boolean(
   window.supabase &&
-  /^https:\/\/.+/.test(String(SUPABASE_CONFIG.url || "")) &&
-  String(SUPABASE_CONFIG.publishableKey || "").length > 20
+  window.SUPABASE_CONFIG &&
+  window.SUPABASE_CONFIG.url &&
+  window.SUPABASE_CONFIG.publishableKey &&
+  !String(window.SUPABASE_CONFIG.url).includes("TU-PROYECTO") &&
+  !String(window.SUPABASE_CONFIG.publishableKey).includes("TU-PUBLISHABLE-KEY")
 );
+
 const client = SUPABASE_READY
-  ? window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.publishableKey)
+  ? window.supabase.createClient(
+      window.SUPABASE_CONFIG.url,
+      window.SUPABASE_CONFIG.publishableKey
+    )
   : null;
 
 const BUSINESS_WHATSAPP = "51983130700";
@@ -1494,6 +1500,10 @@ async function saveOrder(){
 
   try{
 
+    if(!client){
+      throw new Error("SUPABASE_NOT_CONFIGURED");
+    }
+
     const {error}=await client
       .from("pedidos")
       .insert({
@@ -1521,19 +1531,15 @@ async function saveOrder(){
 
     showSuccess(text);
 
- alert(
-  "ERROR SUPABASE\n\n" +
-  "Mensaje: " + (error?.message || "sin mensaje") + "\n" +
-  "Código: " + (error?.code || "sin código") + "\n" +
-  "Detalle: " + (error?.details || "sin detalle") + "\n" +
-  "Hint: " + (error?.hint || "sin hint")
-);
+  }catch(error){
 
     console.error("Error registrando pedido:",error);
 
-button.disabled=false;
-button.textContent="✓ Confirmar pedido";
-}
+    button.disabled=false;
+    button.textContent="✓ Confirmar pedido";
+
+    alert("No se pudo registrar el pedido. Revisa tu conexión e inténtalo nuevamente.");
+  }
 }
 
 function buildWhatsAppMessage(order){
@@ -1741,7 +1747,8 @@ async function loadProducts(){
   // vacía mientras Supabase responde.
   useCatalogRows(starterCatalog);
 
-  if(!SUPABASE_READY || !client){
+  if(!client){
+    console.warn("Supabase aún no está configurado. Se mantiene el catálogo de respaldo.");
     return;
   }
 
@@ -1765,6 +1772,9 @@ async function loadProducts(){
     console.warn("Catálogo remoto no disponible; se mantiene el catálogo de respaldo.",error);
   }
 }
+
+
+
 
 function unitLabel(unit){
 
