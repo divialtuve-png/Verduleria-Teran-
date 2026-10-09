@@ -1,6 +1,12 @@
-const cfg=window.SUPABASE_CONFIG||{};
-const READY=Boolean(window.supabase && /^https:\/\/.+/.test(String(cfg.url||'')) && String(cfg.publishableKey||'').length>20);
-const supabase=READY?window.supabase.createClient(cfg.url,cfg.publishableKey):null;
+const cfg = window.SUPABASE_CONFIG || {};
+const READY = Boolean(
+  window.supabase &&
+  typeof window.supabase.createClient === 'function' &&
+  /^https:\/\/.+/.test(String(cfg.url || '')) &&
+  String(cfg.publishableKey || '').length > 20
+);
+const supabase = READY ? window.supabase.createClient(cfg.url, cfg.publishableKey) : null;
+
 const $=id=>document.getElementById(id);
 
 function status(msg){ $('loginStatus').textContent=msg; }
