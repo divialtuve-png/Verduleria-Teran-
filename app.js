@@ -260,7 +260,7 @@ img{display:block;max-width:100%}
 }
 
 .category.active{
-  background:var(--green);
+  background:var(--orange)
   color:#fff;
   border-color:var(--green);
 }
