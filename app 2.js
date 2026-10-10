@@ -29,17 +29,17 @@ const style = document.createElement("style");
 
 style.textContent = `
 :root{
-–green:#31B7B0;
-–green-dark:#218E89;
-–green-light:#E1F7F5;
-–orange:#F28C28;
-–pink:#F28C28;
-–purple:#263653;
-–blue:#31B7B0;
-–text:#263653;
-–muted:#657386;
-–line:#E3E8ED;
-–cream:#FFFDF7;
+–-green:#31B7B0;
+–-green-dark:#218E89;
+–-green-light:#E1F7F5;
+–-orange:#F28C28;
+–-pink:#F28C28;
+–-purple:#263653;
+–-blue:#31B7B0;
+–-text:#263653;
+–-muted:#657386;
+–-line:#E3E8ED;
+–-cream:#FFFDF7;
 }
 
 *{box-sizing:border-box}
