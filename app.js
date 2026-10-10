@@ -40,17 +40,17 @@ const style = document.createElement("style");
 
 style.textContent = `
 :root{
-  --green:#149447;
-  --green-dark:#087b38;
-  --green-light:#eaf8ed;
-  --orange:#ff7a00;
-  --pink:#ec1b55;
-  --purple:#7629c9;
-  --blue:#11a8dc;
-  --text:#171717;
-  --muted:#737373;
-  --line:#e7e7e7;
-  --cream:#fffaf4;
+–green:#31B7B0;
+–green-dark:#218E89;
+–green-light:#E1F7F5;
+–orange:#F28C28;
+–pink:#F28C28;
+–purple:#263653;
+–blue:#31B7B0;
+–text:#263653;
+–muted:#657386;
+–line:#E3E8ED;
+–cream:#FFFDF7;
 }
 
 *{box-sizing:border-box}
