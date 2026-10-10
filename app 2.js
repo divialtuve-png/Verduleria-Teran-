@@ -408,7 +408,7 @@ img{display:block;max-width:100%}
 
 .nav-icon{font-size:21px;line-height:1}
 
-.nav.active{color:var(--green)}
+.nav.active{color:var(--orange)}
 
 .nav.cart{
   width:52px;
@@ -535,7 +535,7 @@ img{display:block;max-width:100%}
   margin:0 10px;
   border:0;
   border-radius:13px;
-  background:var(--green);
+  background:var(--orange);
   color:#fff;
   padding:14px;
   font-size:14px;
