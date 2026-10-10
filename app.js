@@ -100,7 +100,7 @@ img{display:block;max-width:100%}
   align-items:center;
   justify-content:center;
   font-size:29px;
-  background:linear-gradient(145deg,#ecf8df,#ccefc8);
+  background:linear-gradient(145deg,#FFFDF7,#BDECE8);
   flex:none;
 }
 
@@ -108,7 +108,7 @@ img{display:block;max-width:100%}
   font-weight:900;
   line-height:.96;
   font-size:18px;
-  color:#087b38;
+  color:#263653;
 }
 
 .brand-name span{
