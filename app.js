@@ -260,9 +260,9 @@ img{display:block;max-width:100%}
 }
 
 .category.active{
-  background:var(--orange)
-  color:#fff;
-  border-color:var(--green);
+  background:#218E49;
+  color:#FFFFFF;
+  border-color:#218E49;
 }
 
 .section-head{
