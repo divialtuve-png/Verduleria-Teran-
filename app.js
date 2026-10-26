@@ -1737,7 +1737,7 @@ function useCatalogRows(rows){
       unit,
       unitLabel:unitLabel(unit),
       price:Number(row.precio ?? row.price)||0,
-      image:fallbackImage(name,category)
+      image:row.image_url || fallbackImage(name,category)
     });
   });
   renderProductGrid();
