@@ -93,7 +93,14 @@ img{display:block;max-width:100%}
   gap:9px;
   min-width:0;
 }
-/* Cabecera opción 5: ilustración vectorial original, sin recortes */
+
+/* Imagen independiente del logo y cabecera compacta */
+.brand{flex:1;min-width:0;max-width:none;gap:0}
+.brand-logo-final{display:block;width:min(100%,245px);height:auto;max-height:74px;object-fit:contain;object-position:left center}
+@media(max-width:430px){.brand-logo-final{width:min(100%,226px);max-height:68px}.topbar{gap:5px}.top-cart{gap:3px}}
+@media(max-width:375px){.brand-logo-final{width:min(100%,199px);max-height:61px}.top-cart-total{padding:8px 6px;font-size:11px}}
+
+/* Cabecera opción 5: imagen de marca aprobada y adaptable */
 .brand{gap:7px;flex:1;max-width:calc(100% - 116px)}
 .brand-emblem{width:62px;height:61px;flex:none;display:grid;place-items:center}
 .brand-emblem svg{width:100%;height:100%;filter:drop-shadow(0 2px 2px rgba(13,75,35,.14))}
@@ -999,17 +1006,7 @@ function header(){
   return `
     <header class="topbar">
       <div class="brand">
-        <span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 60Q36 66 64 59" stroke="#14843c" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <path d="M15 48Q3 33 16 25Q9 12 23 11Q27 0 37 11Q48 2 53 16Q67 16 61 31Q69 42 55 49Z" fill="#218c3b"/>
-          <path d="M18 44Q8 31 23 28Q15 16 29 17Q34 5 43 19Q57 13 55 31Q65 39 50 45Z" fill="#65b935"/>
-          <path d="M17 46Q12 35 22 32M27 47Q23 30 35 23M42 47Q48 31 51 26" stroke="#b7e56b" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <circle cx="24" cy="43" r="10" fill="#e9472d"/><path d="M24 32l-3-5 5 3 4-4-1 7" fill="#187b38"/>
-          <path d="M40 33L54 55Q58 61 61 54L48 29Z" fill="#f18722"/><path d="M43 32q-7-6-5-10 6 1 7 8m1 0q2-9 9-9 0 7-7 12" fill="#218a3e"/>
-          <path d="M13 51Q36 59 61 50L57 62Q36 69 18 62Z" fill="#e9b57a" stroke="#8c562a" stroke-width="1.7"/>
-          <path d="M17 54q20 10 42 0M18 59q19 9 40 0M27 55l1 9m10-8v10m10-10-1 9" stroke="#ad713b" stroke-width="1.4" fill="none"/>
-        </svg></span>
-        <span class="brand-wordmark"><span class="brand-title">Verdulería <span>Terán</span></span><span class="brand-caption">Verduras frescas y de calidad</span></span>
+        <img class="brand-logo-final" src="logo-teran-opcion5.png" alt="Verdulería Terán — verduras frescas y de calidad">
       </div>
 
       <button class="top-cart" id="topCart">
