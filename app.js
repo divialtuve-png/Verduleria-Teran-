@@ -187,8 +187,8 @@ img{display:block;max-width:100%}
   overflow:hidden;
   position:relative;
   background:
-    linear-gradient(90deg,rgba(3,77,34,.9),rgba(4,103,49,.32)),
-    url("https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=90")
+    linear-gradient(90deg,rgba(3,77,34,.65),rgba(4,103,49,.08)),
+    url("banner-teran.PNG")
     center/cover;
 }
 
@@ -363,33 +363,6 @@ img{display:block;max-width:100%}
 .card:nth-child(4n) .add{background:var(--orange)}
 .card:nth-child(5n) .add{background:#207ce0}
 .card:nth-child(6n) .add{background:#ef2042}
-
-.fruit-banner{
-  margin:15px 10px 0;
-  min-height:125px;
-  border-radius:18px;
-  overflow:hidden;
-  background:
-    linear-gradient(90deg,rgba(118,37,10,.88),rgba(118,37,10,.25)),
-    url("https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1200&q=90")
-    center/cover;
-  display:flex;
-  align-items:center;
-}
-
-.fruit-banner div{padding:20px;color:#fff}
-
-.fruit-banner h2{
-  margin:0;
-  font-size:21px;
-  font-weight:950;
-}
-
-.fruit-banner p{
-  margin:6px 0 0;
-  font-size:11px;
-  font-weight:700;
-}
 
 .bottom-nav{
   position:fixed;
@@ -1074,7 +1047,7 @@ function renderHome(){
       </div>
 
       <div class="categories" id="categories">
-        ${["Todos","Verduras","Frutas","Tubérculos","Hierbas"].map(c=>`
+        ${["Todos","Verduras","Tubérculos","Hierbas"].map(c=>`
           <button class="category ${currentCategory===c?"active":""}" data-category="${esc(c)}">
             ${esc(c)}
           </button>
@@ -1088,12 +1061,6 @@ function renderHome(){
 
       <section id="products" class="products"></section>
 
-      <section class="fruit-banner">
-        <div>
-          <h2>Frutas frescas y de temporada</h2>
-          <p>Calidad y frescura directo a tu hogar.</p>
-        </div>
-      </section>
 
     </main>
   `;
@@ -1124,7 +1091,7 @@ function renderProductGrid(){
   const term=(document.getElementById("search")?.value || "").trim().toLowerCase();
 
   const list=products.filter(p=>{
-    const categoryOk=currentCategory==="Todos" || p.category===currentCategory;
+    const categoryOk=["verduras","tuberculos","hierbas"].includes(normalize(p.category)) && (currentCategory==="Todos" || normalize(p.category)===normalize(currentCategory));
     const textOk=!term || p.name.toLowerCase().includes(term);
     return categoryOk && textOk;
   });
@@ -1141,7 +1108,7 @@ function renderProductGrid(){
           src="${esc(p.image)}"
           alt="${esc(p.name)}"
           loading="lazy"
-          onerror="this.src='${esc(fallbackImage(p.name,p.category))}'"
+          onerror="this.onerror=null;this.src='${esc(fallbackImage(p.name,p.category))}'"
         >
       </div>
 
@@ -1235,7 +1202,7 @@ function renderCart(){
                 <img
                   src="${esc(item.image)}"
                   alt="${esc(item.name)}"
-                  onerror="this.src='${esc(fallbackImage(item.name,item.category))}'"
+                  onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'"
                 >
 
                 <div>
@@ -1407,7 +1374,7 @@ function openCheckout(){
             <img
               src="${esc(item.image)}"
               alt="${esc(item.name)}"
-              onerror="this.src='${esc(fallbackImage(item.name,item.category))}'"
+              onerror="this.onerror=null;this.src='${esc(fallbackImage(item.name,item.category))}'"
             >
             <div>
               <div class="summary-name">${esc(item.name)}</div>
@@ -1716,7 +1683,6 @@ const starterCatalog = [
   {id:-2,name:"Cebolla roja",category:"Verduras",unit:"kg",price:3.80},
   {id:-3,name:"Zanahoria",category:"Verduras",unit:"kg",price:2.50},
   {id:-4,name:"Lechuga",category:"Verduras",unit:"unidad",price:2.00},
-  {id:-5,name:"Limón",category:"Frutas",unit:"kg",price:5.00},
   {id:-6,name:"Papa amarilla",category:"Tubérculos",unit:"kg",price:3.50},
   {id:-7,name:"Brócoli",category:"Verduras",unit:"kg",price:5.00},
   {id:-8,name:"Pepino criollo",category:"Verduras",unit:"kg",price:3.20},
@@ -1728,6 +1694,7 @@ function useCatalogRows(rows){
   products.length=0;
   (rows || []).forEach(row=>{
     const category=row.categoria || row.category || "Otros";
+    if(!["verduras","tuberculos","hierbas"].includes(normalize(category))) return;
     const name=row.nombre || row.name || "Producto";
     const unit=row.unidad || row.unit || "kg";
     products.push({
