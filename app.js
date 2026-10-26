@@ -93,18 +93,16 @@ img{display:block;max-width:100%}
   gap:9px;
   min-width:0;
 }
-.brand-emblem{
- width:42px;height:42px;flex:none;border-radius:14px;
- background:linear-gradient(145deg,#f1fbf2,#dff3e3);
- display:grid;place-items:center;
- box-shadow:inset 0 0 0 1px #c5e9d0;
-}
-.brand-emblem svg{width:35px;height:35px}
-.brand-wordmark{display:flex;flex-direction:column;min-width:0}
-.brand-wordmark .brand-title{font-size:19px;line-height:1;font-weight:950;letter-spacing:-.7px;color:#126b39;white-space:nowrap}
-.brand-wordmark .brand-title span{color:#f47a16}
-.brand-wordmark .brand-caption{font-size:10px;letter-spacing:.25px;color:#708375;margin-top:5px}
-@media(max-width:390px){.brand-emblem{width:36px;height:36px}.brand-wordmark .brand-title{font-size:17px}.topbar{padding-left:10px;padding-right:10px}.top-cart-total{padding:9px 8px}}
+/* Cabecera opción 5: ilustración vectorial original, sin recortes */
+.brand{gap:7px;flex:1;max-width:calc(100% - 116px)}
+.brand-emblem{width:62px;height:61px;flex:none;display:grid;place-items:center}
+.brand-emblem svg{width:100%;height:100%;filter:drop-shadow(0 2px 2px rgba(13,75,35,.14))}
+.brand-wordmark{display:flex;flex-direction:column;min-width:0;justify-content:center}
+.brand-wordmark .brand-title{display:flex;flex-direction:column;align-items:flex-start;font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:22px;line-height:.92;font-weight:900;letter-spacing:-1.1px;color:#07552d;text-shadow:0 .5px 0 #0d773f;white-space:nowrap}
+.brand-wordmark .brand-title span{font-size:26px;color:#f47a16;align-self:center;text-shadow:0 .5px 0 #c95910}
+.brand-wordmark .brand-caption{font-size:8px;font-weight:750;line-height:1.2;color:#23683d;margin-top:5px;white-space:nowrap}
+.top-cart{flex:none;gap:4px}
+@media(max-width:390px){.topbar{padding-left:7px;padding-right:7px}.brand{gap:4px;max-width:calc(100% - 111px)}.brand-emblem{width:48px;height:53px}.brand-wordmark .brand-title{font-size:18px}.brand-wordmark .brand-title span{font-size:22px}.brand-wordmark .brand-caption{font-size:7px}.top-cart-icon{width:32px;height:36px;font-size:19px}.top-cart-total{padding:9px 7px;font-size:11px}}
 
 
 .brand-mark{
@@ -1001,16 +999,17 @@ function header(){
   return `
     <header class="topbar">
       <div class="brand">
-        <span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img">
-          <path d="M10 23h28l-3 17H13z" fill="#f5c995" stroke="#267b48" stroke-width="2.2" stroke-linejoin="round"/>
-          <path d="M13 29h22M18 24l2 15M30 24l-2 15" fill="none" stroke="#267b48" stroke-width="1.6" opacity=".75"/>
-          <path d="M15 22l8-12 10 12" fill="none" stroke="#267b48" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M17 22c-5-3-5-8-1-10 1-6 9-6 11-1 5 0 7 6 3 10" fill="#56a95c" stroke="#267b48" stroke-width="1.3"/>
-          <path d="M16 20c-3-5 0-9 3-9 0-5 7-5 8 0 4 1 5 5 2 9" fill="#8bd16d"/>
-          <path d="M32 24l4-13" stroke="#e97b22" stroke-width="4" stroke-linecap="round"/>
-          <path d="M36 11c-3-2-3-5-2-6 3 1 4 3 3 6M36 11c1-4 4-5 6-4-1 3-3 5-6 4" fill="#24894c"/>
+        <span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 60Q36 66 64 59" stroke="#14843c" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path d="M15 48Q3 33 16 25Q9 12 23 11Q27 0 37 11Q48 2 53 16Q67 16 61 31Q69 42 55 49Z" fill="#218c3b"/>
+          <path d="M18 44Q8 31 23 28Q15 16 29 17Q34 5 43 19Q57 13 55 31Q65 39 50 45Z" fill="#65b935"/>
+          <path d="M17 46Q12 35 22 32M27 47Q23 30 35 23M42 47Q48 31 51 26" stroke="#b7e56b" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="24" cy="43" r="10" fill="#e9472d"/><path d="M24 32l-3-5 5 3 4-4-1 7" fill="#187b38"/>
+          <path d="M40 33L54 55Q58 61 61 54L48 29Z" fill="#f18722"/><path d="M43 32q-7-6-5-10 6 1 7 8m1 0q2-9 9-9 0 7-7 12" fill="#218a3e"/>
+          <path d="M13 51Q36 59 61 50L57 62Q36 69 18 62Z" fill="#e9b57a" stroke="#8c562a" stroke-width="1.7"/>
+          <path d="M17 54q20 10 42 0M18 59q19 9 40 0M27 55l1 9m10-8v10m10-10-1 9" stroke="#ad713b" stroke-width="1.4" fill="none"/>
         </svg></span>
-        <span class="brand-wordmark"><span class="brand-title">Verdulería <span>Terán</span></span><span class="brand-caption">Frescura en cada pedido</span></span>
+        <span class="brand-wordmark"><span class="brand-title">Verdulería <span>Terán</span></span><span class="brand-caption">Verduras frescas y de calidad</span></span>
       </div>
 
       <button class="top-cart" id="topCart">
