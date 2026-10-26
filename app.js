@@ -184,13 +184,15 @@ img{display:block;max-width:100%}
   margin:10px 10px 0;
   border-radius:19px;
   overflow:hidden;
-  background:#fff;
+  background:#e5f5df;
 }
 
 .hero-image{
   display:block;
   width:100%;
   height:auto;
+  aspect-ratio:792 / 694;
+  object-fit:contain;
 }
 
 .hero-content{
@@ -346,6 +348,7 @@ img{display:block;max-width:100%}
   font-size:13px;
   font-weight:950;
   white-space:nowrap;
+  color:var(--green);
 }
 
 .add{
@@ -360,10 +363,6 @@ img{display:block;max-width:100%}
   background:var(--green);
 }
 
-.card:nth-child(3n) .add{background:var(--purple)}
-.card:nth-child(4n) .add{background:var(--orange)}
-.card:nth-child(5n) .add{background:#207ce0}
-.card:nth-child(6n) .add{background:#ef2042}
 
 .bottom-nav{
   position:fixed;
@@ -1032,7 +1031,7 @@ function renderHome(){
     <main class="page">
 
       <section class="hero">
-        <img class="hero-image" src="banner-teran.PNG" alt="Verdulería Terán: verduras frescas y pedidos por WhatsApp">
+        <img class="hero-image" src="banner-teran-horizontal.png" alt="Verdulería Terán: verduras frescas y pedidos por WhatsApp">
       </section>
 
       <div class="search-wrap">
