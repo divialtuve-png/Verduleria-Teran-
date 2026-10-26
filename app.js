@@ -95,11 +95,11 @@ img{display:block;max-width:100%}
 }
 .brand-emblem{
  width:42px;height:42px;flex:none;border-radius:14px;
- background:linear-gradient(145deg,#eaf9ef,#d1f0dd);
+ background:linear-gradient(145deg,#f1fbf2,#dff3e3);
  display:grid;place-items:center;
  box-shadow:inset 0 0 0 1px #c5e9d0;
 }
-.brand-emblem svg{width:28px;height:28px}
+.brand-emblem svg{width:35px;height:35px}
 .brand-wordmark{display:flex;flex-direction:column;min-width:0}
 .brand-wordmark .brand-title{font-size:19px;line-height:1;font-weight:950;letter-spacing:-.7px;color:#126b39;white-space:nowrap}
 .brand-wordmark .brand-title span{color:#f47a16}
@@ -1001,7 +1001,15 @@ function header(){
   return `
     <header class="topbar">
       <div class="brand">
-        <span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M19 34C19 20 23 13 32 7" fill="none" stroke="#168448" stroke-width="2.8" stroke-linecap="round"/><path d="M21 19C11 19 7 13 8 6c8 0 14 4 13 13ZM24 23c1-10 7-15 15-15 0 9-5 15-15 15ZM19 29C9 30 4 25 3 18c9-1 15 3 16 11Z" fill="#2caa5d"/></svg></span>
+        <span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img">
+          <path d="M10 23h28l-3 17H13z" fill="#f5c995" stroke="#267b48" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M13 29h22M18 24l2 15M30 24l-2 15" fill="none" stroke="#267b48" stroke-width="1.6" opacity=".75"/>
+          <path d="M15 22l8-12 10 12" fill="none" stroke="#267b48" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M17 22c-5-3-5-8-1-10 1-6 9-6 11-1 5 0 7 6 3 10" fill="#56a95c" stroke="#267b48" stroke-width="1.3"/>
+          <path d="M16 20c-3-5 0-9 3-9 0-5 7-5 8 0 4 1 5 5 2 9" fill="#8bd16d"/>
+          <path d="M32 24l4-13" stroke="#e97b22" stroke-width="4" stroke-linecap="round"/>
+          <path d="M36 11c-3-2-3-5-2-6 3 1 4 3 3 6M36 11c1-4 4-5 6-4-1 3-3 5-6 4" fill="#24894c"/>
+        </svg></span>
         <span class="brand-wordmark"><span class="brand-title">Verdulería <span>Terán</span></span><span class="brand-caption">Frescura en cada pedido</span></span>
       </div>
 
