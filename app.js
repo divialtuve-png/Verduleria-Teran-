@@ -182,14 +182,15 @@ img{display:block;max-width:100%}
 
 .hero{
   margin:10px 10px 0;
-  min-height:205px;
   border-radius:19px;
   overflow:hidden;
-  position:relative;
-  background:
-    linear-gradient(90deg,rgba(3,77,34,.65),rgba(4,103,49,.08)),
-    url("banner-teran.PNG")
-    center/cover;
+  background:#fff;
+}
+
+.hero-image{
+  display:block;
+  width:100%;
+  height:auto;
 }
 
 .hero-content{
@@ -852,7 +853,6 @@ img{display:block;max-width:100%}
 
 @media(max-width:700px){
   .products{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .hero{min-height:215px}
 }
 
 @media(min-width:900px){
@@ -1032,14 +1032,7 @@ function renderHome(){
     <main class="page">
 
       <section class="hero">
-        <div class="hero-content">
-          <h1>Productos <span>frescos</span><br>directo a tu hogar</h1>
-          <p>Verdulería Terán</p>
-          <div class="delivery">
-            🚚 San Borja · San Luis<br>
-            San Isidro · La Victoria
-          </div>
-        </div>
+        <img class="hero-image" src="banner-teran.PNG" alt="Verdulería Terán: verduras frescas y pedidos por WhatsApp">
       </section>
 
       <div class="search-wrap">
