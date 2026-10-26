@@ -93,6 +93,19 @@ img{display:block;max-width:100%}
   gap:9px;
   min-width:0;
 }
+.brand-emblem{
+ width:42px;height:42px;flex:none;border-radius:14px;
+ background:linear-gradient(145deg,#eaf9ef,#d1f0dd);
+ display:grid;place-items:center;
+ box-shadow:inset 0 0 0 1px #c5e9d0;
+}
+.brand-emblem svg{width:28px;height:28px}
+.brand-wordmark{display:flex;flex-direction:column;min-width:0}
+.brand-wordmark .brand-title{font-size:19px;line-height:1;font-weight:950;letter-spacing:-.7px;color:#126b39;white-space:nowrap}
+.brand-wordmark .brand-title span{color:#f47a16}
+.brand-wordmark .brand-caption{font-size:10px;letter-spacing:.25px;color:#708375;margin-top:5px}
+@media(max-width:390px){.brand-emblem{width:36px;height:36px}.brand-wordmark .brand-title{font-size:17px}.topbar{padding-left:10px;padding-right:10px}.top-cart-total{padding:9px 8px}}
+
 
 .brand-mark{
   width:47px;
@@ -988,11 +1001,8 @@ function header(){
   return `
     <header class="topbar">
       <div class="brand">
-        <div class="brand-mark">🌿</div>
-        <div>
-          <div class="brand-name">Verdulería <span>Terán</span></div>
-          <div class="brand-sub">Productos frescos</div>
-        </div>
+        <span class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M19 34C19 20 23 13 32 7" fill="none" stroke="#168448" stroke-width="2.8" stroke-linecap="round"/><path d="M21 19C11 19 7 13 8 6c8 0 14 4 13 13ZM24 23c1-10 7-15 15-15 0 9-5 15-15 15ZM19 29C9 30 4 25 3 18c9-1 15 3 16 11Z" fill="#2caa5d"/></svg></span>
+        <span class="brand-wordmark"><span class="brand-title">Verdulería <span>Terán</span></span><span class="brand-caption">Frescura en cada pedido</span></span>
       </div>
 
       <button class="top-cart" id="topCart">
