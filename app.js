@@ -1299,6 +1299,18 @@ function renderCart(){
    CHECKOUT
 ================================================= */
 
+const DELIVERY_RATES={"San Borja":12,"San Luis":10,"San Isidro":18,"La Victoria":15};
+function selectedDeliveryCost(){
+  const district=document.getElementById("deliveryDistrict")?.value;
+  return Object.prototype.hasOwnProperty.call(DELIVERY_RATES,district)?DELIVERY_RATES[district]:null;
+}
+function updateCheckoutDelivery(){
+  const cost=selectedDeliveryCost();
+  const shipping=document.getElementById("shippingAmount");
+  const total=document.getElementById("checkoutTotal");
+  if(shipping) shipping.textContent=cost===null?"Selecciona un distrito":`S/ ${cost.toFixed(2)}`;
+  if(total) total.textContent=cost===null?`S/ ${cartTotal().toFixed(2)} + envío`:`S/ ${(cartTotal()+cost).toFixed(2)}`;
+}
 function openCheckout(){
   if(!cart.length){
     navigate("cart");
@@ -1335,6 +1347,17 @@ function openCheckout(){
           <div class="field">
             <label>Teléfono / WhatsApp</label>
             <input id="phone" type="tel" placeholder="Tu número">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-icon">⌖</div>
+          <div class="field">
+            <label>Distrito de entrega</label>
+            <select id="deliveryDistrict" required style="width:100%;min-height:46px;border:1px solid #d9dfdb;border-radius:10px;padding:10px;background:white;font:inherit;color:#26344c">
+              <option value="">Selecciona tu distrito</option>
+              ${Object.entries(DELIVERY_RATES).map(([district,cost])=>`<option value="${district}">${district} — S/ ${cost.toFixed(2)}</option>`).join("")}
+            </select>
           </div>
         </div>
 
@@ -1421,12 +1444,12 @@ function openCheckout(){
 
           <div class="total-line">
             <span>Costo de envío</span>
-            <strong>S/ 0.00</strong>
+            <strong id="shippingAmount">Selecciona un distrito</strong>
           </div>
 
           <div class="total-final">
             <span>TOTAL</span>
-            <strong>S/ ${cartTotal().toFixed(2)}</strong>
+            <strong id="checkoutTotal">S/ ${cartTotal().toFixed(2)} + envío</strong>
           </div>
         </div>
 
@@ -1449,6 +1472,8 @@ function openCheckout(){
     });
   });
 
+  document.getElementById("deliveryDistrict").addEventListener("change",updateCheckoutDelivery);
+  updateCheckoutDelivery();
   document.getElementById("confirm").addEventListener("click",saveOrder);
 
   updateBadges();
@@ -1482,10 +1507,17 @@ async function saveOrder(){
   const name=document.getElementById("name").value.trim();
   const phone=document.getElementById("phone").value.trim();
   const address=document.getElementById("address").value.trim();
+  const district=document.getElementById("deliveryDistrict").value;
+  const shippingCost=selectedDeliveryCost();
   const reference=document.getElementById("reference").value.trim();
 
   if(!name || !phone || !address){
     alert("Completa nombre, teléfono y dirección.");
+    return;
+  }
+
+  if(shippingCost===null){
+    alert("Selecciona el distrito para calcular el delivery.");
     return;
   }
 
@@ -1512,7 +1544,8 @@ async function saveOrder(){
     subtotal:Number((item.price*item.quantity).toFixed(2))
   }));
 
-  const total=Number(cartTotal().toFixed(2));
+  const subtotal=Number(cartTotal().toFixed(2));
+  const total=Number((subtotal+shippingCost).toFixed(2));
 
   try{
 
@@ -1525,7 +1558,7 @@ async function saveOrder(){
       .insert({
         nombre_cliente:name,
         telefono:phone,
-        direccion:address,
+        direccion:`${address} - ${district}`,
         referencia:reference || null,
         forma_pago:selectedPayment,
         productos:orderProducts,
@@ -1539,8 +1572,11 @@ async function saveOrder(){
       name,
       phone,
       address,
+      district,
       reference,
       payment:selectedPayment,
+      subtotal,
+      shippingCost,
       total,
       products:orderProducts
     });
@@ -1550,6 +1586,9 @@ async function saveOrder(){
       createdAt:new Date().toISOString(),
       products:orderProducts,
       total,
+      subtotal,
+      shippingCost,
+      district,
       payment:selectedPayment,
       statusAtCreation:"Pendiente",
       whatsappUrl:text
@@ -1575,6 +1614,7 @@ function buildWhatsAppMessage(order){
   text+=`*Cliente:* ${order.name}\n`;
   text+=`*Teléfono:* ${order.phone}\n`;
   text+=`*Dirección:* ${order.address}\n`;
+  text+=`*Distrito:* ${order.district}\n`;
 
   if(order.reference){
     text+=`*Referencia:* ${order.reference}\n`;
@@ -1587,7 +1627,9 @@ function buildWhatsAppMessage(order){
     text+=`• ${item.nombre} x ${item.cantidad} ${item.unidad} = S/ ${item.subtotal.toFixed(2)}\n`;
   });
 
-  text+=`\n*TOTAL: S/ ${order.total.toFixed(2)}*`;
+  text+=`\n*Subtotal:* S/ ${order.subtotal.toFixed(2)}\n`;
+  text+=`*Delivery (${order.district}):* S/ ${order.shippingCost.toFixed(2)}\n`;
+  text+=`*TOTAL: S/ ${order.total.toFixed(2)}*`;
 
   return `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(text)}`;
 }
