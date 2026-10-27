@@ -868,6 +868,29 @@ img{display:block;max-width:100%}
   color:#777;
 }
 
+
+/* Mi cuenta: estilos aislados; no modifica el banner ni el catálogo */
+.account-page{padding:14px 12px 110px;max-width:720px}
+.account-welcome{display:flex;gap:12px;align-items:center;background:linear-gradient(115deg,#e8f7ec,#fff);border:1px solid #d9eadc;border-radius:20px;padding:19px 16px;margin-bottom:13px}
+.account-welcome-icon{width:50px;height:50px;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:26px;flex:none}
+.account-welcome h1{font-size:23px;margin:0 0 5px;color:#176b37}
+.account-welcome p{font-size:12px;line-height:1.5;margin:0;color:#475569}
+.account-panel{background:#fff;border:1px solid #e4e9e5;border-radius:17px;padding:17px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.025)}
+.account-panel h2{font-size:17px;margin:0 0 10px;color:#263653}
+.account-panel h3{font-size:13px;margin:14px 0 8px;color:#176b37}
+.account-panel p{font-size:12px;line-height:1.55;color:#647084;margin:0 0 12px}
+.account-actions{display:grid;gap:8px}
+.account-action-main,.account-action-alt,.account-whatsapp{display:block;width:100%;text-align:center;border-radius:11px;padding:12px;font-size:13px;font-weight:800;text-decoration:none;cursor:pointer}
+.account-action-main{background:#218e49;color:#fff;border:1px solid #218e49}
+.account-action-alt{background:#f3faf5;color:#176b37;border:1px solid #cfe7d5}
+.account-zones{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.account-zones span{padding:7px 10px;border-radius:20px;background:#edf8ef;color:#176b37;font-size:11px;font-weight:800}
+.account-panel .account-small{font-size:11px;margin:0}
+.account-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-bottom:1px solid #eef1ef;padding:9px 0;font-size:11px}
+.account-line strong{text-align:right;font-size:11px;color:#176b37}
+.account-whatsapp{background:#20a85a;color:white}
+.account-footnote{text-align:center;font-size:10px;color:#829087;padding:4px 10px}
+
 @media(max-width:700px){
   .products{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -1631,18 +1654,61 @@ function renderAccount(){
 
   document.getElementById("app").innerHTML=`
     ${header()}
-    <main class="page">
-      <section class="info-card">
-        <h2>Mi cuenta</h2>
-        <p>Compra productos frescos de Verdulería Terán y recibe tu pedido en las zonas de reparto disponibles.</p>
-        <p><strong>Reparto:</strong> San Borja, San Luis, San Isidro y La Victoria.</p>
-        <button class="primary" id="accountBack">Volver al inicio</button>
+    <main class="page account-page">
+      <section class="account-welcome">
+        <div class="account-welcome-icon">🌿</div>
+        <div>
+          <h1>Mi cuenta</h1>
+          <p>¡Bienvenido a Verdulería Terán! Compra tus verduras favoritas de forma fácil y segura.</p>
+        </div>
       </section>
+
+      <section class="account-panel">
+        <h2>🛍️ Tus compras</h2>
+        <p>Elige tus verduras, agrégalas al carrito y confirma tu pedido.</p>
+        <div class="account-actions">
+          <button id="accountShop" class="account-action-main">Ver catálogo de verduras →</button>
+          <button id="accountCart" class="account-action-alt">🛒 Ver mi carrito (${cartQuantity()})</button>
+          <button id="accountOrders" class="account-action-alt">📦 Información de mis pedidos</button>
+        </div>
+      </section>
+
+      <section class="account-panel">
+        <h2>🚚 Zonas de reparto</h2>
+        <p>Realizamos entregas en:</p>
+        <div class="account-zones"><span>San Borja</span><span>San Luis</span><span>San Isidro</span><span>La Victoria</span></div>
+        <p class="account-small">Confirma la disponibilidad de entrega para tu dirección antes de finalizar tu compra.</p>
+      </section>
+
+      <section class="account-panel">
+        <h2>🕒 Horarios de atención</h2>
+        <div class="account-line"><span>Lunes a sábado</span><strong>7:00 a. m. – 6:00 p. m.</strong></div>
+        <div class="account-line"><span>Domingos y feriados</span><strong>7:00 a. m. – 3:00 p. m.</strong></div>
+        <h3>Horario de entregas</h3>
+        <div class="account-line"><span>Lunes a sábado</span><strong>7:00 a. m. – 2:30 p. m.</strong></div>
+        <div class="account-line"><span>Domingos y feriados</span><strong>7:00 a. m. – 1:30 p. m.</strong></div>
+      </section>
+
+      <section class="account-panel">
+        <h2>💳 Medios de pago</h2>
+        <p>Yape · Plin · Transferencia bancaria · Efectivo</p>
+      </section>
+
+      <section class="account-panel">
+        <h2>💬 ¿Necesitas ayuda?</h2>
+        <p>Escríbenos por WhatsApp para consultar sobre productos, entregas o pedidos.</p>
+        <a class="account-whatsapp" href="https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent('Hola, Verdulería Terán. Quisiera hacer una consulta.')}" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp ↗</a>
+      </section>
+      <p class="account-footnote">Esta sección es informativa. No requiere crear usuario ni contraseña.</p>
     </main>
   `;
 
   document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
-  document.getElementById("accountBack").addEventListener("click",()=>navigate("home"));
+  document.getElementById("accountShop")?.addEventListener("click",()=>navigate("home"));
+  document.getElementById("accountCart")?.addEventListener("click",()=>navigate("cart"));
+  document.getElementById("accountOrders")?.addEventListener("click",()=>navigate("orders"));
+  updateBadges();
+  window.scrollTo(0,0);
 }
 
 function navigate(view){
