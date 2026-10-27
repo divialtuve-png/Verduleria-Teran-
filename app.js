@@ -1722,7 +1722,17 @@ function renderOrders(){
           ${(Array.isArray(order.products)?order.products:[]).map(item=>`
             <div class="account-line"><span>${esc(item.nombre)} × ${Number(item.cantidad)||0}</span><strong>S/ ${(Number(item.subtotal)||0).toFixed(2)}</strong></div>
           `).join("")}
-          <div class="account-line"><span><b>Total</b></span><strong>S/ ${(Number(order.total)||0).toFixed(2)}</strong></div>
+          ${(() => {
+            const savedSubtotal=Number(order.subtotal);
+            const savedShipping=Number(order.shippingCost);
+            const hasSubtotal=order.subtotal!==undefined && order.subtotal!==null && Number.isFinite(savedSubtotal);
+            const hasShipping=order.shippingCost!==undefined && order.shippingCost!==null && Number.isFinite(savedShipping);
+            return `
+              ${hasSubtotal ? `<div class="account-line"><span>Subtotal de productos</span><strong>S/ ${savedSubtotal.toFixed(2)}</strong></div>` : ""}
+              ${hasShipping ? `<div class="account-line"><span>Delivery${order.district ? ` — ${esc(order.district)}` : ""}</span><strong>S/ ${savedShipping.toFixed(2)}</strong></div>` : ""}
+            `;
+          })()}
+          <div class="account-line" style="font-weight:900;border-top:1px solid #dce6df;margin-top:5px;padding-top:13px"><span><b>TOTAL DEL PEDIDO</b></span><strong>S/ ${(Number(order.total)||0).toFixed(2)}</strong></div>
           <a class="account-whatsapp" href="${esc(order.whatsappUrl)}" target="_blank" rel="noopener noreferrer">Consultar este pedido por WhatsApp ↗</a>
         </section>
       `).join("") : `
