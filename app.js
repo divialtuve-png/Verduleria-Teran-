@@ -1455,6 +1455,24 @@ function openCheckout(){
   window.scrollTo(0,0);
 }
 
+/* Historial privado de este navegador. No consulta pedidos de otros clientes. */
+const LOCAL_ORDERS_KEY="teran_my_orders_v1";
+function readLocalOrders(){
+  try{const value=JSON.parse(localStorage.getItem(LOCAL_ORDERS_KEY)||"[]");return Array.isArray(value)?value:[];}
+  catch(_){return [];}
+}
+function rememberLocalOrder(order){
+  try{
+    const previous=readLocalOrders();
+    previous.unshift(order);
+    localStorage.setItem(LOCAL_ORDERS_KEY,JSON.stringify(previous.slice(0,30)));
+  }catch(error){console.warn("No se pudo guardar historial local",error);}
+}
+function localOrderDate(value){
+  try{return new Date(value).toLocaleString("es-PE",{dateStyle:"medium",timeStyle:"short"});}
+  catch(_){return "Fecha no disponible";}
+}
+
 /* =================================================
    SAVE ORDER
 ================================================= */
@@ -1527,6 +1545,15 @@ async function saveOrder(){
       products:orderProducts
     });
 
+    rememberLocalOrder({
+      localRef:"VT-"+Date.now().toString(36).toUpperCase(),
+      createdAt:new Date().toISOString(),
+      products:orderProducts,
+      total,
+      payment:selectedPayment,
+      statusAtCreation:"Pendiente",
+      whatsappUrl:text
+    });
     showSuccess(text);
 
   }catch(error){
@@ -1632,21 +1659,44 @@ function showSuccess(whatsappUrl){
 
 function renderOrders(){
   currentView="orders";
-
+  const history=readLocalOrders();
   document.getElementById("app").innerHTML=`
     ${header()}
-    <main class="page">
-      <section class="info-card">
-        <h2>Mis pedidos</h2>
-        <p>Los pedidos registrados se procesan como <strong>Pendiente</strong> hasta su confirmación.</p>
-        <p>Para consultar un pedido, puedes comunicarte con Verdulería Terán por WhatsApp.</p>
-        <button class="primary" id="orderBack">Volver al inicio</button>
+    <main class="page account-page">
+      <section class="account-welcome">
+        <div class="account-welcome-icon">📦</div>
+        <div><h1>Mis pedidos</h1><p>Consulta los pedidos realizados desde este dispositivo.</p></div>
       </section>
+      <section class="account-panel">
+        <p class="account-small">Este historial se guarda únicamente en este navegador. El estado mostrado es el registrado al hacer el pedido; para conocer su estado actual, consulta por WhatsApp. Los pedidos anteriores a esta actualización no aparecerán aquí.</p>
+      </section>
+      ${history.length ? history.map(order=>`
+        <section class="account-panel">
+          <h2>🧾 Pedido ${esc(order.localRef)}</h2>
+          <div class="account-line"><span>Fecha</span><strong>${esc(localOrderDate(order.createdAt))}</strong></div>
+          <div class="account-line"><span>Estado inicial</span><strong>${esc(order.statusAtCreation)}</strong></div>
+          <div class="account-line"><span>Forma de pago</span><strong>${esc(order.payment)}</strong></div>
+          <h3>Productos</h3>
+          ${(Array.isArray(order.products)?order.products:[]).map(item=>`
+            <div class="account-line"><span>${esc(item.nombre)} × ${Number(item.cantidad)||0}</span><strong>S/ ${(Number(item.subtotal)||0).toFixed(2)}</strong></div>
+          `).join("")}
+          <div class="account-line"><span><b>Total</b></span><strong>S/ ${(Number(order.total)||0).toFixed(2)}</strong></div>
+          <a class="account-whatsapp" href="${esc(order.whatsappUrl)}" target="_blank" rel="noopener noreferrer">Consultar este pedido por WhatsApp ↗</a>
+        </section>
+      `).join("") : `
+        <section class="account-panel" style="text-align:center">
+          <div style="font-size:42px">🛒</div>
+          <h2>Aún no hay pedidos guardados aquí</h2>
+          <p>Cuando registres tu próximo pedido, podrás consultar su resumen desde este dispositivo.</p>
+        </section>
+      `}
+      <button class="account-action-main" id="orderBack">Volver al inicio</button>
     </main>
   `;
-
   document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
-  document.getElementById("orderBack").addEventListener("click",()=>navigate("home"));
+  document.getElementById("orderBack")?.addEventListener("click",()=>navigate("home"));
+  updateBadges();
+  window.scrollTo(0,0);
 }
 
 function renderAccount(){
