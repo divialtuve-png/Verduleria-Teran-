@@ -31,6 +31,8 @@ let cart = [];
 let currentCategory = "Todos";
 let selectedPayment = "";
 let currentView = "home";
+let currentUser = null;
+let authMode = "login";
 
 /* =================================================
    ESTILOS
@@ -908,6 +910,12 @@ img{display:block;max-width:100%}
 }
 `;
 
+style.textContent += `
+.auth-form{display:grid;gap:10px}.auth-form label{font-size:12px;font-weight:800;color:#263653}
+.auth-form input{width:100%;border:1px solid #d5dfd7;border-radius:11px;padding:13px;font-size:14px;background:white}
+.auth-note{font-size:12px;color:#647084;line-height:1.5}.auth-error{color:#ad2831;font-size:12px;white-space:pre-wrap}
+.auth-success{color:#176b37;font-size:12px;white-space:pre-wrap}.auth-link{border:0;background:transparent;color:#176b37;text-decoration:underline;font-weight:800;padding:9px}
+`;
 document.head.appendChild(style);
 
 /* =================================================
@@ -1553,9 +1561,13 @@ async function saveOrder(){
       throw new Error("SUPABASE_NOT_CONFIGURED");
     }
 
+    const {data:authData,error:authError}=await client.auth.getUser();
+    if(authError) console.warn("No se pudo verificar sesión",authError);
+    const userId=authData?.user?.id || null;
     const {error}=await client
       .from("pedidos")
       .insert({
+        ...(userId ? {user_id:userId} : {}),
         nombre_cliente:name,
         telefono:phone,
         direccion:`${address} - ${district}`,
@@ -1699,56 +1711,100 @@ function showSuccess(whatsappUrl){
    OTHER SCREENS
 ================================================= */
 
-function renderOrders(){
+async function renderOrders(){
   currentView="orders";
   const history=readLocalOrders();
   document.getElementById("app").innerHTML=`
     ${header()}
     <main class="page account-page">
-      <section class="account-welcome">
-        <div class="account-welcome-icon">📦</div>
-        <div><h1>Mis pedidos</h1><p>Consulta los pedidos realizados desde este dispositivo.</p></div>
+      <section class="account-welcome"><div class="account-welcome-icon">📦</div>
+        <div><h1>Mis pedidos</h1><p>${currentUser ? "Consulta tus pedidos desde cualquier dispositivo al iniciar sesión." : "Inicia sesión para consultar tus pedidos desde cualquier celular."}</p></div>
       </section>
-      <section class="account-panel">
-        <p class="account-small">Este historial se guarda únicamente en este navegador. El estado mostrado es el registrado al hacer el pedido; para conocer su estado actual, consulta por WhatsApp. Los pedidos anteriores a esta actualización no aparecerán aquí.</p>
-      </section>
+      ${currentUser ? `<section class="account-panel" id="remoteOrders"><p>Buscando tus pedidos guardados en Supabase...</p></section>` : `<section class="account-panel"><p>Para consultar pedidos desde otro celular, entra a Mi cuenta y accede con tu correo y contraseña.</p><button class="account-action-main" id="ordersLogin">Iniciar sesión o crear cuenta</button></section>`}
+      <section class="account-panel"><h2>Pedidos guardados en este dispositivo</h2><p>Este historial local conserva pedidos anteriores. Los pedidos realizados antes de iniciar sesión no se vinculan automáticamente a tu cuenta.</p></section>
       ${history.length ? history.map(order=>`
-        <section class="account-panel">
-          <h2>🧾 Pedido ${esc(order.localRef)}</h2>
+        <section class="account-panel"><h2>🧾 Pedido ${esc(order.localRef)}</h2>
           <div class="account-line"><span>Fecha</span><strong>${esc(localOrderDate(order.createdAt))}</strong></div>
           <div class="account-line"><span>Estado inicial</span><strong>${esc(order.statusAtCreation)}</strong></div>
           <div class="account-line"><span>Forma de pago</span><strong>${esc(order.payment)}</strong></div>
           <h3>Productos</h3>
-          ${(Array.isArray(order.products)?order.products:[]).map(item=>`
-            <div class="account-line"><span>${esc(item.nombre)} × ${Number(item.cantidad)||0}</span><strong>S/ ${(Number(item.subtotal)||0).toFixed(2)}</strong></div>
-          `).join("")}
-          ${(() => {
-            const savedSubtotal=Number(order.subtotal);
-            const savedShipping=Number(order.shippingCost);
-            const hasSubtotal=order.subtotal!==undefined && order.subtotal!==null && Number.isFinite(savedSubtotal);
-            const hasShipping=order.shippingCost!==undefined && order.shippingCost!==null && Number.isFinite(savedShipping);
-            return `
-              ${hasSubtotal ? `<div class="account-line"><span>Subtotal de productos</span><strong>S/ ${savedSubtotal.toFixed(2)}</strong></div>` : ""}
-              ${hasShipping ? `<div class="account-line"><span>Delivery${order.district ? ` — ${esc(order.district)}` : ""}</span><strong>S/ ${savedShipping.toFixed(2)}</strong></div>` : ""}
-            `;
-          })()}
-          <div class="account-line" style="font-weight:900;border-top:1px solid #dce6df;margin-top:5px;padding-top:13px"><span><b>TOTAL DEL PEDIDO</b></span><strong>S/ ${(Number(order.total)||0).toFixed(2)}</strong></div>
-          <a class="account-whatsapp" href="${esc(order.whatsappUrl)}" target="_blank" rel="noopener noreferrer">Consultar este pedido por WhatsApp ↗</a>
-        </section>
-      `).join("") : `
-        <section class="account-panel" style="text-align:center">
-          <div style="font-size:42px">🛒</div>
-          <h2>Aún no hay pedidos guardados aquí</h2>
-          <p>Cuando registres tu próximo pedido, podrás consultar su resumen desde este dispositivo.</p>
-        </section>
-      `}
+          ${(Array.isArray(order.products)?order.products:[]).map(item=>`<div class="account-line"><span>${esc(item.nombre)} × ${Number(item.cantidad)||0}</span><strong>S/ ${(Number(item.subtotal)||0).toFixed(2)}</strong></div>`).join("")}
+          ${order.subtotal != null ? `<div class="account-line"><span>Subtotal</span><strong>S/ ${(Number(order.subtotal)||0).toFixed(2)}</strong></div>` : ""}
+          ${order.shippingCost != null ? `<div class="account-line"><span>Delivery ${esc(order.district||"")}</span><strong>S/ ${(Number(order.shippingCost)||0).toFixed(2)}</strong></div>` : ""}
+          <div class="account-line"><span><b>TOTAL</b></span><strong>S/ ${(Number(order.total)||0).toFixed(2)}</strong></div>
+          ${order.whatsappUrl ? `<a class="account-whatsapp" href="${esc(order.whatsappUrl)}" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp ↗</a>` : ""}
+        </section>`).join("") : `<section class="account-panel"><p>No hay pedidos guardados en este navegador.</p></section>`}
       <button class="account-action-main" id="orderBack">Volver al inicio</button>
-    </main>
-  `;
+    </main>`;
   document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
   document.getElementById("orderBack")?.addEventListener("click",()=>navigate("home"));
-  updateBadges();
-  window.scrollTo(0,0);
+  document.getElementById("ordersLogin")?.addEventListener("click",()=>navigate("account"));
+  updateBadges();window.scrollTo(0,0);
+  if(currentUser && client){
+    const target=document.getElementById("remoteOrders");
+    try{
+      const {data,error}=await client.from("pedidos")
+        .select("id,fecha,estado,forma_pago,productos,total,direccion")
+        .eq("user_id",currentUser.id).order("fecha",{ascending:false}).limit(50);
+      if(error) throw error;
+      if(currentView!=="orders" || !target?.isConnected) return;
+      target.innerHTML=`<h2>Pedidos de mi cuenta</h2>`+(data?.length ? data.map(order=>{
+        const items=Array.isArray(order.productos)?order.productos:[];
+        return `<div style="border-top:1px solid #e4e9e5;padding:12px 0">
+          <h3>Pedido #${esc(order.id)}</h3>
+          <div class="account-line"><span>Fecha</span><strong>${esc(localOrderDate(order.fecha))}</strong></div>
+          <div class="account-line"><span>Estado actual</span><strong>${esc(order.estado||"Pendiente")}</strong></div>
+          <div class="account-line"><span>Pago</span><strong>${esc(order.forma_pago||"—")}</strong></div>
+          ${items.map(item=>`<div class="account-line"><span>${esc(item.nombre||"Producto")} × ${Number(item.cantidad)||0}</span><strong>S/ ${(Number(item.subtotal)||0).toFixed(2)}</strong></div>`).join("")}
+          <div class="account-line"><span><b>Total con delivery</b></span><strong>S/ ${(Number(order.total)||0).toFixed(2)}</strong></div>
+        </div>`;
+      }).join("") : `<p>Todavía no hay pedidos vinculados a esta cuenta.</p>`);
+    }catch(error){
+      console.error("No se pudo consultar pedidos",error);
+      if(target?.isConnected) target.innerHTML=`<h2>Pedidos de mi cuenta</h2><p>No pudimos cargar tus pedidos. Verifica que las políticas de Supabase permitan a cada usuario consultar únicamente sus pedidos.</p>`;
+    }
+  }
+}
+
+function renderAuthPanel(){
+  if(!client) return `<section class="account-panel"><h2>Acceso de clientes</h2><p>La conexión a Supabase no está configurada. Verifica config.js antes de publicar.</p></section>`;
+  if(currentUser) return `<section class="account-panel"><h2>🔐 Mi sesión</h2><p>Has iniciado sesión como <strong>${esc(currentUser.email||"Cliente")}</strong>.</p><div class="account-actions"><button class="account-action-main" id="authOrders">Ver mis pedidos en línea</button><button class="account-action-alt" id="authLogout">Cerrar sesión</button></div></section>`;
+  return `<section class="account-panel"><h2>🔐 ${authMode==="signup"?"Crear cuenta":authMode==="reset"?"Recuperar contraseña":authMode==="update"?"Establecer contraseña nueva":"Iniciar sesión"}</h2>
+    <p>Con una cuenta podrás consultar tus próximos pedidos desde cualquier celular.</p>
+    <form class="auth-form" id="authForm">
+      ${authMode!=="update"?`<label>Correo electrónico<input id="authEmail" type="email" autocomplete="email" required placeholder="correo@ejemplo.com"></label>`:""}
+      ${authMode!=="reset" ? `<label>${authMode==="update"?"Nueva contraseña":"Contraseña"}<input id="authPassword" type="password" autocomplete="${authMode==="signup"?"new-password":"current-password"}" required minlength="6" placeholder="Mínimo 6 caracteres"></label>` : ""}
+      <button class="account-action-main" type="submit">${authMode==="signup"?"Crear mi cuenta":authMode==="reset"?"Enviar enlace de recuperación":authMode==="update"?"Guardar nueva contraseña":"Entrar a mi cuenta"}</button>
+      <div id="authMessage" role="status" aria-live="polite"></div>
+    </form>
+    <button class="auth-link" id="authToggle">${authMode==="signup"?"Ya tengo cuenta: iniciar sesión":"¿No tienes cuenta? Crear cuenta"}</button>
+    ${authMode==="update"?"":authMode!=="reset"?`<button class="auth-link" id="authReset">Olvidé mi contraseña</button>`:`<button class="auth-link" id="authLogin">Volver a iniciar sesión</button>`}
+  </section>`;
+}
+
+async function submitAuth(event){
+  event.preventDefault();
+  if(!client) return;
+  const email=document.getElementById("authEmail")?.value.trim();
+  const password=document.getElementById("authPassword")?.value||"";
+  const message=document.getElementById("authMessage");
+  const submit=document.querySelector("#authForm button[type=submit]");
+  if((authMode!=="update"&&!email)|| (authMode!=="reset"&&password.length<6)) return;
+  if(submit) submit.disabled=true;
+  if(message){message.className="auth-note";message.textContent="Procesando...";}
+  try{
+    let result;
+    if(authMode==="update") result=await client.auth.updateUser({password});
+    else if(authMode==="signup") result=await client.auth.signUp({email,password});
+    else if(authMode==="reset") result=await client.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
+    else result=await client.auth.signInWithPassword({email,password});
+    if(result.error) throw result.error;
+    if(authMode==="update" && !result.error){authMode="login";currentUser=result.data?.user||currentUser;renderAccount();alert("Contraseña actualizada correctamente.");return;}
+    if(result.data?.user && result.data?.session){currentUser=result.data.user;renderAccount();return;}
+    if(message){message.className="auth-success";message.textContent=authMode==="signup"?"Revisa tu correo y confirma tu cuenta. Luego vuelve a iniciar sesión.":"Si el correo está registrado, recibirás un enlace con instrucciones.";}
+  }catch(error){
+    if(message){message.className="auth-error";message.textContent=error.message||"No se pudo completar la operación.";}
+  }finally{if(submit?.isConnected)submit.disabled=false;}
 }
 
 function renderAccount(){
@@ -1765,6 +1821,7 @@ function renderAccount(){
         </div>
       </section>
 
+      ${renderAuthPanel()}
       <section class="account-panel">
         <h2>🛍️ Tus compras</h2>
         <p>Elige tus verduras, agrégalas al carrito y confirma tu pedido.</p>
@@ -1801,7 +1858,7 @@ function renderAccount(){
         <p>Escríbenos por WhatsApp para consultar sobre productos, entregas o pedidos.</p>
         <a class="account-whatsapp" href="https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent('Hola, Verdulería Terán. Quisiera hacer una consulta.')}" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp ↗</a>
       </section>
-      <p class="account-footnote">Esta sección es informativa. No requiere crear usuario ni contraseña.</p>
+      <p class="account-footnote">Puedes comprar como invitado, pero solo los pedidos realizados con sesión iniciada estarán disponibles en otros dispositivos.</p>
     </main>
   `;
 
@@ -1809,6 +1866,12 @@ function renderAccount(){
   document.getElementById("accountShop")?.addEventListener("click",()=>navigate("home"));
   document.getElementById("accountCart")?.addEventListener("click",()=>navigate("cart"));
   document.getElementById("accountOrders")?.addEventListener("click",()=>navigate("orders"));
+  document.getElementById("authForm")?.addEventListener("submit",submitAuth);
+  document.getElementById("authToggle")?.addEventListener("click",()=>{authMode=authMode==="signup"?"login":"signup";renderAccount();});
+  document.getElementById("authReset")?.addEventListener("click",()=>{authMode="reset";renderAccount();});
+  document.getElementById("authLogin")?.addEventListener("click",()=>{authMode="login";renderAccount();});
+  document.getElementById("authOrders")?.addEventListener("click",()=>navigate("orders"));
+  document.getElementById("authLogout")?.addEventListener("click",async()=>{const {error}=await client.auth.signOut();if(error){alert("No se pudo cerrar sesión.");return;}currentUser=null;renderAccount();});
   updateBadges();
   window.scrollTo(0,0);
 }
@@ -1940,3 +2003,16 @@ function unitLabel(unit){
 renderShell();
 renderHome();
 loadProducts();
+if(client){
+  client.auth.getUser().then(({data,error})=>{
+    if(!error) currentUser=data?.user||null;
+    if(currentView==="account") renderAccount();
+    if(currentView==="orders") renderOrders();
+  }).catch(error=>console.warn("No se pudo restaurar sesión",error));
+  client.auth.onAuthStateChange((_event,session)=>{
+    if(_event==="PASSWORD_RECOVERY") authMode="update";
+    currentUser=session?.user||null;
+    if(currentView==="account") renderAccount();
+    if(currentView==="orders") renderOrders();
+  });
+}
