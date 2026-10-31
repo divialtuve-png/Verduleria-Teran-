@@ -918,6 +918,31 @@ style.textContent += `
 `;
 style.textContent += '\n/* Canasta Inteligente Terán — estilos independientes */\n.smart-entry{margin:12px 10px;padding:17px;border-radius:20px;background:linear-gradient(115deg,#126b38,#249d4e);color:white;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 8px 22px #116b3825}\n.smart-entry h2{margin:0 0 6px;font-size:20px;color:white}.smart-entry p{margin:0 0 12px;font-size:12px;line-height:1.45;color:#f0fff3}\n.smart-entry button,.smart-action{border:0;border-radius:13px;padding:12px 15px;font-weight:900;background:#fff;color:#126b38}\n.smart-entry-icon{font-size:54px;flex:none}\n.smart-wrap{padding:12px 12px 115px;max-width:680px;margin:auto}\n.smart-hero{background:linear-gradient(130deg,#e9f9e8,#fff9eb);padding:22px 17px;border-radius:22px;text-align:center;margin-bottom:13px}\n.smart-hero .smart-emoji{font-size:56px}.smart-hero h2{margin:6px 0;color:#176b37;font-size:23px}.smart-hero p{font-size:13px;line-height:1.5;color:#52645a;margin:6px 0}\n.smart-panel{background:white;border:1px solid #e1eae1;border-radius:18px;padding:17px;margin-bottom:12px}\n.smart-panel h3{margin:0 0 12px;color:#176b37;font-size:16px}\n.smart-budget{display:flex;align-items:center;gap:8px}.smart-budget input{width:100%;min-width:0;padding:12px;border:1px solid #cdded1;border-radius:11px;font-size:21px;font-weight:900;color:#176b37;text-align:center}\n.smart-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.smart-chips button,.smart-choice button{border:1px solid #d4e5d6;background:#f6fbf6;border-radius:11px;padding:10px 12px;color:#176b37;font-weight:800}\n.smart-choice{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.smart-choice button.active{background:#218e49;color:#fff;border-color:#218e49}\n.smart-muted{font-size:12px;color:#657386;line-height:1.45}.smart-result{background:#edf9e9;border:1px solid #cfe8ca;border-radius:16px;padding:15px;margin-bottom:12px}\n.smart-result strong{color:#176b37}.smart-row{display:grid;grid-template-columns:46px 1fr auto;gap:9px;align-items:center;border-bottom:1px solid #eef1ee;padding:10px 0}\n.smart-row img{width:46px;height:46px;object-fit:cover;border-radius:10px}.smart-row b{font-size:12px}.smart-row small{display:block;color:#68796c;font-size:10px;margin-top:3px}\n.smart-qty{display:flex;gap:7px;align-items:center}.smart-qty button{border:0;border-radius:8px;background:#e6f5e9;color:#176b37;font-weight:900;width:29px;height:29px}.smart-qty span{min-width:14px;text-align:center;font-weight:800}\n.smart-total{display:flex;justify-content:space-between;font-size:19px;font-weight:900;color:#176b37;padding:15px 0}\n.smart-submit{display:block;width:100%;padding:15px;border:0;border-radius:14px;background:#218e49;color:#fff;font-size:15px;font-weight:900}\n.smart-submit:disabled{opacity:.45}.smart-note{font-size:11px;color:#647084;margin:9px 0}\n';
 style.textContent += '\n/* Catálogo Terán: tarjetas limpias con fotografías protagonistas. */\n.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 12px}\n.card{background:#fff;border:1px solid #e4eae4;border-radius:16px;box-shadow:0 4px 15px rgba(18,75,37,.06)}\n.card-image{aspect-ratio:1/1;background:#fff;padding:8px;box-sizing:border-box}\n.card-image img{object-fit:contain;border-radius:9px}\n.card-body{padding:10px 11px 12px}\n.card-name{font-size:14px;line-height:1.25;min-height:0}\n.card-unit{font-size:11px;color:#69776d}\n.card-bottom{margin-top:10px;gap:6px}\n.price{font-size:16px;color:#176b37}\n.add{min-width:34px;min-height:34px;border-radius:10px;font-size:20px}\n@media(min-width:800px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}\n@media(max-width:360px){.products{gap:8px}.card-body{padding:8px}.card-name{font-size:12px}.price{font-size:14px}}\n';
+style.textContent += `
+/* Canasta inteligente — presentación aprobada verde y blanco */
+.smart-entry{background:linear-gradient(125deg,#eaffdb,#baf18a 65%,#70ca55);color:#07572b;border:1px solid #c6eeb3;box-shadow:0 6px 22px #2c883022}
+.smart-entry h2{color:#07572b}.smart-entry p{color:#285d35}.smart-entry button{background:linear-gradient(110deg,#0a9d16,#078023);color:white;box-shadow:0 4px 12px #188c3333}
+.smart-entry-icon{font-size:35px;letter-spacing:-13px;padding-right:14px}
+.smart-wrap{background:linear-gradient(#f4fff0,#fff 320px);min-height:75vh}
+.smart-hero{background:radial-gradient(circle at 35% 60%,#c5f6a6,#effde9 60%,#fffef4);display:flex;justify-content:space-around;align-items:center;gap:12px;text-align:left;min-height:176px;padding:16px 12px}
+.smart-robot{font-size:82px;line-height:1;position:relative;filter:drop-shadow(0 7px 8px #286b2930)}
+.smart-robot span{display:block;font-size:25px;text-align:center;margin-top:-5px}
+.smart-hello{background:white;border-radius:24px;padding:17px 14px;max-width:175px;box-shadow:0 4px 14px #226a2418}
+.smart-hello strong{font-size:20px;color:#07572b}.smart-hello p{font-size:12px;color:#274c2e;line-height:1.4;margin:4px 0}
+.smart-panel{box-shadow:0 4px 17px #174f1b0b;border:1px solid #e7efe3}
+.smart-panel h3{color:#075a26}
+.smart-budget{background:#f9fcf8;border:1px solid #e6eee3;padding:7px;border-radius:35px}
+.smart-budget input{border:0;background:transparent;outline:none;font-size:24px;padding:7px 2px;min-width:0}
+.smart-budget button{flex:none;width:38px;height:38px;border:0;border-radius:50%;background:linear-gradient(150deg,#20c51c,#058c19);color:#fff;font-size:25px;font-weight:800;line-height:1}
+.smart-choice button{padding:14px 5px;min-height:62px;background:#f7faf6}
+.smart-choice button.active{background:#e9fbe6;color:#075e19;border:2px solid #0ba423;box-shadow:0 3px 8px #118b231a}
+.smart-submit{border-radius:30px;background:linear-gradient(105deg,#10b81d,#008b17);box-shadow:0 5px 13px #168e2533}
+.smart-result{background:linear-gradient(120deg,#eafbe1,#f8fff1)}
+.smart-row{grid-template-columns:52px minmax(0,1fr) auto}
+.smart-row img{width:52px;height:52px;object-fit:contain;background:#fff}
+.smart-qty button{background:linear-gradient(135deg,#13b923,#00871b);color:white;border-radius:9px}
+@media(max-width:375px){.smart-robot{font-size:67px}.smart-hello{padding:12px 10px}.smart-choice button{font-size:11px}.smart-row{gap:5px}.smart-qty{gap:4px}}
+`;
 document.head.appendChild(style);
 
 /* =================================================
@@ -1085,7 +1110,7 @@ function renderHome(){
         <img class="hero-image" src="${TERAN_BANNER_IMAGE}" alt="Verdulería Terán: verduras frescas y pedidos por WhatsApp">
       </section>
 
-      <section class="smart-entry"><div><h2>🥬 Canasta Inteligente Terán</h2><p>Cuéntanos tu presupuesto y armamos tu canasta con nuestras verduras frescas.</p><button id="openSmartBasket">✨ Crear mi canasta →</button></div><div class="smart-entry-icon" aria-hidden="true">🧺</div></section>
+      <section class="smart-entry"><div><h2>🥬 Canasta Inteligente Terán</h2><p>Dinos tu presupuesto y preparamos la mejor selección de verduras para ti.</p><button id="openSmartBasket">✨ Crear mi canasta →</button></div><div class="smart-entry-icon" aria-hidden="true">🤖🧺</div></section>
 
       <div class="search-wrap">
         <input id="search" class="search" placeholder="⌕  Buscar productos...">
@@ -1939,13 +1964,13 @@ function renderSmartBasket(){
     ${header()}
     <div class="screen-head"><button class="back" id="smartBack">‹</button><h1 class="screen-title">Canasta Inteligente</h1></div>
     <main class="smart-wrap page">
-      <section class="smart-hero"><div class="smart-emoji">🧺🥬</div><h2>¡Tu canasta, a tu medida!</h2><p>Elige cuánto deseas gastar y te sugerimos una selección de verduras de nuestro catálogo.</p></section>
-      <section class="smart-panel"><h3>💚 ¿Cuál es tu presupuesto?</h3><div class="smart-budget"><strong>S/</strong><input id="smartBudget" type="number" min="1" max="2000" step="1" inputmode="decimal" value="${state.budget}" aria-label="Presupuesto en soles"></div><div class="smart-chips">${[20,30,50,80].map(v=>`<button type="button" data-budget="${v}">S/ ${v}</button>`).join("")}</div></section>
+      <section class="smart-hero"><div class="smart-robot">🤖<span>🥬🥕🍅</span></div><div class="smart-hello"><strong>¡Hola!</strong><p>Te ayudo a crear una canasta perfecta para ti.</p></div></section>
+      <section class="smart-panel"><h3>💚 ¿Cuál es tu presupuesto?</h3><div class="smart-budget"><button type="button" id="smartBudgetMinus" aria-label="Reducir presupuesto">−</button><strong>S/</strong><input id="smartBudget" type="number" min="1" max="2000" step="1" inputmode="decimal" value="${state.budget}" aria-label="Presupuesto en soles"><button type="button" id="smartBudgetPlus" aria-label="Aumentar presupuesto">+</button></div><div class="smart-chips">${[20,30,50,80].map(v=>`<button type="button" data-budget="${v}">S/ ${v}</button>`).join("")}</div></section>
       <section class="smart-panel"><h3>👨‍👩‍👧 ¿Para cuántas personas?</h3><div class="smart-choice">${[1,2,3,4].map(v=>`<button class="${selected('people',v)}" data-people="${v}">${v===4?'4+':v} ${v===1?'persona':'personas'}</button>`).join("")}</div></section>
       <section class="smart-panel"><h3>📅 ¿Para cuántos días?</h3><div class="smart-choice">${[3,5,7,14].map(v=>`<button class="${selected('days',v)}" data-days="${v}">${v} días</button>`).join("")}</div></section>
-      <button class="smart-submit" id="smartGenerate">✨ Preparar mi canasta</button>
+      <button class="smart-submit" id="smartGenerate">✨ Crear mi canasta ❯</button>
       <p class="smart-note">Los precios son los del catálogo disponible. La sugerencia no garantiza cubrir todas las comidas; el delivery se calcula al finalizar el pedido.</p>
-      ${state.generated?`<section class="smart-panel" id="smartResult"><h3>🥦 Tu canasta sugerida</h3>
+      ${state.generated?`<section class="smart-panel" id="smartResult"><h3>🧺 Tu Canasta Inteligente</h3>
         ${state.items.length?`<div class="smart-result"><strong>Selección personalizada</strong><p class="smart-muted">Puedes ajustar las cantidades antes de agregar los productos al carrito.</p></div>
         ${state.items.map(item=>{
           const p=products.find(p=>p.id===item.id);if(!p)return '';
@@ -1960,6 +1985,9 @@ function renderSmartBasket(){
   document.getElementById("smartBudget")?.addEventListener("change",e=>{
     state.budget=Math.max(1,Math.min(2000,Number(e.target.value)||30));state.generated=false;renderSmartBasket();
   });
+  for(const [id,delta] of [["smartBudgetMinus",-5],["smartBudgetPlus",5]]){
+    document.getElementById(id)?.addEventListener("click",()=>{state.budget=Math.max(1,Math.min(2000,state.budget+delta));state.generated=false;renderSmartBasket();});
+  }
   document.querySelectorAll("[data-budget]").forEach(b=>b.addEventListener("click",()=>{state.budget=Number(b.dataset.budget);state.generated=false;renderSmartBasket();}));
   document.querySelectorAll("[data-people]").forEach(b=>b.addEventListener("click",()=>{state.people=Number(b.dataset.people);state.generated=false;renderSmartBasket();}));
   document.querySelectorAll("[data-days]").forEach(b=>b.addEventListener("click",()=>{state.days=Number(b.dataset.days);state.generated=false;renderSmartBasket();}));
