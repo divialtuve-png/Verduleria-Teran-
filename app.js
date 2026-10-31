@@ -951,6 +951,18 @@ style.textContent += `
 .smart-entry button{cursor:pointer;touch-action:manipulation;position:relative;z-index:2}
 @media(max-width:375px){.smart-produce{font-size:29px;min-width:90px}.smart-entry-icon{font-size:25px}}
 `;
+style.textContent += `
+/* Corrección final: canasta sin robot, ilustraciones vacías ni elementos que bloqueen pulsaciones */
+.smart-entry{background:linear-gradient(120deg,#edffe5 0%,#c5f3aa 68%,#91dc73 100%);border:1px solid #b6e8a1;color:#095b2c}
+.smart-entry-icon{font-size:32px;letter-spacing:0;padding:0 8px 0 0;line-height:1.25;min-width:96px;text-align:center;pointer-events:none}
+.smart-entry button{position:relative;z-index:5;display:inline-flex;align-items:center;justify-content:center;min-height:49px;touch-action:manipulation;pointer-events:auto;background:linear-gradient(110deg,#13b828,#087e29);color:#fff}
+.smart-entry .smart-entry-icon{user-select:none}
+.smart-hero{background:linear-gradient(130deg,#f2ffe8,#dcf8cc 70%,#fffdf1);border:1px solid #d5ebcf}
+.smart-produce{min-width:0;font-size:43px;letter-spacing:0;line-height:1.2;max-width:42%;overflow-wrap:anywhere}
+.smart-hello{flex:1;max-width:none}
+.smart-robot{display:none!important}
+@media(max-width:375px){.smart-entry-icon{font-size:26px;min-width:70px}.smart-produce{font-size:33px}}
+`;
 document.head.appendChild(style);
 
 /* =================================================
@@ -1156,7 +1168,7 @@ function renderHome(){
     });
   });
 
-  document.getElementById("openSmartBasket")?.addEventListener("click",()=>navigate("smart"));
+  // La apertura se gestiona por delegación para resistir cambios del DOM.
 
   document.getElementById("search").addEventListener("input",renderProductGrid);
 
@@ -2023,6 +2035,15 @@ function renderSmartBasket(){
   });
   updateBadges();
 }
+
+// Delegated click listener: survives re-rendering of the home screen.
+document.addEventListener("click",function(event){
+  const trigger=event.target.closest && event.target.closest("#openSmartBasket");
+  if(!trigger)return;
+  event.preventDefault();
+  event.stopPropagation();
+  navigate("smart");
+},true);
 
 function navigate(view){
   if(view==="smart"){
