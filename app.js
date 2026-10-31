@@ -943,6 +943,14 @@ style.textContent += `
 .smart-qty button{background:linear-gradient(135deg,#13b923,#00871b);color:white;border-radius:9px}
 @media(max-width:375px){.smart-robot{font-size:67px}.smart-hello{padding:12px 10px}.smart-choice button{font-size:11px}.smart-row{gap:5px}.smart-qty{gap:4px}}
 `;
+style.textContent += `
+/* Canasta sin robot ni canasta vacía; presentación sencilla de verduras */
+.smart-entry-icon{font-size:31px;letter-spacing:-9px;padding-right:12px;white-space:nowrap}
+.smart-produce{font-size:38px;letter-spacing:-10px;line-height:1.3;min-width:125px;filter:drop-shadow(0 5px 6px #245d2520)}
+.smart-hello{max-width:210px}
+.smart-entry button{cursor:pointer;touch-action:manipulation;position:relative;z-index:2}
+@media(max-width:375px){.smart-produce{font-size:29px;min-width:90px}.smart-entry-icon{font-size:25px}}
+`;
 document.head.appendChild(style);
 
 /* =================================================
@@ -1110,7 +1118,7 @@ function renderHome(){
         <img class="hero-image" src="${TERAN_BANNER_IMAGE}" alt="Verdulería Terán: verduras frescas y pedidos por WhatsApp">
       </section>
 
-      <section class="smart-entry"><div><h2>🥬 Canasta Inteligente Terán</h2><p>Dinos tu presupuesto y preparamos la mejor selección de verduras para ti.</p><button id="openSmartBasket">✨ Crear mi canasta →</button></div><div class="smart-entry-icon" aria-hidden="true">🤖🧺</div></section>
+      <section class="smart-entry"><div><h2>🥬 Canasta Inteligente Terán</h2><p>Dinos tu presupuesto y preparamos la mejor selección de verduras para ti.</p><button id="openSmartBasket">✨ Crear mi canasta →</button></div><div class="smart-entry-icon" aria-hidden="true">🥬🥕🍅</div></section>
 
       <div class="search-wrap">
         <input id="search" class="search" placeholder="⌕  Buscar productos...">
@@ -1147,6 +1155,8 @@ function renderHome(){
       },30);
     });
   });
+
+  document.getElementById("openSmartBasket")?.addEventListener("click",()=>navigate("smart"));
 
   document.getElementById("search").addEventListener("input",renderProductGrid);
 
@@ -1964,7 +1974,7 @@ function renderSmartBasket(){
     ${header()}
     <div class="screen-head"><button class="back" id="smartBack">‹</button><h1 class="screen-title">Canasta Inteligente</h1></div>
     <main class="smart-wrap page">
-      <section class="smart-hero"><div class="smart-robot">🤖<span>🥬🥕🍅</span></div><div class="smart-hello"><strong>¡Hola!</strong><p>Te ayudo a crear una canasta perfecta para ti.</p></div></section>
+      <section class="smart-hero"><div class="smart-produce" aria-hidden="true">🥬🥦🥕🍅</div><div class="smart-hello"><strong>Tu selección ideal</strong><p>Elige tu presupuesto y preparamos una propuesta con las verduras disponibles.</p></div></section>
       <section class="smart-panel"><h3>💚 ¿Cuál es tu presupuesto?</h3><div class="smart-budget"><button type="button" id="smartBudgetMinus" aria-label="Reducir presupuesto">−</button><strong>S/</strong><input id="smartBudget" type="number" min="1" max="2000" step="1" inputmode="decimal" value="${state.budget}" aria-label="Presupuesto en soles"><button type="button" id="smartBudgetPlus" aria-label="Aumentar presupuesto">+</button></div><div class="smart-chips">${[20,30,50,80].map(v=>`<button type="button" data-budget="${v}">S/ ${v}</button>`).join("")}</div></section>
       <section class="smart-panel"><h3>👨‍👩‍👧 ¿Para cuántas personas?</h3><div class="smart-choice">${[1,2,3,4].map(v=>`<button class="${selected('people',v)}" data-people="${v}">${v===4?'4+':v} ${v===1?'persona':'personas'}</button>`).join("")}</div></section>
       <section class="smart-panel"><h3>📅 ¿Para cuántos días?</h3><div class="smart-choice">${[3,5,7,14].map(v=>`<button class="${selected('days',v)}" data-days="${v}">${v} días</button>`).join("")}</div></section>
