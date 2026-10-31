@@ -1795,7 +1795,7 @@ async function submitAuth(event){
   try{
     let result;
     if(authMode==="update") result=await client.auth.updateUser({password});
-    else if(authMode==="signup") result=await client.auth.signUp({email,password});
+    else if(authMode==="signup") result=await client.auth.signUp({email,password,options:{emailRedirectTo:"https://divialtuve-png.github.io/Verduleria-Teran-/"}});
     else if(authMode==="reset") result=await client.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
     else result=await client.auth.signInWithPassword({email,password});
     if(result.error) throw result.error;
