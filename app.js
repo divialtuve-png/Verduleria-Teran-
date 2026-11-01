@@ -989,6 +989,7 @@ style.textContent += `
 .teran-feature-photo:active{transform:scale(.98)!important}
 @media(max-width:375px){.teran-features{gap:8px!important;margin-left:9px!important;margin-right:9px!important}.teran-feature.teran-feature-photo{border-radius:15px!important}}
 `;
+style.textContent += '\n/* Catálogo renovado: la fotografía y el nombre son protagonistas. */\n.teran-catalog-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:7px 12px 13px;color:#386347;font-size:12px;font-weight:700}\n.teran-view-buttons{display:flex;gap:4px;padding:4px;border-radius:16px;background:#f0f7ed;border:1px solid #dcead8}\n.teran-view-buttons button{width:39px;height:35px;border:0;border-radius:11px;background:transparent;color:#446b50;font-size:23px;cursor:pointer}\n.teran-view-buttons button.active{background:#148341;color:white;box-shadow:0 2px 7px #125a2930}\n.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:0 12px}\n.products .card{border:1px solid #e2eadf;border-radius:19px;box-shadow:0 5px 17px #153e1d0c;overflow:hidden}\n.products .card-image{aspect-ratio:1/1.13;background:#f5faf2}\n.products .card-image img{width:100%;height:100%;object-fit:cover}\n.products .card-body{padding:10px 11px 12px}\n.products .card-name{font-size:14px;color:#074f29;line-height:1.2}\n.products .card-unit{font-size:11px;color:#657569}\n.products .card-bottom{margin-top:9px}\n.products .price{color:#0a7133;font-size:15px;font-weight:900}\n.products .add{background:linear-gradient(130deg,#25c736,#087b2b);color:white;border-radius:50%;min-width:35px;min-height:35px;box-shadow:0 3px 8px #098b2630}\n.products.teran-list-view{display:flex;flex-direction:column;gap:10px}\n.products.teran-list-view .card{display:grid;grid-template-columns:116px minmax(0,1fr);min-height:116px}\n.products.teran-list-view .card-image{height:100%;aspect-ratio:auto}\n.products.teran-list-view .card-body{display:flex;flex-direction:column;justify-content:center;padding:10px 13px}\n.products.teran-list-view .card-name{min-height:0}\n@media(min-width:780px){.products:not(.teran-list-view){grid-template-columns:repeat(4,minmax(0,1fr))}}\n';
 document.head.appendChild(style);
 
 /* =================================================
@@ -1055,6 +1056,22 @@ const fallbackByCategory = {
   otros:"https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=90"
 };
 
+// Fotografías verificadas del catálogo WhatsApp; sin el recuadro de precio.
+const teranFotosVerificadas = {
+  'olluco': 'catalogo-olluco.jpg',
+  'zapallo macre': 'catalogo-zapallo-macre.jpg',
+  'palta': 'catalogo-palta.jpg',
+  'aguacate': 'catalogo-palta.jpg',
+  'limon': 'catalogo-limon.jpg'
+};
+function teranFotoProducto(nombre, imagenActual){
+  const n=normalize(nombre);
+  if(n.includes('zapallo macre')) return teranFotosVerificadas['zapallo macre'];
+  if(n.includes('olluco')) return teranFotosVerificadas.olluco;
+  if(n.includes('palta') || n.includes('aguacate')) return teranFotosVerificadas.palta;
+  if(n==='limon' || n.startsWith('limon ')) return teranFotosVerificadas.limon;
+  return imagenActual;
+}
 function fallbackImage(name,category){
   const n=normalize(name);
   for(const key of Object.keys(imageLibrary)){
@@ -1218,6 +1235,10 @@ function renderHome(){
         <span class="section-chip">Frescos del día</span>
       </div>
 
+      <div class="teran-catalog-tools" aria-label="Vista del catálogo">
+        <span>Elige cómo ver tus verduras</span>
+        <div class="teran-view-buttons"><button type="button" data-catalog-view="grid" aria-label="Ver cuadrícula" aria-pressed="true">▦</button><button type="button" data-catalog-view="list" aria-label="Ver lista" aria-pressed="false">☰</button></div>
+      </div>
       <section id="products" class="products"></section>
 
 
@@ -1255,6 +1276,18 @@ function renderHome(){
   updateBadges();
 }
 
+let teranCatalogView='grid';
+function teranSetCatalogView(view){
+  teranCatalogView=view==='list'?'list':'grid';
+  const box=document.getElementById('products');
+  if(box) box.classList.toggle('teran-list-view',teranCatalogView==='list');
+  document.querySelectorAll('[data-catalog-view]').forEach(b=>{
+    const active=b.dataset.catalogView===teranCatalogView;
+    b.classList.toggle('active',active);
+    b.setAttribute('aria-pressed',String(active));
+    b.onclick=()=>teranSetCatalogView(b.dataset.catalogView);
+  });
+}
 function renderProductGrid(){
   const box=document.getElementById("products");
   if(!box) return;
@@ -1295,6 +1328,7 @@ function renderProductGrid(){
     </article>
   `).join("");
 
+  teranSetCatalogView(teranCatalogView);
   box.querySelectorAll("[data-add]").forEach(btn=>{
     btn.addEventListener("click",()=>{
       addToCart(Number(btn.dataset.add));
@@ -2207,7 +2241,7 @@ function useCatalogRows(rows){
       unit,
       unitLabel:unitLabel(unit),
       price:Number(row.precio ?? row.price)||0,
-      image:row.image_url || fallbackImage(name,category)
+      image:teranFotoProducto(name,row.image_url || fallbackImage(name,category))
     });
   });
   renderProductGrid();
