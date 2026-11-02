@@ -977,19 +977,6 @@ style.textContent += `
 style.textContent += '\n\n/* TERAN VISUAL FINAL — diseño inspirado directamente en la referencia aprobada; no modifica eventos */\n.topbar{min-height:82px;padding:10px 12px;gap:8px;background:#fff}\n.topbar .brand{flex:1;min-width:0;display:flex;align-items:center}\n.topbar .brand-logo-final{width:min(100%,330px)!important;max-width:330px!important;height:auto!important;max-height:78px!important;object-fit:contain!important;object-position:left center!important}\n.topbar .top-cart{flex-shrink:0}\n.smart-wrap{max-width:520px;padding:12px 14px 115px;background:#fff}\n.smart-hero{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;padding:8px 10px 0!important;min-height:0!important;border:0!important;border-radius:22px!important;background:linear-gradient(110deg,#f5fff2 5%,#e9f8df 62%,#fffdf5 100%)!important;box-shadow:none!important;overflow:hidden!important;margin-bottom:12px!important}\n.smart-bot-art{flex:0 0 51%!important;max-width:235px!important;align-self:end!important;min-width:0!important}\n.smart-bot-art .teran-robot-real{width:100%;height:auto;display:block;object-fit:contain;object-position:bottom left;mix-blend-mode:multiply}\n.smart-hello{flex:1!important;min-width:0!important;padding:13px 11px!important;border-radius:23px!important;background:#fff!important;box-shadow:0 5px 18px #216c1912!important;text-align:left!important}\n.smart-hello strong{display:block;font-size:clamp(19px,5vw,27px)!important;color:#064a24!important}\n.smart-hello p{font-size:clamp(11px,3vw,14px)!important;line-height:1.45!important;margin:6px 0 0!important}\n.smart-panel{border:1px solid #ecf0e9!important;border-radius:22px!important;padding:15px 14px!important;margin-bottom:12px!important;box-shadow:0 3px 12px #183b1b0b!important}\n.smart-panel h3{font-size:clamp(15px,4.2vw,19px)!important;color:#084c26!important;margin-bottom:13px!important}\n.smart-budget{border:1px solid #edf0e9;border-radius:35px;padding:5px;gap:8px}\n.smart-budget input{border:0!important;background:transparent!important;box-shadow:none!important;padding:8px 0!important}\n.smart-budget button{border-radius:50%!important;width:39px!important;height:39px!important;min-width:39px!important;padding:0!important;background:linear-gradient(#42c620,#078b19)!important;color:#fff!important;border:0!important;font-size:25px!important}\n.smart-chips{justify-content:space-between!important;gap:7px!important}\n.smart-chips button{flex:1!important;padding:9px 5px!important;border-radius:12px!important;background:#f4faf2!important;color:#176b37!important}\n.smart-choice{gap:7px!important}\n.smart-choice button{padding:12px 3px!important;min-height:65px!important;border-radius:14px!important;background:#f7f9f7!important;color:#145e31!important;font-size:12px!important;line-height:1.25!important}\n.smart-choice button.active{background:#e8fae4!important;border:2px solid #10a332!important;color:#075c24!important}\n.smart-submit{background:linear-gradient(180deg,#20c71a,#007f1a)!important;border-radius:22px!important;box-shadow:0 7px 14px #048a2624!important}\n.smart-entry{background:linear-gradient(115deg,#f2ffe9,#c8f5b0)!important;color:#105c2c!important;border-radius:22px!important}\n.smart-entry h2{color:#07552c!important}\n.smart-entry p{color:#315d40!important}\n.smart-entry-icon{width:92px!important;min-width:92px!important;align-self:center!important}\n.smart-entry-icon .teran-robot-real{width:92px;height:auto;display:block;mix-blend-mode:multiply}\n.smart-entry button{background:linear-gradient(180deg,#18bc24,#048c24)!important;color:white!important;border-radius:16px!important}\n.smart-row img{object-fit:contain!important;background:#fff!important}\n@media(max-width:380px){.smart-hero{gap:4px!important}.smart-bot-art{flex-basis:48%!important}.smart-hello{padding:10px 8px!important}.smart-choice button{font-size:11px!important}.topbar .brand-logo-final{max-height:65px!important}}\n';
 style.textContent += '\n/* Accesos visuales de la referencia aprobada — sin cambiar carrito ni Supabase */\n.teran-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:12px 12px 7px}\n.teran-shortcut{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;color:#174c2b;font-weight:800;font-size:11px;line-height:1.2;min-width:0}\n.teran-shortcut-icon{width:57px;height:57px;border-radius:19px;background:#e5f9df;display:grid;place-items:center;color:#078a31;box-shadow:0 3px 12px #164d1710}\n.teran-shortcut-icon svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}\n.teran-shortcut:nth-child(2) .teran-shortcut-icon{background:#fff0dc;color:#f47712}\n.teran-shortcut:nth-child(4) .teran-shortcut-icon{background:#ffeaeb;color:#e94b56}\n.teran-feature-head{font-size:19px;color:#07582b;margin:17px 14px 11px;font-weight:900}\n.teran-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:0 12px 15px}\n.teran-feature{min-height:158px;border:1px solid #d8e7d1;border-radius:19px;overflow:hidden;position:relative;padding:16px 12px;background:linear-gradient(145deg,#e4ffd7,#91db68);color:#075326;text-align:left;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 12px #1a671015}\n.teran-feature:nth-child(2){background:linear-gradient(140deg,#fff8e3,#ffcc7e)}\n.teran-feature:nth-child(3){background:linear-gradient(140deg,#e7ffe4,#a4e78e)}\n.teran-feature:nth-child(4){background:linear-gradient(140deg,#fff8dc,#b7e783)}\n.teran-feature strong{font-size:19px;line-height:1.07;font-weight:950;max-width:145px;position:relative;z-index:1}\n.teran-feature span{font-size:11px;line-height:1.3;max-width:170px;position:relative;z-index:1}\n.teran-feature-art{position:absolute;right:-5px;bottom:30px;font-size:57px;opacity:.22;pointer-events:none}\n.teran-feature:focus-visible,.teran-shortcut:focus-visible{outline:3px solid #058b2b;outline-offset:3px}\n.teran-feature[disabled]{cursor:default;opacity:.8}\n@media(max-width:360px){.teran-shortcuts{gap:3px}.teran-shortcut{font-size:10px}.teran-shortcut-icon{width:49px;height:49px}.teran-feature strong{font-size:17px}}\n';
 style.textContent += '\n/* Ajustes de diseño 31-10: proporciones y colores */\n.hero-image{width:100%;height:auto;aspect-ratio:auto;object-fit:cover}\n.teran-shortcuts{gap:4px!important;padding:12px 5px 4px!important}\n.teran-shortcut{font-size:10px!important;gap:5px!important}\n.teran-shortcut-icon{width:45px!important;height:45px!important;border-radius:14px!important}\n.teran-shortcut-icon svg{width:23px!important;height:23px!important}\n.teran-shortcut:nth-child(2) .teran-shortcut-icon{background:#fff0df!important;color:#ed7e20!important}\n.teran-shortcut:nth-child(4) .teran-shortcut-icon{background:#fff0eb!important;color:#e56744!important}\n.teran-features{gap:10px!important}\n.teran-feature{min-height:180px!important;overflow:hidden!important;position:relative!important;box-shadow:0 5px 18px #194e2112!important}\n.teran-feature:nth-child(1){background:linear-gradient(145deg,#f0ffe2,#8cdd52)!important}\n.teran-feature:nth-child(2){background:linear-gradient(145deg,#fff6e1,#ffcd81)!important}\n.teran-feature:nth-child(3){background:linear-gradient(145deg,#eaffdd,#91db80)!important}\n.teran-feature:nth-child(4){background:linear-gradient(145deg,#fff8d9,#c5eb91)!important}\n.teran-feature-art{font-size:55px!important;opacity:1!important;line-height:1!important;display:block!important;filter:drop-shadow(0 5px 5px #31551d25)}\n.teran-feature strong{font-size:17px!important;line-height:1.1!important}\n.teran-feature>span:last-child{font-size:11px!important;line-height:1.25!important}\n@media(max-width:390px){.teran-feature{min-height:165px!important}.teran-feature-art{font-size:47px!important}}\n';
-style.textContent += '\n/* Tarjetas editoriales: ilustraciones nítidas, proporciones equilibradas */\n.teran-feature{min-height:184px!important;padding:13px 12px 12px!important;justify-content:space-between!important;isolation:isolate}\n.teran-feature strong{font-size:17px!important;max-width:100%!important;line-height:1.12!important;z-index:2!important}\n.teran-feature-art{position:relative!important;inset:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;align-self:center!important;width:100%!important;height:91px!important;opacity:1!important;font-size:initial!important;filter:none!important;flex:none!important}\n.teran-feature-art svg{width:100%!important;height:100%!important;max-width:180px!important;display:block!important;filter:drop-shadow(0 4px 3px #21502b16)}\n.teran-feature>span:last-child{font-size:10px!important;line-height:1.3!important;max-width:100%!important;z-index:2!important}\n.teran-feature:nth-child(1){background:linear-gradient(145deg,#e8fbd8,#b4e68e)!important}\n.teran-feature:nth-child(2){background:linear-gradient(145deg,#fff5e4,#ffdc9e)!important}\n.teran-feature:nth-child(3){background:linear-gradient(145deg,#e6f7e3,#b7e4aa)!important}\n.teran-feature:nth-child(4){background:linear-gradient(145deg,#fff6df,#d8eeb6)!important}\n.premia-hero{margin:16px 12px;background:linear-gradient(135deg,#f0ffe2,#d5edb3);border-radius:24px;padding:18px;text-align:center;color:#07552c}\n.premia-art{width:205px;height:145px;margin:auto}.premia-art svg{width:100%;height:100%}\n.premia-hero h2{margin:6px 0 8px;font-size:23px}.premia-hero p{font-size:13px;line-height:1.5}\n.premia-panel{background:white;border:1px solid #e2eadb;border-radius:18px;margin:12px;padding:18px;color:#1e5130}\n.premia-panel h3{margin:0 0 10px}.premia-panel p{font-size:13px;line-height:1.5}.premia-note{font-weight:700;color:#876b29}\n@media(max-width:390px){.teran-feature{min-height:177px!important;padding:11px 9px!important}.teran-feature strong{font-size:15px!important}.teran-feature-art{height:85px!important}}\n';
-style.textContent += " \n/* TERÁN PREMIUM: cuatro tarjetas de experiencias — cambio exclusivamente visual */\n.teran-feature-head{font-size:clamp(21px,5.2vw,27px);letter-spacing:-.7px;margin:24px 15px 14px;color:#124b2a}\n.teran-features{gap:13px!important;margin:0 12px 23px!important}\n.teran-feature{min-height:253px!important;border:0!important;border-radius:23px!important;padding:17px 13px 15px!important;box-shadow:0 11px 24px rgba(31,77,38,.16)!important;position:relative!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;align-items:stretch!important;gap:7px!important;transition:transform .18s,box-shadow .18s!important;-webkit-tap-highlight-color:transparent;isolation:isolate}\n.teran-feature:active{transform:scale(.975)!important}\n.teran-feature:before{content:'';position:absolute;inset:-35% -40% auto auto;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.22);pointer-events:none}\n.teran-feature:after{content:'EXPLORAR  ↗';display:block;align-self:flex-start;position:relative;z-index:2;margin-top:auto;border-radius:30px;padding:9px 13px;background:rgba(255,255,255,.93);font-size:10px;font-weight:950;letter-spacing:.5px;color:#07552c;box-shadow:0 3px 9px rgba(0,0,0,.09)}\n.teran-feature strong{font-size:clamp(17px,4.4vw,23px)!important;line-height:1.06!important;letter-spacing:-.5px!important;max-width:100%!important;z-index:2!important;color:inherit!important;text-shadow:0 1px 0 rgba(255,255,255,.15)}\n.teran-feature-art{position:relative!important;inset:auto!important;display:flex!important;justify-content:center!important;align-items:center!important;align-self:center!important;flex:0 0 auto!important;height:112px!important;width:100%!important;margin:0!important;z-index:1!important;pointer-events:none!important;opacity:1!important;filter:none!important}\n.teran-feature-art svg{width:100%!important;height:100%!important;max-width:190px!important;filter:drop-shadow(0 8px 7px rgba(0,0,0,.17))!important;transform:scale(1.08)}\n.teran-feature>span:last-child{font-size:11px!important;line-height:1.35!important;font-weight:650!important;color:inherit!important;max-width:100%!important;z-index:2!important;opacity:.94!important}\n.teran-feature:nth-child(1){background:linear-gradient(145deg,#d7ff7e 0%,#65d43e 47%,#0c9c4e 100%)!important;color:#064a27!important}\n.teran-feature:nth-child(2){background:linear-gradient(145deg,#fff2ad 0%,#ffb34f 51%,#fa6c20 100%)!important;color:#70310b!important}\n.teran-feature:nth-child(3){background:linear-gradient(145deg,#c4f8c7 0%,#6ad98c 46%,#158e73 100%)!important;color:#074a34!important}\n.teran-feature:nth-child(4){background:linear-gradient(145deg,#ffe5f3 0%,#ff9ec6 50%,#df4c91 100%)!important;color:#6b1646!important}\n.teran-feature:nth-child(2):after{color:#a5440b}\n.teran-feature:nth-child(3):after{color:#076c51}\n.teran-feature:nth-child(4):after{color:#a21b61}\n@media(min-width:700px){.teran-feature{min-height:285px!important;padding:21px!important}.teran-feature-art{height:145px!important}.teran-feature>span:last-child{font-size:13px!important}}\n@media(max-width:375px){.teran-features{gap:9px!important;margin-left:9px!important;margin-right:9px!important}.teran-feature{min-height:240px!important;padding:13px 10px!important}.teran-feature strong{font-size:16px!important}.teran-feature-art{height:100px!important}.teran-feature>span:last-child{font-size:10px!important}.teran-feature:after{font-size:9px;padding:8px 10px}}\n";
-style.textContent += `
-/* Cuatro tarjetas aprobadas: imagen real de la referencia, sin SVG ni emojis. */
-.teran-features{gap:10px!important;margin:0 12px 23px!important;align-items:start}
-.teran-feature.teran-feature-photo{display:block!important;min-height:0!important;height:auto!important;aspect-ratio:auto!important;padding:0!important;margin:0!important;border:0!important;border-radius:20px!important;overflow:hidden!important;background:transparent!important;box-shadow:0 5px 15px rgba(13,66,33,.13)!important;line-height:0!important;isolation:auto!important;cursor:pointer!important}
-.teran-feature-photo::before,.teran-feature-photo::after{display:none!important;content:none!important}
-.teran-feature-photo img{display:block!important;width:100%!important;height:auto!important;object-fit:contain!important;pointer-events:none!important}
-.teran-feature-photo:focus-visible{outline:3px solid #168b42!important;outline-offset:3px!important}
-.teran-feature-photo:active{transform:scale(.98)!important}
-@media(max-width:375px){.teran-features{gap:8px!important;margin-left:9px!important;margin-right:9px!important}.teran-feature.teran-feature-photo{border-radius:15px!important}}
-`;
-style.textContent += '\n/* Catálogo renovado: la fotografía y el nombre son protagonistas. */\n.teran-catalog-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:7px 12px 13px;color:#386347;font-size:12px;font-weight:700}\n.teran-view-buttons{display:flex;gap:4px;padding:4px;border-radius:16px;background:#f0f7ed;border:1px solid #dcead8}\n.teran-view-buttons button{width:39px;height:35px;border:0;border-radius:11px;background:transparent;color:#446b50;font-size:23px;cursor:pointer}\n.teran-view-buttons button.active{background:#148341;color:white;box-shadow:0 2px 7px #125a2930}\n.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:0 12px}\n.products .card{border:1px solid #e2eadf;border-radius:19px;box-shadow:0 5px 17px #153e1d0c;overflow:hidden}\n.products .card-image{aspect-ratio:1/1.13;background:#f5faf2}\n.products .card-image img{width:100%;height:100%;object-fit:cover}\n.products .card-body{padding:10px 11px 12px}\n.products .card-name{font-size:14px;color:#074f29;line-height:1.2}\n.products .card-unit{font-size:11px;color:#657569}\n.products .card-bottom{margin-top:9px}\n.products .price{color:#0a7133;font-size:15px;font-weight:900}\n.products .add{background:linear-gradient(130deg,#25c736,#087b2b);color:white;border-radius:50%;min-width:35px;min-height:35px;box-shadow:0 3px 8px #098b2630}\n.products.teran-list-view{display:flex;flex-direction:column;gap:10px}\n.products.teran-list-view .card{display:grid;grid-template-columns:116px minmax(0,1fr);min-height:116px}\n.products.teran-list-view .card-image{height:100%;aspect-ratio:auto}\n.products.teran-list-view .card-body{display:flex;flex-direction:column;justify-content:center;padding:10px 13px}\n.products.teran-list-view .card-name{min-height:0}\n@media(min-width:780px){.products:not(.teran-list-view){grid-template-columns:repeat(4,minmax(0,1fr))}}\n';
 document.head.appendChild(style);
 
 /* =================================================
@@ -1056,22 +1043,6 @@ const fallbackByCategory = {
   otros:"https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=90"
 };
 
-// Fotografías verificadas del catálogo WhatsApp; sin el recuadro de precio.
-const teranFotosVerificadas = {
-  'olluco': 'catalogo-olluco.jpg',
-  'zapallo macre': 'catalogo-zapallo-macre.jpg',
-  'palta': 'catalogo-palta.jpg',
-  'aguacate': 'catalogo-palta.jpg',
-  'limon': 'catalogo-limon.jpg'
-};
-function teranFotoProducto(nombre, imagenActual){
-  const n=normalize(nombre);
-  if(n.includes('zapallo macre')) return teranFotosVerificadas['zapallo macre'];
-  if(n.includes('olluco')) return teranFotosVerificadas.olluco;
-  if(n.includes('palta') || n.includes('aguacate')) return teranFotosVerificadas.palta;
-  if(n==='limon' || n.startsWith('limon ')) return teranFotosVerificadas.limon;
-  return imagenActual;
-}
 function fallbackImage(name,category){
   const n=normalize(name);
   for(const key of Object.keys(imageLibrary)){
@@ -1159,32 +1130,6 @@ const TERAN_BANNER_IMAGE = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2
    HOME
 ================================================= */
 
-
-/* Ilustraciones propias para las cuatro tarjetas: sin emojis ni dependencias externas */
-const TERAN_CARD_ART = {'canasta': '<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="w" x2="0" y2="1"><stop stop-color="#e4a75c"/><stop offset="1" stop-color="#9b571f"/></linearGradient></defs><ellipse cx="125" cy="146" rx="102" ry="10" fill="#377e3a" opacity=".12"/><path d="M60 84Q45 36 91 30Q106 47 88 79M123 77Q107 13 146 10Q163 42 139 80M155 82Q173 25 207 38Q207 71 170 90" fill="#278b3c" stroke="#0b622f" stroke-width="3"/><path d="M72 76Q48 46 30 62Q39 89 78 97M166 70Q185 41 214 58Q206 89 171 97" fill="#64ba39"/><circle cx="91" cy="89" r="24" fill="#e43e27"/><circle cx="150" cy="83" r="24" fill="#f5b322"/><path d="M90 67l-10-11 13 4 9-7-3 15M150 60l-10-10 12 4 9-7-3 14" fill="#257d2e"/><path d="M31 91Q121 108 213 91L195 141Q120 158 47 141Z" fill="url(#w)" stroke="#8d572c" stroke-width="4"/><path d="M42 105q77 27 160 0M46 119q75 27 153 0M56 135q69 22 135 0" stroke="#f7d093" stroke-width="5" fill="none" opacity=".9"/><path d="M62 95Q122 20 185 95" stroke="#b7793a" stroke-width="10" fill="none"/></svg>', 'cocina': '<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg"><ellipse cx="121" cy="142" rx="99" ry="11" fill="#795b32" opacity=".12"/><ellipse cx="119" cy="98" rx="96" ry="55" fill="#e8e6dc" stroke="#d7c5a5" stroke-width="5"/><ellipse cx="119" cy="95" rx="78" ry="42" fill="#fffaf0"/><path d="M55 91q23-35 55-7t69-8" stroke="#5a9d37" stroke-width="16" fill="none" stroke-linecap="round"/><path d="M66 104q34-32 55 4t65-12" stroke="#70b644" stroke-width="14" fill="none" stroke-linecap="round"/><circle cx="84" cy="82" r="15" fill="#e6482e"/><circle cx="145" cy="102" r="16" fill="#e3482a"/><circle cx="172" cy="80" r="13" fill="#f4c038"/><circle cx="105" cy="117" r="11" fill="#f5ba2e"/><path d="M76 73l9-8 8 8M138 92l7-9 8 9" fill="#247b36"/><path d="M117 65q16-18 34-6M61 113q17-7 29 3" stroke="#2e8d41" stroke-width="7" fill="none" stroke-linecap="round"/></svg>', 'temporada': '<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg"><ellipse cx="125" cy="145" rx="105" ry="9" fill="#356d3a" opacity=".12"/><path d="M56 90Q31 52 66 32Q99 40 93 92M113 94Q93 22 129 13Q157 41 140 96M151 90Q172 32 206 45Q205 80 174 99" fill="#278c3e" stroke="#11632e" stroke-width="3"/><circle cx="81" cy="88" r="24" fill="#e6432c"/><circle cx="147" cy="80" r="24" fill="#f4b52c"/><path d="M80 64l-11-9 13 3 7-8-2 16M147 58l-9-8 12 4 8-7-3 14" fill="#1d7834"/><path d="M42 88l158 0-10 60H51Z" fill="#bd7b3c" stroke="#8b5629" stroke-width="4"/><path d="M42 108h158M46 129h150" stroke="#e8af68" stroke-width="9"/><path d="M65 90v54M174 90v54" stroke="#8b5629" stroke-width="7"/><path d="M38 87h166" stroke="#dba05d" stroke-width="10"/></svg>', 'premia': '<svg viewBox="0 0 240 160" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#f8c85d"/><stop offset="1" stop-color="#ec8c22"/></linearGradient></defs><ellipse cx="125" cy="147" rx="84" ry="9" fill="#795e24" opacity=".13"/><rect x="54" y="67" width="132" height="77" rx="9" fill="url(#g)" stroke="#c7791c" stroke-width="3"/><rect x="47" y="55" width="146" height="25" rx="7" fill="#ffcf6a" stroke="#d28a29" stroke-width="3"/><rect x="111" y="55" width="20" height="89" fill="#1c8b42"/><path d="M120 55Q61 50 79 27Q94 11 120 55Q139 10 160 29Q178 51 120 55" fill="none" stroke="#159344" stroke-width="13" stroke-linecap="round"/><path d="M120 58v83" stroke="#c1e7a5" stroke-width="3"/><circle cx="47" cy="32" r="4" fill="#f1b52d"/><circle cx="192" cy="27" r="5" fill="#f1b52d"/><path d="M200 81l5 8 9 3-9 4-5 9-4-9-9-4 9-3Z" fill="#edb52b"/><path d="M42 96l4 6 7 2-7 3-4 7-3-7-7-3 7-2Z" fill="#4da843"/></svg>'};
-function teranCardArt(name){return TERAN_CARD_ART[name] || "";}
-
-
-/* Terán Premia: pantalla interna, sin mensajes automáticos a WhatsApp. */
-function renderTeranPremia(){
-  currentView="premia";
-  document.getElementById("app").innerHTML=`${header()}
-    <main class="page">
-      <div class="screen-head"><button class="back" id="premiaBack" aria-label="Volver al inicio">‹</button><h1 class="screen-title">Terán Premia</h1></div>
-      <section class="premia-hero">
-        <div class="premia-art">${teranCardArt("premia")}</div>
-        <h2>¡Tus compras merecen premios!</h2>
-        <p>Estamos preparando beneficios especiales para quienes compran en Verdulería Terán.</p>
-      </section>
-      <section class="premia-panel"><h3>Próximamente</h3><p>Podrás conocer aquí las promociones, los beneficios y las condiciones del programa Terán Premia.</p><p class="premia-note">Todavía no se están acumulando puntos ni canjeando premios.</p></section>
-      <button class="primary" id="premiaHome">Seguir comprando</button>
-    </main>`;
-  document.getElementById("premiaBack")?.addEventListener("click",()=>navigate("home"));
-  document.getElementById("premiaHome")?.addEventListener("click",()=>navigate("home"));
-  document.getElementById("topCart")?.addEventListener("click",()=>navigate("cart"));
-  updateBadges();
-}
-
 function renderHome(){
   currentView="home";
 
@@ -1224,10 +1169,10 @@ function renderHome(){
 
       <h2 class="teran-feature-head">Descubre Verdulería Terán</h2>
       <section class="teran-features" aria-label="Experiencias Terán">
-        <button class="teran-feature teran-feature-photo" data-teran-go="smart" aria-label="Canasta Inteligente: personalizar mi canasta"><img src="tarjeta-canasta.jpg" alt="Canasta Inteligente: personalizar mi canasta" loading="lazy"></button>
-        <button class="teran-feature teran-feature-photo" data-teran-go="recipes" aria-label="¿Qué cocinamos hoy?: ver recetas"><img src="tarjeta-recetas.jpg" alt="¿Qué cocinamos hoy?: ver recetas" loading="lazy"></button>
-        <button class="teran-feature teran-feature-photo" data-teran-go="products" aria-label="Canasta de temporada: ver disponibles"><img src="tarjeta-temporada.jpg" alt="Canasta de temporada: ver disponibles" loading="lazy"></button>
-        <button class="teran-feature teran-feature-photo" data-teran-go="premia" aria-label="Terán Premia: conocer más"><img src="tarjeta-premia.jpg" alt="Terán Premia: conocer más" loading="lazy"></button>
+        <button class="teran-feature" data-teran-go="smart"><strong>Canasta Inteligente</strong><span class="teran-feature-art">🥬</span><span>Dinos tu presupuesto y preparamos tu selección.</span></button>
+        <button class="teran-feature" data-teran-go="recipes"><strong>¿Qué cocinamos hoy?</strong><span class="teran-feature-art">🥕</span><span>Ideas de platos con verduras frescas.</span></button>
+        <button class="teran-feature" data-teran-go="products"><strong>Canasta de temporada</strong><span class="teran-feature-art">🥦</span><span>Descubre las verduras disponibles.</span></button>
+        <button class="teran-feature" data-teran-go="premia"><strong>Terán Premia</strong><span class="teran-feature-art">🎁</span><span>Consulta nuestros próximos beneficios.</span></button>
       </section>
 
       <div class="section-head">
@@ -1235,10 +1180,6 @@ function renderHome(){
         <span class="section-chip">Frescos del día</span>
       </div>
 
-      <div class="teran-catalog-tools" aria-label="Vista del catálogo">
-        <span>Elige cómo ver tus verduras</span>
-        <div class="teran-view-buttons"><button type="button" data-catalog-view="grid" aria-label="Ver cuadrícula" aria-pressed="true">▦</button><button type="button" data-catalog-view="list" aria-label="Ver lista" aria-pressed="false">☰</button></div>
-      </div>
       <section id="products" class="products"></section>
 
 
@@ -1261,7 +1202,7 @@ function renderHome(){
   document.querySelectorAll("[data-teran-go]").forEach(btn=>btn.addEventListener("click",()=>{
     const go=btn.dataset.teranGo;
     if(go==="smart") navigate("smart");
-    else if(go==="premia") renderTeranPremia();
+    else if(go==="premia") window.open("https://wa.me/51983130700?text="+encodeURIComponent("Hola, quisiera información sobre Terán Premia y sus beneficios."),"_blank","noopener");
     else if(go==="recipes") renderTeranRecipes();
     else if(go==="products"||go==="offers"){
       document.getElementById("products")?.scrollIntoView({behavior:"smooth",block:"start"});
@@ -1276,18 +1217,6 @@ function renderHome(){
   updateBadges();
 }
 
-let teranCatalogView='grid';
-function teranSetCatalogView(view){
-  teranCatalogView=view==='list'?'list':'grid';
-  const box=document.getElementById('products');
-  if(box) box.classList.toggle('teran-list-view',teranCatalogView==='list');
-  document.querySelectorAll('[data-catalog-view]').forEach(b=>{
-    const active=b.dataset.catalogView===teranCatalogView;
-    b.classList.toggle('active',active);
-    b.setAttribute('aria-pressed',String(active));
-    b.onclick=()=>teranSetCatalogView(b.dataset.catalogView);
-  });
-}
 function renderProductGrid(){
   const box=document.getElementById("products");
   if(!box) return;
@@ -1298,7 +1227,7 @@ function renderProductGrid(){
     const categoryOk=["verduras","tuberculos","hierbas"].includes(normalize(p.category)) && (currentCategory==="Todos" || normalize(p.category)===normalize(currentCategory));
     const textOk=!term || p.name.toLowerCase().includes(term);
     return categoryOk && textOk;
-  });
+  }).sort((a,b)=>String(a.name || "").localeCompare(String(b.name || ""), "es", {sensitivity:"base", numeric:true}));
 
   if(!list.length){
     box.innerHTML=`<div class="empty" style="grid-column:1/-1">No encontramos ese producto.</div>`;
@@ -1328,7 +1257,6 @@ function renderProductGrid(){
     </article>
   `).join("");
 
-  teranSetCatalogView(teranCatalogView);
   box.querySelectorAll("[data-add]").forEach(btn=>{
     btn.addEventListener("click",()=>{
       addToCart(Number(btn.dataset.add));
@@ -2241,7 +2169,7 @@ function useCatalogRows(rows){
       unit,
       unitLabel:unitLabel(unit),
       price:Number(row.precio ?? row.price)||0,
-      image:teranFotoProducto(name,row.image_url || fallbackImage(name,category))
+      image:row.image_url || fallbackImage(name,category)
     });
   });
   renderProductGrid();
